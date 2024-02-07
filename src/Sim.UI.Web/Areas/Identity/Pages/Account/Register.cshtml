@@ -1,0 +1,59 @@
+﻿@page "/contas/nova"
+@model RegisterModel
+@{
+    ViewData["Title"] = "Registrar";
+    ViewData["ActivePage"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.Configuracoes;
+    ViewData["ActivePageLi"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.ConfigContas;
+}
+
+<div class="card">
+        
+    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">        
+        <div class="card-header grey-text">
+            Novo Usuário<i class="left material-icons">person_add</i>
+        </div>
+        <div class="card-content">
+            <div class="row">
+                <div class="input-field col s12 m6 l4">
+                    <input asp-for="Input!.UserName" />
+                    <label asp-for="Input!.UserName" ></label>
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <input asp-for="Input!.Name" />
+                    <label asp-for="Input!.Name"></label>
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <input asp-for="Input!.LastName" />
+                    <label asp-for="Input!.LastName"></label>
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <select asp-for="Input!.Genero">
+                        <option selected></option>
+                        <option>Feminino</option>
+                        <option>Masculino</option>
+                    </select>
+                    <label asp-for="Input!.Genero"></label>
+                </div>
+                <div class="input-field col s12 m6 l4">                    
+                    <input asp-for="Input!.Email" />
+                    <label asp-for="Input!.Email"></label>
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <input asp-for="Input!.Password"/>
+                    <label asp-for="Input!.Password"></label>                    
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <label asp-for="Input!.ConfirmPassword"></label>
+                    <input asp-for="Input!.ConfirmPassword"/>
+                </div>
+            </div>
+        </div>
+        <div class="card-action">
+            <button type="submit" class="btn waves-effect waves-light">Registrar</button>
+        </div>        
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

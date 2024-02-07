@@ -1,0 +1,160 @@
+﻿@page "/cliente/alteracoes/{id}"
+@model Sim.UI.Web.Pages.Cliente.Manager.IndexModel
+@{
+    ViewData["Title"] = "Edição";
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<div>
+    <form method="post" asp-route="url" novalidate>
+        <div id="dropdownacc" class="dropdown-content rounded-default row pdn-10">
+            <div class="pdn-v-10"><div class="switch" title="Possui deficiência?"><label><input asp-for="Input!.Fisica" type="checkbox" /><span class="lever"></span>Física</label></div></div> 
+            <div class="pdn-v-10"><div class="switch" title="Possui deficiência?"><label><input asp-for="Input!.Visual" type="checkbox" /><span class="lever"></span>Visual</label></div></div> 
+            <div class="pdn-v-10"><div class="switch" title="Possui deficiência?"><label><input asp-for="Input!.Auditiva" type="checkbox" /><span class="lever"></span>Auditiva</label></div></div> 
+            <div class="pdn-v-10"><div class="switch" title="Possui deficiência?"><label><input asp-for="Input!.Intelectual" type="checkbox" /><span class="lever"></span>Intelectual</label></div></div> 
+        </div>
+        <input asp-for="Input!.Id" hidden/>
+        <div class="card">
+            <div class="card-header alpha-text-5">
+                Cliente<i class="material-icons left">person</i>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 m4 l4">
+                    <input asp-for="Input!.Nome" id="inputNome" required />
+                    <label asp-for="Input!.Nome" for="inputNome"></label>                                          
+                </div>
+                <div class="input-field col s12 m4 l4">                    
+                    <input asp-for="Input!.Nome_Social" id="inputSocial" />
+                    <label asp-for="Input!.Nome_Social" for="inputSocial"></label>                    
+                </div>
+                <div class="input-field col s12 m2 l2">                    
+                    <select asp-for="Input!.Genero" id="inputGenero">
+                        <option selected>-- Genero --</option>
+                        <option>Feminino</option>
+                        <option>Masculino</option>
+                    </select>
+                    <label asp-for="Input!.Genero" for="inputGenero"></label>                    
+                </div>     
+                <div class="input-field col s12 m2 l2">
+                    <a class="dropdown-trigger blue-grey waves-effect waves-light btn-small right" data-target="dropdownacc" title="Deficência?">?<i class="material-icons left">accessible</i></a>  
+                </div>            
+            
+                <div class="input-field col s12 m4 l3">                        
+                    <input asp-for="Input!.Data_Nascimento" id="inputNascimento" required />
+                    <label asp-for="Input!.Data_Nascimento" for="inputNascimento"></label>                        
+                </div>
+                <div class="input-field col s12 m3 l3">
+                    <input asp-for="Input!.CPF" id="inputCPF" required />
+                    <label asp-for="Input!.CPF" for="inputCPF"></label>                        
+                </div>
+                <div class="input-field col s12 m2 l3">                        
+                    <input asp-for="Input!.RG" id="inputRG" />
+                    <label asp-for="Input!.RG" for="inputRG"></label>                        
+                </div>
+                <div class="input-field col s12 m2 l2">                        
+                    <input asp-for="Input!.RG_Emissor" id="inputEmissor" />
+                    <label asp-for="Input!.RG_Emissor" for="inputEmissor"></label>                        
+                </div>
+                <div class="input-field col s12 m1 l1">                        
+                    <input asp-for="Input!.RG_Emissor_UF" id="inputEmissorUF" />
+                    <label asp-for="Input!.RG_Emissor_UF" for="inputEmissorUF"></label>                        
+                </div>  
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header alpha-text-5">Endereço<i class="material-icons left">home_pin</i></div>
+            <div class="row">
+                <div class="input-field col s12 m3 l3">                    
+                    <input asp-for="Input!.CEP" id="cep" />
+                    <label asp-for="Input!.CEP" for="cep"></label>                    
+                </div>
+                <div class="input-field col s12 m6 l6">
+                    <input asp-for="Input!.Logradouro" id="rua" />
+                    <label asp-for="Input!.Logradouro" for="rua"></label>                    
+                </div>
+                <div class="input-field col s12 m3 l3">
+                    <input asp-for="Input!.Numero" />
+                    <label asp-for="Input!.Numero"></label>                    
+                </div> 
+                <div class="input-field col s12 m6 l3">                    
+                    <input asp-for="Input!.Complemento" />
+                    <label asp-for="Input!.Complemento"></label>                   
+                </div>
+                <div class="input-field col s12 m6 l3">                    
+                    <input asp-for="Input!.Bairro" id="bairro" />
+                    <label asp-for="Input!.Bairro" for="bairro"></label>                    
+                </div>
+                <div class="input-field col s12 m6 l3">                    
+                    <input asp-for="Input!.Cidade" id="cidade" />
+                    <label asp-for="Input!.Cidade" for="cidade"></label>                    
+                </div>
+                <div class="input-field col s12 m6 l3">                    
+                    <input asp-for="Input!.UF" id="uf" />
+                    <label asp-for="Input!.UF" for="uf"></label>                    
+                </div>       
+            </div>
+        </div>
+        <div class="card">
+             <div class="card-header alpha-text-5">Contato<i class="material-icons left">call</i></div>
+            <div class="row">
+                <div class="input-field col s12 m3 l3">                       
+                    <input asp-for="Input!.Tel_Movel" class="form-control" id="txtmobile" />
+                    <label asp-for="Input!.Tel_Movel" class="form-label"></label>                        
+                </div>
+                <div class="input-field col s12 m3 l3">                        
+                    <input asp-for="Input!.Tel_Fixo" class="form-control" id="txtphone" />
+                    <label asp-for="Input!.Tel_Fixo" class="form-label"></label>                        
+                </div>
+                <div class="input-field col s12 m6 l6">                        
+                    <input asp-for="Input!.Email" class="form-control" />
+                    <label asp-for="Input!.Email" class="form-label"></label>                        
+                </div>  
+            </div>
+        </div>
+        <div class="card" hidden>
+            <input asp-for="Input!.Deficiencia" hidden />
+            <div class="row">
+                <div class="col s12">
+                    <div class="col s12 m3 l3">
+                        <div class="input-field">
+                            <label asp-for="Input!.Data_Cadastro"></label>
+                            <input asp-for="Input!.Data_Cadastro" disabled />
+                        </div>
+                    </div>
+                    <div class="col s12 m3 l3">
+                        <div class="input-field">
+                            <label asp-for="Input!.Ultima_Alteracao"></label>
+                            <input asp-for="Input!.Ultima_Alteracao" disabled />
+                        </div>
+                    </div>
+                    <div class="col s12 m3 l3">
+                        <label>
+                            <input type="checkbox" asp-for="Input!.Ativo" />
+                            <span>@Html.DisplayNameFor(model => model.Input!.Ativo)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>           
+        </div>
+       
+        <div class="card pdn-10">
+            <button type="submit" role="button" class="waves-effect waves-light btn">Gravar Cadastro</button>
+            <a asp-page="/Cliente/Index" role="button" type="button" class="blue-grey lighten-1 right waves-effect waves-light btn">Voltar</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/jquery.cep.js"></script>
+    <script src="~/js/jquery.mask.min.js"></script>
+    <script src="~/js/jquery.validation.js"></script>
+    <script>
+        $('#inputCPF').mask('000.000.000-00', { placeholder: "___.___.___-__" });
+        $('#txtphone').mask('(00) 0000-0000', { placeholder: "(__) ____-____" });
+        $('#txtmobile').mask('(00) 00000-0000', { placeholder: "(__) _____-____" });
+        $('#cep').mask('00000-000', { placeholder: "_____-___" });
+    </script>
+}
+

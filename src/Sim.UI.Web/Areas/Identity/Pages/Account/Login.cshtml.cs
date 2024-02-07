@@ -1,0 +1,131 @@
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Sim.Identity.Entity;
+
+namespace Sim.UI.Web.Areas.Identity.Pages.Account
+{
+    [AllowAnonymous]
+    public class LoginModel : PageModel
+    {
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ILogger<LoginModel> _logger;
+
+        public LoginModel(SignInManager<ApplicationUser> signInManager,
+            ILogger<LoginModel> logger)
+        {
+            _signInManager = signInManager;
+            _logger = logger;
+        }
+
+        [BindProperty]
+        public InputModel? Input { get; set; }
+
+        public IList<AuthenticationScheme>? ExternalLogins { get; set; }
+
+        public string? ReturnUrl { get; set; }
+
+        [TempData]
+        public string? ErrorMessage { get; set; }
+
+        public class InputModel
+        {
+            [Required]
+            [Display(Name = "Identificador")]
+            public string? UserName { get; set; }
+
+            [Required]
+            [DataType(DataType.Password)]
+            [Display(Name = "Senha")]
+            public string? Password { get; set; }
+
+            [Display(Name = "Lembrar de mim?")]
+            public bool RememberMe { get; set; }
+        }
+
+        public async Task OnGetAsync(string? returnUrl = null)
+        {
+            if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                ModelState.AddModelError(string.Empty, ErrorMessage);
+            }
+
+            returnUrl ??= Url.Content("~/");
+
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            ReturnUrl = returnUrl;
+        }
+
+        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
+        {
+            returnUrl ??= Url.Content("~/");
+
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(Input!.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                if (result.Succeeded)
+                {
+                    var first_name = await _signInManager.UserManager.FindByNameAsync(Input.UserName);
+
+                    if (first_name.LockoutEnabled)
+                    {
+                        _logger.LogWarning("Conta de usuário bloqueada!");
+                        return RedirectToPage("./Lockout");
+                    }
+
+                    //var _mybindings = await _bindaccount.DoListAsync(s => s.AccountId == Guid.Parse(first_name.Id));
+
+                    //Cria claims
+                    // var _claims = new List<Claim>(){
+                    //     new("UserID", first_name.Id),
+                    //     new("FName", first_name.Name),
+                    //     new("LName", first_name.LastName)
+                    // };
+                    // var _claimsIdentity = new ClaimsIdentity(_claims);
+
+                    // foreach (var u in User.Claims)
+                    //     _claimsIdentity.AddClaim(new Claim(u.Type, u.Value));
+
+                    // var _userPrincipal = new ClaimsPrincipal(_claimsIdentity);
+
+                    // await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, _userPrincipal);
+
+                    //theme
+                    HttpContext.Session.SetString("Theme", first_name.Theme ?? "light");
+
+                    _logger.LogInformation($"Usuário {User?.Identity!.Name} conectado.");
+
+                    if (DateTime.Now.DayOfYear > 10)
+                        return LocalRedirect(returnUrl);
+                    else
+                        return RedirectToPage("/Index");
+                }
+                if (result.RequiresTwoFactor)
+                {
+                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                }
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning("Conta de usuário bloqueada.");
+                    return RedirectToPage("./Lockout");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Tentativa de login inválida.");
+                    return Page();
+                }
+            }
+
+            return Page();
+        }
+    }
+}

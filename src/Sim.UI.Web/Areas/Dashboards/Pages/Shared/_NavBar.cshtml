@@ -1,0 +1,83 @@
+@using Microsoft.AspNetCore.Identity
+@using Sim.Identity.Entity
+@using Sim.Application.Interfaces
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject IAppServiceStatusAtendimento MeuStatus
+@inject HttpContextAccessor httpcontextaccessor
+
+@model (int Ano, string Setor, string Page, IEnumerable<string> Setores)
+
+
+@{
+    var _mstatus = await MeuStatus.DoListAsync(s => s.UnserName == User.Identity!.Name);
+    var _user = UserManager.Users.FirstOrDefault(m => m.UserName == User.Identity!.Name);
+    var _lstatus = _mstatus.FirstOrDefault();
+    var _status = _lstatus == null ? false : _lstatus.Online;
+    var _idstatus = _lstatus == null ? Guid.Empty : _lstatus.Id;
+    var DisplayName = _user!.Name;
+    var DisplayLastName = _user.LastName;
+    var _mytheme = _user.Theme == null ? "light" : _user.Theme;
+    var _changetheme = _mytheme == "light" ? "dark" : "light";
+    var _icon = _mytheme == "dark" ? "dark_mode" : "light_mode";
+}
+<input id="meustatusonline" type="text" value="@_idstatus" hidden />
+
+<div class="navbar-fixed">
+    <nav class="navbar z-depth-0">
+        <div class="nav-wrapper">
+            <a href="#" data-target="sidenav-left" class="sidenav-trigger hide-on-extra-large-only"><i
+                    class="material-icons">menu</i></a>
+
+            <div class="left"><img src="~/icons/idnet-normal-white.svg"
+                    style="padding-top: 14px; padding-left: 10px; margin-left: 10px;" width="48px" alt="IDNet" /></div>
+
+            <ul class="right hide-on-med-and-down">
+                <li><a class="dropdown-trigger alpha-w-text-9" href="#!" data-target="pagnames">@Model.Page<i
+                            class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-trigger alpha-w-text-9" href="#!" data-target="dropdown1">@Model.Ano<i
+                            class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-trigger alpha-w-text-9" href="#!" data-target="dropdown2">@Model.Setor<i
+                            class="material-icons right">arrow_drop_down</i></a></li>
+                 
+                @* <li class="dropdown-trigger" data-target="dropdownuser">
+                    <a id="btnstatus" href="#" class="alpha-w-text-9
+                    ">@DisplayName<i class="left material-icons">person</i></a>
+                </li> *@
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div id="dropdownuser" class="dropdown-content rounded-default row">
+    <div class="center-align"><a class="grey-text" asp-area="Identity" asp-page="/Account/Manage/Index">Meu Perfil</a>
+    </div>
+    <div class="divider"></div>
+    <div><a asp-area="Identity" asp-page="/Account/Logout" class="grey-text">Sair<i
+                class="left material-icons">logout</i></a></div>
+</div>
+
+<ul id="dropdown1" class="dropdown-content">
+    @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 10; i--)
+    {
+        <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/@Model.Page" asp-route-ano="@i"
+                asp-route-setor="@Model.Setor" onclick="CloseDropdown()">@i</a></li>
+    }
+</ul>
+
+<ul id="dropdown2" class="dropdown-content">
+    @foreach (var item in @Model.Setores)
+    {
+        <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/@Model.Page" asp-route-ano="@Model.Ano"
+                asp-route-setor="@item" onclick="CloseDropdown()" target="_blank">@item</a></li>
+    }
+</ul>
+
+<ul id="pagnames" class="dropdown-content">
+    <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/Atendimentos" asp-route-ano="@Model.Ano"
+            asp-route-setor="@Model.Setor" onclick="CloseDropdown()">Atendimentos</a></li>
+    <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/Eventos" asp-route-ano="@Model.Ano"
+            asp-route-setor="@Model.Setor" onclick="CloseDropdown()">Eventos</a></li>
+    <li><a class="submit" href="https://www.indicadores.net/empresas/jau" onclick="CloseDropdown()" target="_blank">Empresas</a></li>
+</ul>

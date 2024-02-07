@@ -1,0 +1,22 @@
+﻿@model string
+
+@if (!String.IsNullOrEmpty(Model))
+{
+    var statusMessageClass = "green";
+    var iconclass = "done";
+
+    if (Model.StartsWith("Erro:"))
+    {
+        statusMessageClass = "red";
+        iconclass = "error";
+    }
+    else if (Model.StartsWith("Alerta:"))
+    {
+        statusMessageClass = "amber";
+        iconclass = "warning";
+    }
+
+    <div class="card-panel z-depth-0 @statusMessageClass lighten-5 @statusMessageClass-text text-accent-4" role="alert">
+        <h6><i class="left material-icons">@iconclass</i>@Model</h6>
+    </div>    
+}

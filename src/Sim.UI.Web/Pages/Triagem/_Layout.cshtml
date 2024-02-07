@@ -1,0 +1,22 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+    {
+        Layout = (string)parentLayout!;
+    }
+    else
+    {
+        Layout = "/Pages/Shared/__LayoutModal.cshtml";
+    }
+    //ViewData["ActivePage"] = Web.Pages.Shared.LayoutNavPages.Atendimento;
+    //ViewData["ActivePageLi"] = Web.Pages.Shared.LayoutNavPages.InicioTriagem;
+}
+<!---->
+<partial name="_TriagemNav" />
+
+<div style="margin:20px 20px 20px 20px;">
+    @RenderBody()
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

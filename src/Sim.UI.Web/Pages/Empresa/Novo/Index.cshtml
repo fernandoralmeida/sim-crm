@@ -1,0 +1,181 @@
+﻿@page "/empresa/novo/"
+@model Sim.UI.Web.Pages.Empresa.Novo.IndexModel
+
+@{
+    ViewData["Title"] = "Incluir Empresa";
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<div>
+    <form class="row" method="post">
+        <div class="card">
+            <div class="row">
+                <div class="col s12">
+                    <div class="col s12" hidden>
+                        <label asp-for="Input!.Id"></label>
+                        <input asp-for="Input!.Id" />
+                    </div>
+                    <div class="col left-align">
+                        <a asp-page="/Empresa/Index" class="btn grey waves-effect right mgn-t-12"><i
+                                class="material-icons">arrow_back</i></a>
+                    </div>
+                    <div class="col s12 m4 l4">
+                        <div class="input-field">
+                            <input asp-for="Input!.CNPJ" id="inputCNPJ">
+                            <label asp-for="Input!.CNPJ" for="inputCNPJ"></label>
+                        </div>                        
+                    </div>
+                    <div class="col s12 m3 l3">
+                        <div class="input-field">
+                            <input asp-for="Input!.Data_Abertura" id="inputAbertura" />
+                            <label asp-for="Input!.Data_Abertura" for="inputAbertura"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <div class="col s12 m5 l4">
+                        <div class="input-field">
+                            <input asp-for="Input!.Nome_Empresarial" id="inputNome" />
+                            <label asp-for="Input!.Nome_Empresarial" for="inputNome"></label>
+                        </div>
+                    </div>
+                    <div class="col s12 m5 l4">
+                        <div class="input-field">
+                            <input asp-for="Input!.Nome_Fantasia" id="inputFantasia" />
+                            <label asp-for="Input!.Nome_Fantasia" for="inputFantasia"></label>
+                        </div>
+                    </div>
+                    <div class="col s12 m2 l4">
+                        <div class=" input-field">
+                            <input asp-for="Input!.Situacao_Cadastral" id="inputSitCad" />
+                            <label asp-for="Input!.Situacao_Cadastral" for="inputSitCad"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <div class="col s12 m3 l3">
+                        <div class="input-field">
+                            <input asp-for="Input!.CNAE_Principal" id="inputCNAE" />
+                            <label for="inputCNAE">Cnae</label>
+                        </div>
+                    </div>
+                    <div class="col s12 m9 l9">
+                        <div class="input-field">
+                            <input asp-for="Input!.Atividade_Principal" id="inputAtividade" />
+                            <label for="inputAtividade">Descrição</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12">
+                    <div class="col s12 ">
+                        <div class="input-field">
+                            <textarea asp-for="Input!.Atividade_Secundarias" rows="4" class="materialize-textarea"
+                                id="inputSecundaria"></textarea>
+                            <label asp-for="Input!.Atividade_Secundarias" for="inputSecundaria"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="row">
+                <div class="col s12">
+                    <div class="col s12 m3 l3">
+                        <div class="input-field">
+                            <input asp-for="Input!.CEP" id="inputCEP" />
+                            <label asp-for="Input!.CEP" for="inputCEP"></label>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 l6">
+                        <div class="input-field">
+                            <input asp-for="Input!.Logradouro" id="inputRua" />
+                            <label asp-for="Input!.Logradouro" for="inputRua"></label>
+                        </div>
+                    </div>
+                    <div class="col s12 m3 l3">
+                        <div class="input-field">
+                            <input asp-for="Input!.Numero" id="inputNumero" />
+                            <label asp-for="Input!.Numero" for="inputNumero"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <div class="col s12 m6 l3">
+                        <div class="input-field">
+                            <input asp-for="Input!.Complemento" id="inputComp" />
+                            <label asp-for="Input!.Complemento" for="inputComp"></label>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 l3">
+                        <div class="input-field">
+                            <input asp-for="Input!.Bairro" id="inputBairro" />
+                            <label asp-for="Input!.Bairro" for="inputBairro"></label>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 l3">
+                        <div class="input-field">
+                            <input asp-for="Input!.Municipio" id="inputMunucipio" />
+                            <label asp-for="Input!.Municipio" for="inputMunucipio"></label>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 l3">
+                        <div class="input-field">
+                            <input asp-for="Input!.UF" id="inputUF" />
+                            <label asp-for="Input!.UF" for="inputUF"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="row">
+                <div class="col s12">
+                    <div class="col s12 m6 l6">
+                        <div class="input-field">
+                            <input asp-for="Input!.Email" id="inputEmail" />
+                            <label asp-for="Input!.Email" for="inputEmail"></label>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 l6">
+                        <div class="input-field">
+                            <input asp-for="Input!.Telefone" id="inputTel" />
+                            <label asp-for="Input!.Telefone" for="inputTel"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" hidden>
+            <div class="card-action">
+                <a asp-page="./Index" role="button" type="button"
+                    class="btn btn-large blue-grey lighten-1 waves-effect right">Voltar</a>
+                <button type="submit" role="button" class="btn btn-large waves-effect">Gravar Cadastro</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/jquery.cep.js"></script>
+    <script src="~/js/jquery.mask.min.js"></script>
+    <script src="~/js/jquery.validation.js"></script>
+    <script>
+        $('#inputCNPJ').mask('00.000.000/0000-00');
+        $('#inputTel').mask('(00) 0000-0000', { placeholder: "(__) ____-____" });
+        $('#inputCEP').mask('00000-000');
+    </script>
+}

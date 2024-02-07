@@ -1,0 +1,159 @@
+﻿@page "/atendimento/"
+@model Sim.UI.Web.Pages.Atendimento.IndexModel
+
+@{
+    ViewData["Title"] = "Meus Atendimentos";
+    ViewData["ActivePageLi"] = Web.Pages.Shared.LayoutNavPages.AtendimentoDiario;
+}
+
+<!---->
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<form method="post">
+    <nav class="row transparent">
+        <div class="nav-wrapper">
+            <div class="input-field">
+                <input id="search" placeholder="Digite aqui para pesquisar!" onkeypress="handle(event)"
+                    asp-for="Input!.DataAtendimento" type="search" autofocus required>
+                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+            </div>
+        </div>
+    </nav>
+</form>
+
+<div class="card">
+    <table class="responsive-table">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    Protocolo
+                </th>
+                <th>
+                    Horário
+                </th>
+                <th>
+                    Cliente
+                </th>
+                <th>
+                    Servicos
+                </th>
+                <th>
+                    Setor
+                </th>
+                <th>
+                    Canal
+                </th>
+                <th>
+                    Ação
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int cont1 = 0;
+            }
+
+
+            @foreach (var item in Model.Input!.ListaAtendimento!)
+            {
+                <tr>
+
+                    <td>
+                        @{
+                            cont1++;
+                        }
+                        @cont1.ToString()
+                    </td>
+                    <td>
+                        <a class="modal-trigger" href="#viewmodal" data-id="@item.Id">@Html.DisplayFor(modelItem =>
+                        item.Protocolo)</a>
+                    </td>
+                    <td>
+                        @{
+                            var d1 = Convert.ToDateTime(item.Data);
+                            var d2 = Convert.ToDateTime(item.DataF);
+                            var datainicial = d1.ToShortTimeString();
+                            var datafinal = d2.ToShortTimeString();
+                        }
+
+                        @Html.DisplayFor(modelItem => datainicial)
+                        @Html.DisplayFor(modelItem => datafinal)
+                    </td>
+                    <td class="t-uppercase">
+                        @{
+                            var _isempresa = item.Empresa != null ? item.Empresa.Nome_Empresarial : "Anônimo";
+                            var _isperson = item.Pessoa != null ? item.Pessoa.Nome : _isempresa;
+                        }
+                        @Html.DisplayFor(modelItem => _isperson)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Servicos)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Setor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Canal)
+                    </td>
+                    <td>
+                        <a class="btn-floating btn-small orange waves-effect" asp-page="/Atendimento/Manager/Index"
+                            asp-route-id="@item.Id"><i class="material-icons">edit</i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal Structure -->
+<div id="viewmodal" class="modal modal-fixed-footer">
+    <div class="modal-content"></div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close btn waves-effect">Fechar</a>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/jquery.mask.min.js"></script>
+    <script>
+        $('#search').mask('00/00/0000', { placeholder: "15/08/1853" });
+    </script>
+    <script>
+        $(function () {
+            $(".modal-trigger").click(function () {
+                var customerId = $(this).data('id');
+                $(".modal-content").empty();
+                $.getJSON(`/api/v1/atendimento/${customerId}`, (data) => {
+                    $(".modal-content").append(`<div>Protocolo: ${data.protocolo}</div>`);
+                    $(".modal-content").append(`<div>Data: ${data.data}</div>`);
+                    $(".modal-content").append(`<div>Setor: ${data.setor}</div>`);
+                    $(".modal-content").append(`<div>Canal: ${data.canal}</div>`);
+                    $(".modal-content").append(`<div>Serviços: ${data.servicos}</div>`);
+                    $(".modal-content").append(`<div>Descricao: ${data.descricao}</div>`);
+                    $(".modal-content").append(`<div class="divider"></div>`);
+                    $(".modal-content").append(`<div>Nome: ${data.pessoa.nome}</div>`);
+                    $(".modal-content").append(`<div>CPF: ${data.pessoa.cpf}</div>`);
+                    $(".modal-content").append(`<div>Data Nascimento: ${data.pessoa.data_Nascimento}</div>`);
+                    $(".modal-content").append(`<div>CEP: ${data.pessoa.cep}</div>`);
+                    $(".modal-content").append(`<div>${data.pessoa.logradouro} ${data.pessoa.numero}</div>`);
+                    $(".modal-content").append(`<div>${data.pessoa.bairro}, ${data.pessoa.cidade} - ${data.pessoa.uf}</div>`);
+                    $(".modal-content").append(`<div>Telefone: ${data.pessoa.tel_Movel}, E-mail: ${data.pessoa.email}</div>`);
+                    $(".modal-content").append(`<div class="divider"></div>`);
+                    $(".modal-content").append(`<div>${data.empresa.cnpj} ${data.empresa.situacao_Cadastral}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.nome_Empresarial}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.nome_Fantasia}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.data_Abertura}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.cnaE_Principal} ${data.empresa.atividade_Principal}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.atividade_Secundarias}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.cep} ${data.empresa.logradouro} ${data.empresa.numero}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.bairro} ${data.empresa.municipio} ${data.empresa.uf}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.telefone} ${data.empresa.email}</div>`);
+                });
+
+            });
+        });
+    </script>
+}

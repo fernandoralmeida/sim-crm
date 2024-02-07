@@ -1,0 +1,30 @@
+﻿@using Sim.UI.Web.Areas.Admin.Pages.Manager
+
+
+    <nav class="row navbar transparent">
+        <div class="nav-wrapper">
+            <ul class="right">
+                <li class="@AdminNavPages.IndexNavClass(ViewContext)">
+                    <a id="lusers" asp-area="Admin" asp-page="./Index">Ativos</a>
+                </li>
+                <li class="@AdminNavPages.LockNavClass(ViewContext)">
+                    <a asp-area="Admin" id="lblock" asp-page="./Lockout">Bloqueados</a>
+                </li>
+                <li class="@AdminNavPages.RegisterNavClass(ViewContext)" hidden>
+                    <a id="regs" asp-area="Admin" asp-page="./Register"><i class="material-icons">add</i></a>
+                </li>
+                <li class="@AdminNavPages.RolesNavClass(ViewContext)">
+                    <a id="roles" asp-area="Admin" asp-page="./Roles">Funções</a>
+                </li>
+                <li class="@AdminNavPages.ClaimsNavClass(ViewContext)" hidden>
+                    <a id="claims" asp-area="Admin" asp-page="./Claims">Papeis</a>
+                </li>
+                <li>
+                    <form>
+                        <a asp-area="Identity" asp-page="/Account/Register"><i class="material-icons blue-text">add</i></a>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+

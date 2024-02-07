@@ -1,0 +1,151 @@
+﻿@page "/empresa/"
+@model Sim.UI.Web.Pages.Empresa.IndexModel
+@using Sim.UI.Web.Functions
+
+@{
+    ViewData["Title"] = "Empresas";
+    ViewData["ActivePageEmp"] = EmpresaNavPages.Inicio;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<form>
+    <nav class="row transparent">
+        <div class="nav-wrapper">
+            <div class="input-field col s6 m6 l6 no-padding">
+                <input id="search" placeholder="Digite aqui para pesquisar!" onkeypress="handle(event)" asp-for="Src"
+                    type="search" autofocus required>
+                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+            </div>
+            <ul class="right">
+                <li><a class="modal-trigger" href="#modal1" title="Incluir Empresa!"><i
+                            class="material-icons blue-text">add</i></a></li>
+                <li><a asp-page="/Empresa/Consulta/Index" title="Consulta Avançada!"><i
+                            class="material-icons orange-text">manage_search</i></a></li>
+            </ul>
+        </div>
+    </nav>
+</form>
+
+<div class="card">
+    <table class="responsive-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Ano</th>
+                <th>CNPJ</th>
+                <th>Nome Empresarial</th>
+                <th>Tel</th>
+                <th>E-mail</th>
+                <th>Situação</th>
+                <th>Endereço</th>
+                <th>Município</th>
+                <th>Atividade</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int cont = 1;
+                int t = (Model.PaginationEmpresas!.PageIndex - 1) * Model.PaginationEmpresas.ItemsViews;
+            }
+            @if (Model.PaginationEmpresas != null)
+            {
+
+                @foreach (var item in Model.PaginationEmpresas)
+                {
+                    <tr>
+                        <td>@Functions.Extensions.Contador(cont++, t)
+                        <td>
+                                @{
+                                    var ano = item.Data_Abertura!.Value.Year;
+                                }
+                                @Html.DisplayFor(modelItem => ano)
+                        </td>
+                        <td>
+                            <a class="blue-text" asp-page="/Empresa/Preview/Index" asp-route-id="@item.Id"
+                                target="_blank">@Html.DisplayFor(modelItem => item.CNPJ)</a>
+                        </td>
+                        <td>
+                                @Html.DisplayFor(modelItem => item.Nome_Empresarial)
+                        </td>
+                        <td>
+                                @Html.DisplayFor(modelItem => item.Telefone)
+                        </td>
+                        <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                                @Html.DisplayFor(modelItem => item.Situacao_Cadastral)
+                        </td>
+                        <td>
+                                @{
+                                    var end = string.Format("{0}, {1}", item.Logradouro, item.Numero);
+                                }
+                                @Html.DisplayFor(modelItem => end)
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.Municipio)</td>
+                        <td>
+                                @Html.DisplayFor(modelItem => item.Atividade_Principal)
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+
+    @{
+        var prevDisabled = !Model.PaginationEmpresas!.HasPreviusPage ? "disabled" : "";
+        var nextDisabled = !Model.PaginationEmpresas.HasNextPage ? "disabled" : "";
+        var _isdisabled = Model.PaginationEmpresas.Any() ? null : "disabled";
+    }
+    <div class="card-action center">
+        <span class="left">Página @Model.PaginationEmpresas.PageIndex de @Model.PaginationEmpresas.TotalPages -
+            @Model.RegCount Reg.</span>
+        <a asp-page="/Empresa/Export/Index" asp-route-ss="@Model.Src"
+            class="btn-small waves-effect waves-light green @_isdisabled right" title="Exportar"><i
+                class="material-icons">description file_download</i></a>
+
+        <a asp-page="./Index" asp-route-Src="@Model.Src" asp-route-pag="@(Model.PaginationEmpresas.PageIndex - 1)"
+            class="btn-small waves-effect waves-light @prevDisabled">
+            <i class="material-icons">navigate_before</i>
+        </a>
+        <a asp-page="./Index" asp-route-Src="@Model.Src" asp-route-pag="@(Model.PaginationEmpresas.PageIndex + 1)"
+            class="btn-small waves-effect waves-light @nextDisabled">
+            <i class="material-icons">navigate_next</i>
+        </a>
+    </div>
+</div>
+
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <form id="add-new" asp-page-handler="AddNew" method="post">
+            <div class="col s12 input-field valign-wrapper">
+                <input id="inputcnpj" asp-for="GetDocument" placeholder="Informe o CNPJ" autofocus />
+                <button asp-page-handler="AddNew" class="waves-effect waves-light btn">
+                    <i class="material-icons">sync</i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/jquery.mask.min.js"></script>
+    <script>
+        $('#inputcnpj').mask('00.000.000/0000-00');
+        $(function () {
+            $(".modal-trigger").click(function () {
+                var _div = document.getElementById("divcaptcha");
+                _div.innerHTML = "";
+                var img = document.createElement("img");
+                img.className = "imgcaptcha";
+                img.src = "https://solucoes.receita.fazenda.gov.br/Servicos/cnpjreva/captcha/gerarCaptcha.asp";
+                _div.appendChild(img);
+            });
+        });
+    </script>
+}

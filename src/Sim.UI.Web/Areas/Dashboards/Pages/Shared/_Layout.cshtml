@@ -1,0 +1,62 @@
+@using Microsoft.AspNetCore.Identity
+@using Sim.Identity.Entity
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Language" content="pt-br">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="~/favicon.ico" />
+    <link rel="stylesheet" href="~/lib/google/material-symbols-rounded.css" />
+    <link rel="stylesheet" href="~/lib/materialize/css/materialize.min.css" />
+    <link rel="stylesheet" href="~/css/light.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/lib/apexcharts/apexcharts.css" />
+
+    <title>SIM - Dashboards</title>
+</head>
+
+<body>
+    <div class="blackboxload-indicadores">
+        <div id="loader" class="row center mgn-t-10">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @RenderBody()
+    <footer></footer>
+    <script type="text/javascript" src="~/lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="~/js/site.js"></script>
+    <script type="text/javascript" src="~/lib/materialize/js/materialize.min.js"></script>
+    <script type="text/javascript" src="~/lib/apexcharts/apexcharts.min.js"></script>
+    <script>
+        $(window).on('load', function () {
+            //$(".progress").fadeOut("slow"); 
+            $("#loader").hide();
+            $(".blackboxload-indicadores").fadeOut("slow");
+        });
+        $(function () {
+            $(".submit").click(function () {
+                $(".blackboxload-indicadores").show();
+                $("#loader").show();
+                $(this).addClass('pre-active');
+            });
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

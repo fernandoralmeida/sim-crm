@@ -1,0 +1,110 @@
+﻿@page "/agenda/eventos/inscricoes/lista/"
+@using System.Text;
+@model Sim.UI.Web.Pages.Agenda.Inscricoes.Lista.IndexModel
+@{
+    Layout = "/Pages/Shared/__LayoutModal.cshtml";
+    ViewData["Title"] = "Lista Inscritos";
+}
+
+<div class="row valign-wrapper">
+    <div class="col s9 m9 l9">
+        Código: @Model.Input?.Codigo
+        <br /><b>@Model.Input?.Tipo @Model.Input?.Nome</b>
+        <br />@Model.Input?.Formato para até @Model.Input?.Lotacao pessoas.
+        <br />Data: @Model.Input?.Data
+    </div>
+    <div class="col s3 m3 l3">
+        <img class="right" src="~/icons/sedempi_166p.svg" style="height:60px;">
+    </div>
+</div>
+
+<div>
+    <table class="responsive-table border-a">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    CPF
+                </th>
+                <th>
+                    Cliente
+                </th>
+                <th>
+                    Empresa
+                </th>
+                <th>
+                    Contato
+                </th>
+                <th>Assinatura</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int cont = 0;
+            }
+            @foreach (var item in Model.Input?.Inscritos!)
+            {
+                <tr>
+                    <td>
+                        @{cont++;}
+                        @cont.ToString()
+                    </td>
+                    <td>
+                        @{
+                            var _cpf = item.Participante!.CPF;
+                            var _cpfmsk = _cpf?.Remove(0, 3);
+                            _cpfmsk = _cpfmsk?.Insert(0, "***");
+                            _cpfmsk = _cpfmsk?.Remove(12, 2);
+                            _cpfmsk = _cpfmsk?.Insert(12, "**");
+
+                            string[] nomes = item.Participante!.Nome!.Split(new char[] { ' ' });
+
+                            StringBuilder _nome = new StringBuilder();
+
+                            var i = 0;
+
+                            foreach (string s in nomes)
+                            {
+
+                                if (i % 2 == 0)
+                                {
+                                    _nome.Append(nomes[i].ToUpper());
+                                    i++;
+                                }
+                                else
+                                {
+                                    _nome.Append(" **** ");
+                                    i++;
+                                }
+                            }
+
+                            var _nomemsk = item.Participante.Nome.ToUpper();
+                        }
+
+                        @Html.DisplayFor(modelItem => _cpfmsk)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => _nomemsk)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Empresa!.CNPJ)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Participante.Tel_Movel)
+                    </td>
+                    <td>A.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<span>Secretaria de Desenvolvimento Econômico, Empreendedorismo e Inovação: @User.Identity!.Name</span>
+<span class="right">Prefeitura do Município de Jahu</span>
+<!---->
+<div class="row">
+    <p class="center">
+        <button id="printpagebutton" class="btn waves-effect waves-light" onclick="printpage()">Imprimir</button>
+    </p>
+</div>

@@ -1,0 +1,406 @@
+@page "/painel/eventos/{ano?}/{setor?}"
+@model Sim.UI.Web.Areas.Dashboards.Pages.Indicadores.DashEventos;
+@{
+    ViewData["Title"] = "Eventos";
+}
+
+<partial name="./Shared/_NavBar" model="Model.NavBar" />
+
+<div class="container-m10 row">
+    <div class="col s12 m8 l10">
+        <div class="row">
+            <div class="col s12 m6 l4">
+                <div class="card hoverable">
+                    <div id="t_eventos"></div>
+                </div>
+            </div>
+            <div class="col s12 m6 l4">
+                <div class="card hoverable">
+                    <div id="t_inscricoes_pie"></div>
+                </div>
+            </div>
+            <div class="col s12 m12 l4">
+                <div class="card hoverable">
+                    <div id="t_perfil_presente_pie"></div>
+                </div>
+            </div>
+            <div class="col s12 m12 l6">
+                <div class="card hoverable">
+                    <div id="t_eve_faixa_etaria_participantes"></div>
+                </div>
+            </div>
+            <div class="col s12 m12 l6">
+                <div class="card hoverable">
+                    <div id="t_eve_setores"></div>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="card hoverable">
+                    <div id="t_eve_month"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m4 l2">
+        @foreach (var item in Model.LReports!.EventosTipo!)
+        {
+            <div class="card hoverable">                
+                <div class="card-content">@item.Value - @item.Key</div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    window.onload = function () {
+
+        var t_eventos = {
+            title: {
+                text: 'Eventos',
+                align: 'left'
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            chart: {
+                type: 'donut',
+                height: 300,
+                zoom: {
+                    enabled: true
+                }
+            },
+            series: [@Model!.Eventos[0]],
+            labels: [@Model!.Eventos[1]],
+            legend: {
+                position: 'bottom'
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true
+                            }
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                enabled: false
+            },
+            theme: {
+                mode: 'ligth',
+                palette: 'palette1'
+            }
+        };
+
+        new ApexCharts(document.querySelector("#t_eventos"), t_eventos).render();
+
+        var t_inscricoes_pie = {
+            title: {
+                text: 'Inscrições',
+                align: 'left'
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            chart: {
+                type: 'donut',
+                height: 300,
+                zoom: {
+                    enabled: true
+                }
+            },
+            series: [@Model.Participantes, @Model.Ausentes],
+            labels: ["Participantes", "Ausentes"],
+            legend: {
+                position: 'bottom'
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true
+                            }
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                enabled: false
+            },
+            theme: {
+                mode: 'ligth',
+                palette: 'palette1'
+            }
+        };
+
+        new ApexCharts(document.querySelector("#t_inscricoes_pie"), t_inscricoes_pie).render();
+
+        var t_perfil_presente_pie = {
+            title: {
+                text: 'Participantes',
+                align: 'left'
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            chart: {
+                type: 'donut',
+                height: 300,
+                zoom: {
+                    enabled: false
+                }
+            },
+            series: [@Model!.ParticipantesGeneroPresente[0]],
+            labels: [@Model!.ParticipantesGeneroPresente[1]],
+            legend: {
+                position: 'bottom'
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true
+                            }
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                enabled: false
+            },
+            theme: {
+                mode: 'light',
+                palette: 'palette1'
+            }
+        };
+
+        new ApexCharts(document.querySelector("#t_perfil_presente_pie"), t_perfil_presente_pie).render();
+
+        var t_eve_month = {
+            chart: {
+                type: 'area',
+                height: 500,
+                zoom: {
+                    enabled: false
+                }
+            },
+            series: [{
+                name: 'Eventos',
+                data: [@Model.EventosMeses]
+            },
+            {
+                name: 'Inscritos',
+                data: [@Model.EventosMesesInscritos]
+            },
+            {
+                name: 'Participantes',
+                data: [@Model.EventosMesesParticipantes]
+            }],
+            yaxis: {
+                labels: {
+                    show: false
+                }
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'right',
+                floating: true,
+                offsetY: -25,
+                offsetX: -5
+            },
+            dataLabels: {
+                enabled: true,
+            },
+            title: {
+                text: 'Eventos Mês',
+                align: 'left'
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            theme: {
+                mode: 'light',
+                palette: 'palette1'
+            },
+            stroke: {
+                curve: 'smooth',
+            },
+            grid: {
+                xaxis: {
+                    lines: {
+                        show: false
+                    },
+                },
+                yaxis: {
+                    lines: {
+                        show: false
+                    }
+                }
+            }
+        };
+
+        new ApexCharts(document.querySelector("#t_eve_month"), t_eve_month).render();
+
+        var t_eve_faixa_etaria_participantes = {
+            plotOptions: {
+                bar: {
+                    distributed: true
+                }
+            },
+            chart: {
+                type: 'bar',
+                height: 250,
+                zoom: {
+                    enabled: false
+                }
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    //isFunnel: true
+                },
+            },
+            series: [{
+                name: "Faixa",
+                data: [@Model.FaixaEtariaParticipantes],
+            }],
+            dataLabels: {
+                enabled: true,
+            },
+            title: {
+                text: 'Faixa Etária',
+                align: 'left',
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            tooltip: {
+                shared: true,
+                intersect: false
+            },
+            theme: {
+                mode: 'light',
+                palette: 'palette1'
+            },
+            xaxis: {
+                labels: {
+                    show: false
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                crosshairs: {
+                    show: false
+                }
+            },
+            grid: {
+                xaxis: {
+                    lines: {
+                        show: false
+                    },
+                },
+                yaxis: {
+                    lines: {
+                        show: false
+                    }
+                }
+            },
+            legend: {
+                floating: true,
+                position: 'top',
+                horizontalAlign: 'right',
+                offsetY: -36
+            }
+        };
+
+        new ApexCharts(document.querySelector("#t_eve_faixa_etaria_participantes"), t_eve_faixa_etaria_participantes).render();
+
+        var t_eve_setores = {
+            plotOptions: {
+                bar: {
+                    distributed: true
+                }
+            },
+            chart: {
+                type: 'bar',
+                height: 250,
+                zoom: {
+                    enabled: false
+                }
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    //isFunnel: true
+                },
+            },
+            series: [{
+                name: "Setor",
+                data: [@Model.EventosSetores],
+            }],
+            dataLabels: {
+                enabled: true,
+            },
+            title: {
+                text: 'Setores',
+                align: 'left',
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            tooltip: {
+                shared: true,
+                intersect: false
+            },
+            theme: {
+                mode: 'light',
+                palette: 'palette1'
+            },
+            xaxis: {
+                labels: {
+                    show: false
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                crosshairs: {
+                    show: false
+                }
+            },
+            grid: {
+                xaxis: {
+                    lines: {
+                        show: false
+                    },
+                },
+                yaxis: {
+                    lines: {
+                        show: false
+                    }
+                }
+            },
+            legend: {
+                floating: true,
+                position: 'top',
+                horizontalAlign: 'right',
+                offsetY: -36
+            }
+        };
+
+        new ApexCharts(document.querySelector("#t_eve_setores"), t_eve_setores).render();
+
+    };
+</script>

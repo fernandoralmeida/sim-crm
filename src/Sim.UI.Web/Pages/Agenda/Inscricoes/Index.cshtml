@@ -1,0 +1,148 @@
+﻿@page "/agenda/eventos/inscricoes/"
+@model Sim.UI.Web.Pages.Agenda.Inscricoes.IndexModel
+@{
+    ViewData["Title"] = "Lista de Participantes";
+}
+
+<div class="row card">
+    <div class="col s12">
+        Código: @Model.Input!.Codigo
+        <br /><span>@Model.Input.Tipo @Model.Input.Nome - @Model.Input.Formato</span>
+        <br />Data: @Model.Input.Data
+        <br />@Model.Input.Descricao
+    </div>
+</div>
+
+<div class="card">
+    <form method="post">
+        <a class="btn waves-effect waves-light blue mgn-8" asp-page="/Agenda/Inscricoes/Novo/Index" asp-route-id="@Model.Input.Codigo" title="Inscrever"><i class="material-icons">person add</i></a>
+        <button class="btn waves-effect waves-light blue mgn-8 right" asp-page-handler="Reorder" asp-route-id="@Model.Input.Codigo" title="Ordenar por data de inscrição"><i class="material-icons">reorder arrow_drop_down</i></button>
+        <table class="responsive-table">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Presença
+                    </th>
+                    <th>
+                        CPF
+                    </th>
+                    <th>
+                        Cliente
+                    </th>
+                    <th>
+                        Empresa
+                    </th>
+                    <th>
+                        Contato
+                    </th>
+
+                    <th>
+                        Ação
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int cont = 0;
+                }
+                @foreach (var item in Model.Input!.Inscritos!)
+                {
+                <tr>
+                    <td>
+                        @{cont++;}
+                        @cont.ToString()
+                    </td>
+                    <td>
+                        <div class="switch">
+                            <label><input class="icheckbox" data-id="@item.Id" data-cd="@Model.Input.Codigo" checked="@item.Presente" type="checkbox" /><span class="lever"></span></label>
+                        </div>                        
+                    </td>
+                    <td>
+                        <a class="modal-trigger" href="#viewmodal" data-id="@item.Id">@Html.DisplayFor(modelItem => item.Participante!.CPF)</a>
+                    </td>
+                    <td class="t-uppercase">
+                        @Html.DisplayFor(modelItem => item.Participante!.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Empresa!.Nome_Empresarial)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Participante!.Tel_Movel)
+                    </td>
+
+                    <td>
+                        <button asp-page-handler="Remove" asp-route-id="@item.Id" asp-route-ide="@Model.Input.Codigo" type="submit" class="btn-floating materialize-red waves-effect waves-light btn-small"><i class="material-icons">remove</i></button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+    <div class="card-action">
+        <a asp-page="/Agenda/Index" asp-route-m="ativos" class="btn grey waves-effect waves-light">Voltar</a>
+        <a asp-page="/Agenda/Inscricoes/Lista/Index" asp-route-id="@Model.Input.Codigo" class="btn waves-effect waves-light right" target="_blank">Visualizar Lista</a>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="viewmodal" class="modal modal-fixed-footer">
+    <div class="modal-content"></div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close btn waves-effect">Fechar</a>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $(".icheckbox").click(function(){
+                var g_id = $(this).data('id');
+                var e_id = $(this).data('cd');
+                var chk = $(this).prop("checked");                
+                $.get(`/agenda/eventos/inscricoes/status/?id=${g_id}&ide=${e_id}&st=${chk}`, 
+                    function(returnedData){                        
+                }).fail(function(erroData){
+                    alert("Erro");
+                });
+            });
+            $(".modal-trigger").click(function () {
+                var customerId = $(this).data('id');
+                $(".modal-content").empty();
+                $.getJSON(`/agenda/eventos/inscricoes/?id=${customerId}&handler=DetalheInscrito`, (data) => {
+                    $.each(data, function (i, item) {
+                        $(".modal-content").append(`<div>Código: ${item.evento.codigo}</div>`);
+                        $(".modal-content").append(`<div>Evento: ${item.evento.tipo} ${item.evento.nome}</div>`);
+                        $(".modal-content").append(`<div>Formato: ${item.evento.formato}</div>`);
+                        $(".modal-content").append(`<div>Data: ${item.evento.data}</div>`);
+                        $(".modal-content").append(`<div>Capacidade: ${item.evento.lotacao}</div>`);
+                        $(".modal-content").append(`<div>Inscrição: ${item.numero}</div>`);
+                        $(".modal-content").append(`<div>Data Inscricao: ${item.data_Inscricao}</div>`);
+                        $(".modal-content").append(`<div>Usuário do Sistema: ${item.aplicationUser_Id}</div>`);
+                        $(".modal-content").append(`<div class="divider"></div>`);
+                        $(".modal-content").append(`<div>Nome: ${item.participante.nome}</div>`);
+                        $(".modal-content").append(`<div>CPF: ${item.participante.cpf}</div>`);
+                        $(".modal-content").append(`<div>Data Nascimento: ${item.participante.data_Nascimento}</div>`);
+                        $(".modal-content").append(`<div>CEP: ${item.participante.cep}</div>`);
+                        $(".modal-content").append(`<div>${item.participante.logradouro} ${item.participante.numero}</div>`);
+                        $(".modal-content").append(`<div>${item.participante.bairro}, ${item.participante.cidade} - ${item.participante.uf}</div>`);
+                        $(".modal-content").append(`<div>Telefone: ${item.participante.tel_Movel}, E-mail: ${item.participante.email}</div>`);
+                        $(".modal-content").append(`<div class="divider"></div>`);
+                        $(".modal-content").append(`<div>${item.empresa.cnpj} ${item.empresa.situacao_Cadastral}</div>`);
+                        $(".modal-content").append(`<div>${item.empresa.nome_Empresarial}</div>`);
+                        $(".modal-content").append(`<div>${item.empresa.nome_Fantasia}</div>`);
+                        $(".modal-content").append(`<div>${item.empresa.data_Abertura}</div>`);
+                        $(".modal-content").append(`<div>${item.empresa.cnaE_Principal} ${item.empresa.atividade_Principal}</div>`);
+                        $(".modal-content").append(`<div>${item.empresa.atividade_Secundarias}</div>`);
+                        $(".modal-content").append(`<div>${item.empresa.cep} ${item.empresa.logradouro} ${item.empresa.numero}</div>`);
+                        $(".modal-content").append(`<div>${item.empresa.bairro} ${item.empresa.municipio} ${item.empresa.uf}</div>`);
+                        $(".modal-content").append(`<div>${item.empresa.telefone} ${item.empresa.email}</div>`);
+                    });
+                });
+
+            });
+        });
+    </script>
+}

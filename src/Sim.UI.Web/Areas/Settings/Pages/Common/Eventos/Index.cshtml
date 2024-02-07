@@ -1,0 +1,66 @@
+﻿@page "/configuracoes/eventos/"
+@model Sim.UI.Web.Areas.Settings.Pages.Common.Eventos.IndexModel
+@{
+    ViewData["Title"] = "Tipos";
+    ViewData["ActivePageSettings"] = SettingsNavPages.Eventos;
+    ViewData["ActivePage"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.Configuracoes;
+    ViewData["ActivePageLi"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.ConfigSistema;
+}
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<div>
+    <form method="post">
+        <div class="col s12" hidden>
+            <input asp-for="Input!.Id" class="form-control" />
+        </div>
+        <div class="row">
+            <div class="card-header">
+                <a asp-area="Settings" asp-page="/Common/Unidade/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i class="material-icons">undo</i></a><span class="pdn-10">Inclua e gerencie os tipos de eventos da unidade</span>
+            </div>
+            <div class="input-field col s12 m6 l6">
+                <input asp-for="Input!.Dominio!.Acronimo" />
+                <label asp-for="Input!.Dominio"></label>                        
+            </div>
+            <div class="input-field col s12 m6 l6 valign-wrapper">
+                <input asp-for="Input!.Nome" />
+                <label asp-for="Input!.Nome"></label>
+                <button type="submit" asp-route-id="@Model.Unidade!.Id" asp-page-handler="Add" class="btn waves-effect waves-light"><i class="material-icons">add</i></button>
+            </div>
+        </div>
+        <div class="card">
+            <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Dominio</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Tipos != null)
+                    {
+                        foreach (var item in Model.Tipos)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Nome)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Tipo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Dominio!.Acronimo)
+                                </td>
+
+                                <td>
+                                    <button asp-page-handler="Remove" asp-route-id="@item.Id" asp-route-domain="@Model.Unidade.Id" class="btn-small waves-effect materialize-red"><i class="material-icons">remove</i></button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>        
+    </form>
+</div>

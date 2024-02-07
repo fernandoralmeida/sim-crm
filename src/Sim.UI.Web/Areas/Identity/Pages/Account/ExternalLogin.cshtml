@@ -1,0 +1,35 @@
+﻿@page "/contas/autenticacao/externa"
+@model ExternalLoginModel
+@{
+    ViewData["Title"] = "Registro";
+}
+
+<h5>@ViewData["Title"]</h5>
+<h6 id="external-login-title">Associe sua conta  @Model.ProviderDisplayName.</h6>
+<hr />
+
+<p id="external-login-description" class="text-info">
+    Você se autenticou com sucesso com <strong>@Model.ProviderDisplayName</strong>.
+    Por favor, insira um endereço de e-mail para este site abaixo e clique no botão Registrar para finalizar o
+    login.
+</p>
+
+<div>
+    
+        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="row-cols-md-4 g-3">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-md-12">
+                <label asp-for="Input!.Email"></label>
+                <input asp-for="Input!.Email" class="form-control" />
+                <span asp-validation-for="Input!.Email" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-primary">Registro</button>
+            </div>
+            
+        </form>    
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,134 @@
+@page "/bindings/admin/"
+@model Sim.UI.Web.Pages.Bind.AdminModel
+
+@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Administrar Vínculos";
+    ViewData["ActivePage"] = Web.Pages.Shared.LayoutNavPages.Clientes;
+    ViewData["ActivePageLi"] = Web.Pages.Shared.LayoutNavPages.ClientesVincular;
+}
+
+<form method="post">
+    <div class="row">
+
+    </div>
+    @if (Model.Vinculos != null)
+    {
+        <div class="row">
+            <div class="box-column">
+                <div class="box-column-row">
+                    <div class="box-card">
+                        <div class="card-header grey-text">Clientes não Vínculados<i
+                                class="material-icons left">view_module</i>
+                        </div>
+                        <div class="box-around">
+                            @if (Model.NotBindings != null)
+                            {
+                                @foreach (var item in Model.NotBindings)
+                                {
+                                    <div class="box-cell-item-flex font-size-12 btn-nobg waves-effect">
+                                        <p class="grey-text">@item.Item1</p>
+                                        <p class="orange-text font-h5">@item.Item2</p>
+                                    </div>
+                                }
+                            }
+                            <button asp-page-handler="Bindings"
+                                class="box-cell-item-flex font-size-12 btn-nobg waves-effect">
+                                <p class="grey-text">Verificar</p>
+                                <p class="orange-text font-h5">Iniciar Vinculos</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="box-column">
+                <div class="box-column-row">
+                    <div class="box-card">
+                        <div class="card-header grey-text">Panorama Vínculos<i class="material-icons left">view_module</i>
+                        </div>
+                        <div class="box-around">
+                            @foreach (var item in Model.Vinculos)
+                            {
+                                <button asp-page-handler="Preview" asp-route-id="@item.Item3"
+                                    class="box-cell-item-flex font-size-12 btn-nobg waves-effect">
+                                    <p class="grey-text">@item.Item1</p>
+                                    <p class="orange-text font-h5">@item.Item2</p>
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</form>
+
+@if (Model.Listar != null)
+{
+    <div class="card">
+        <div class="card-header grey-text">Vínculos<i class="material-icons left">text_snippet</i></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Empresa</th>
+                    <th>Pessoa</th>
+                    <th>Vínculo</th>
+                    <th>Manager</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Listar != null)
+                {
+                    var _c = 0;
+                    @foreach (var item in Model.Listar)
+                    {
+                        _c++;
+                        var _vinculo = item.Vinculo;
+                        <tr>
+                            <td>@_c</td>
+                            <td>@Html.DisplayFor(model => item.Empresa!.CNPJ)<br>@Html.DisplayFor(model =>
+                    item.Empresa!.Nome_Empresarial)
+                            </td>
+                            <td class="t-uppercase">@Html.DisplayFor(model => item.Pessoa!.CPF)<br>@Html.DisplayFor(model =>
+                    item.Pessoa!.Nome)</td>
+                            <td>@Html.DisplayFor(model => _vinculo)</td>
+                            <td>
+                                <a class="waves-effect waves-light orange btn-small" asp-page="./edit" asp-route-id="@item.Id"><i
+                                        class="material-icons">edit</i></a>
+                                |
+                                <a href="#" class="waves-effect waves-light red btn-small bindremove" data-id="@item.Id"><i
+                                        class="material-icons">delete</i></a>
+
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@section Scripts {
+    <script src="~/js/jquery.mask.min.js"></script>
+    <script>
+        $('#inputCNPJ').mask('00.000.000/0000-00');
+        $('#inputCPF').mask('000.000.000-00');
+
+        $(function () {
+            $(".bindremove").click(function () {
+                var _id = $(this).data('id');
+                $(".loadingpage").append(`<div class="progress"><div class="indeterminate"></div></div>`);
+                $.getJSON(`/bindings/?id=${_id}&handler=Delete`, function (data) {
+                    $(".loadingpage").empty();
+                    $.each(data, function (i, item) {
+                        alert(`Víncuilo ID:${_id} | ${item.empresa.nome_Empresarial} <> ${item.pessoa.nome} Removido!`);
+                        location.reload();
+                    });
+                });
+            });
+        });
+    </script>
+}

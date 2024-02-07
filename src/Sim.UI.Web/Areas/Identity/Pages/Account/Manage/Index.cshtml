@@ -1,0 +1,121 @@
+﻿@page "/perfil/"
+@model IndexModel
+@{
+    ViewData["Title"] = "Perfil";
+    ViewData["ActivePageIdentityManager"] = ManageNavPages.Index;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<form id="profile-form" method="post">
+    <div class="card">
+        <div class="card-header grey-text">@ViewData["Title"]<i class="left material-icons">assignment_ind</i></div>
+        <div class="card-content">
+            <div class="row">
+                <div class="input-field col s12 m7 l7">
+                    <input asp-for="UserName" disabled />
+                    <label asp-for="UserName"></label>
+                </div>
+                <div class="input-field col s12 m6 l6">
+                    <input asp-for="Input!.Name" />
+                    <label asp-for="Input!.Name"></label>
+                </div>
+                <div class="input-field col s12 m6 l6">
+                    <input asp-for="Input!.LastName" />
+                    <label asp-for="Input!.LastName"></label>
+                </div>
+                <div class="input-field col s12 m6 l6">
+                    <select asp-for="Input!.Genero">
+                        <option selected></option>
+                        <option>Feminino</option>
+                        <option>Masculino</option>
+                    </select>
+                    <label asp-for="Input!.Genero"></label>
+                </div>
+                <div class="input-field col s12 m6 l6">
+                    <input asp-for="Input!.PhoneNumber" id="inputphone" />
+                    <label asp-for="Input!.PhoneNumber"></label>
+                </div>
+            </div>
+        </div>
+        <div class="card-action">
+            <button id="update-profile-button" type="submit" class="btn waves-effect waves-ligth">Gravar
+                Alterações</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header grey-text">Funções<i class="left material-icons">account_box</i></div>
+        <table class="responsive-table">
+            <tbody>
+                @foreach (var item in Model.Funcoes!)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <div class="card-header grey-text">Vínculos<i class="left material-icons">account_box</i></div>
+        @if (User.IsInRole(Sim.Identity.Config.AccountType.Adm_Global) ||
+        User.IsInRole(Sim.Identity.Config.AccountType.Adm_Account))
+        {
+            <div class="row no-padding mgn-0">
+                <div class="col s12 m6 l6 mgn-b-10 valign-wrapper">
+                    <select asp-for="OwnerSelect" class="browser-default">
+                        <option>-- Associar Vinculo --</option>
+                        @foreach (var item in Model.OwnerList!)
+                        {
+                            <optgroup label="@item.Key">
+                                @foreach (var subitem in item.Value)
+                                {
+                                    <option value="@subitem.Value">@subitem.Key</option>
+                                }
+                            </optgroup>
+                        }
+                    </select>
+                    <button type="submit" asp-page-handler="BindAccount" asp-route-id="@Model.Input!.Id"
+                        class="btn waves-effect mgn-l-10"><i class="material-icons">link</i></button>
+                </div>
+            </div>
+        }
+        <div class="divider"></div>
+        <table class="responsive-table">
+            <tbody>
+                @foreach (var item in Model.Vinculos!)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Value)
+                        </td>
+                        @if (User.IsInRole(Sim.Identity.Config.AccountType.Adm_Global) ||
+                            User.IsInRole(Sim.Identity.Config.AccountType.Adm_Account))
+                        {
+                            <td>
+                                <button type="submit" asp-page-handler="UnbindAccount" asp-route-id="@Model.Input!.Id"
+                                    asp-route-ct="@item.Type" asp-route-cv="@item.Value"
+                                    class="btn-small waves-effect waves-light materialize-red" title="Excluir Vínculo"><i
+                                        class="material-icons">remove</i></button>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/jquery.mask.min.js"></script>
+    <script>
+        $('#inputphone').mask('(00) 00000-0000');
+    </script>
+}

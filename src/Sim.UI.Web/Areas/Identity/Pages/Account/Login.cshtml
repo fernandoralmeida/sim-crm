@@ -1,0 +1,58 @@
+﻿@page "/contas/autenticacao/entrar"
+@model LoginModel
+
+@{
+    Layout = "/Pages/Shared/__LayoutModal.cshtml";
+    ViewData["Title"] = "Conecte-se";
+}
+
+<partial name="_StatusMessage" model="Model.ErrorMessage" />
+
+<div class="center teal lighten-5 pdn-10 mgn-b-20">    
+    <div class="row mgn-0">
+        <div class="col s6 m6 l6 no-padding">
+            <img class="right" src="~/css/imgs/sim_logo.png" title="SIM" width="100px">
+        </div>
+        <div class="col s6 m6 l6 alpha-text-8 no-padding">
+            <strong class="left"  style="margin-top: 69px;">App v2.3</strong>
+        </div>
+    </div>     
+    <h6 class="alpha-text-8 mgn-0 no-padding" style="font-size:10px;"><strong>SECRETARIA DE DESENVOLVIMENTO ECONÔMICO, EMPREENDEDORISMO E INOVAÇÃO</strong></h6>
+</div>
+
+<form id="account" method="post" class="form-signin mgn-t-12 center">
+    <div asp-validation-summary="All" class="red-text mgn-10"></div>
+    <div class="row">
+        <div class="card border-a">
+            <div class="card-header grey-text left">
+                Identificação<i class="material-icons left">lock</i>
+            </div>
+            <div class="card-content mgn-t-10">
+                <div class="input-field">
+                    <i class="material-icons prefix">person</i>
+                    <input asp-for="Input!.UserName" type="text" id="floatingInput" />
+                    <label asp-for="Input!.UserName" for="floatingInput"></label>
+                </div>
+                <div class="input-field">
+                    <i class="material-icons prefix">key</i>
+                    <input asp-for="Input!.Password" type="password" id="floatingsenha" />
+                    <label asp-for="Input!.Password" for="floatingsenha"></label>
+                </div>
+                <div class="switch mgn-b-20">
+                    <label>            
+                        <input type="checkbox" asp-for="Input!.RememberMe">
+                        <span class="lever" ></span>
+                        Lembrar?
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-large waves-effect waves-light">Entrar</button>   
+                <p hidden><a id="forgot-password" asp-page="./ForgotPassword">Esqueceu sua senha?</a></p>         
+                <a hidden id="resend-confirmation" asp-page="./ResendEmailConfirmation">Reenviar confirmação por email</a> 
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

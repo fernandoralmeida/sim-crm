@@ -1,0 +1,44 @@
+@page "/configuracaoes/setor/gerencia"
+@model Sim.UI.Web.Areas.Settings.Pages.Common.Setor.Manage.IndexModel
+@{
+    ViewData["Title"] = "Manager";
+    ViewData["ActivePageSettings"] = SettingsNavPages.Unidade;
+    ViewData["ActivePage"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.Configuracoes;
+    ViewData["ActivePageLi"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.ConfigSistema;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<div class="row">
+    <form method="post">
+        <div class="card">
+            <div class="row">
+                <div class="col s12" hidden>
+                    <input asp-for="Input!.Id"/>                    
+                    <input asp-for="Input!.Ativo"/>
+                    <input asp-for="Input!.Dominio"/>
+                </div>                  
+                <div class="row">
+                    <div class="card-header">
+                        <a asp-area="Settings" asp-page="/Common/Setor/Index" asp-route-id="@Model!.Input!.Dominio" class="btn-small waves-effect waves-light grey" title="Voltar"><i class="material-icons">undo</i></a><span class="pdn-10">Alterar informações do Setor</span>
+                    </div>
+                    <div class="input-field col s12 m4 l5">
+                        <select asp-for="Input!.Hierarquia" asp-items="Model.Hierarquia" ></select>
+                        <label asp-for="Input!.Hierarquia"></label>                         
+                    </div>   
+                    <div class="input-field col s12 m8 l7">
+                        <input asp-for="Input!.Nome" />
+                        <label asp-for="Input!.Nome"></label>                         
+                    </div>    
+                    <div class="input-field col s12 m5 l5" hidden>
+                        <input asp-for="Input!.Acronimo" />
+                        <label asp-for="Input!.Acronimo"></label>                       
+                    </div>
+                </div>
+            </div> 
+            <div class="card-action">
+                <button class="btn waves-effect waves-light">Gravar</button>
+            </div>
+        </div>
+    </form>
+</div>

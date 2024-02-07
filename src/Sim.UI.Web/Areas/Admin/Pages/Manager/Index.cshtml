@@ -1,0 +1,269 @@
+﻿@page "/gerencia/contas/"
+@model Sim.UI.Web.Areas.Admin.Pages.Manager.IndexModel
+@using Sim.Identity.Config;
+
+@{
+    Layout = "_Layout.cshtml";
+
+    ViewData["Title"] = "Contas de Usuário";
+    ViewData["ActivePageAreaAdmin"] = AdminNavPages.Index;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+@{int cont = 0;}
+@if(User.IsInRole(AccountType.Adm_Global)){
+    <div class="row">
+        <div class="box-column">
+            <div class="box-column-row">
+                <div class="box-card">
+                    <div class="card-header">Admin Global<i class="material-icons left">admin_panel_settings</i></div>
+
+                        <table class="responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        #
+                                    </th>
+                                    <th>
+                                        User Name
+                                    </th>
+                                    <th>
+                                        Nome
+                                    </th>
+                                    <th>
+                                        Bloquear
+                                    </th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @{
+                                    cont = 0;
+                                }
+
+                                @foreach (var item in Model.Users_Admin_Global!)
+                                {
+
+                                    <tr>
+                                        <td>
+                                            @{cont++;}
+                                            @cont.ToString()
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                            @Html.DisplayFor(modelItem => item.LastName)
+                                        </td>
+                                        <td>
+                                            <div class="switch">
+                                                <label><input class="icheckbox" data-id="@item.UserName" checked="@item.LockoutEnabled" type="checkbox" /><span class="lever"></span></label>
+                                            </div>    
+                                        </td>
+                                        <td>
+                                            <a asp-page="./UserRoles" asp-route-id="@item.Id" class="btn btn-small waves-effect waves-light orange" title="Editar"><i class="material-icons">edit</i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    
+                </div>
+                <div class="box-card">
+                    <div class="card-header">Admin Account<i class="material-icons left">manage_accounts</i></div>
+
+                        <table class="responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        #
+                                    </th>
+                                    <th>
+                                        User Name
+                                    </th>
+                                    <th>
+                                        Nome
+                                    </th>
+                                    <th>
+                                        Bloquear
+                                    </th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @{
+                                    cont = 0;
+                                }
+
+                                @foreach (var item in Model.Users_Admin_Account!)
+                                {
+
+                                    <tr>
+                                        <td>
+                                            @{cont++;}
+                                            @cont.ToString()
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                            @Html.DisplayFor(modelItem => item.LastName)
+                                        </td>
+                                        <td>
+                                            <div class="switch">
+                                                <label><input class="icheckbox" data-id="@item.UserName" checked="@item.LockoutEnabled" type="checkbox" /><span class="lever"></span></label>
+                                            </div>    
+                                        </td>
+                                        <td>
+                                            <a asp-page="./UserRoles" asp-route-id="@item.Id" class="btn btn-small waves-effect waves-light orange" title="Editar"><i class="material-icons">edit</i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    
+                </div>
+                <div class="box-card">
+                    <div class="card-header">Admin Config<i class="material-icons left">settings</i></div>
+
+                        <table class="responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        #
+                                    </th>
+                                    <th>
+                                        User Name
+                                    </th>
+                                    <th>
+                                        Nome
+                                    </th>
+                                    <th>
+                                        Bloquear
+                                    </th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @{
+                                    cont = 0;
+                                }
+
+                                @foreach (var item in Model.Users_Admin_Config!)
+                                {
+
+                                    <tr>
+                                        <td>
+                                            @{cont++;}
+                                            @cont.ToString()
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                            @Html.DisplayFor(modelItem => item.LastName)
+                                        </td>
+                                        <td>
+                                            <div class="switch">
+                                                <label><input class="icheckbox" data-id="@item.UserName" checked="@item.LockoutEnabled" type="checkbox" /><span class="lever"></span></label>
+                                            </div>    
+                                        </td>
+                                        <td>
+                                            <a asp-page="./UserRoles" asp-route-id="@item.Id" class="btn btn-small waves-effect waves-light orange" title="Editar"><i class="material-icons">edit</i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>    
+                </div>
+            </div>
+        </div>
+    </div>    
+}
+
+<div class="row">
+    <div class="card">
+        <div class="card-header">Contas<i class="material-icons left">manage_accounts</i></div>
+        <table class="responsive-table">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        User Name
+                    </th>
+                    <th>
+                        Nome
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Bloquear
+                    </th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @{
+                    cont = 0;
+                }
+
+                @foreach (var item in Model.Input!.Users!)
+                {
+
+                    <tr>
+                        <td>
+                            @{cont++;}
+                            @cont.ToString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            <div class="switch">
+                                <label><input class="icheckbox" data-id="@item.UserName" checked="@item.LockoutEnabled" type="checkbox" /><span class="lever"></span></label>
+                            </div>    
+                        </td>
+                        <td>
+                            <a asp-page="./UserRoles" asp-route-id="@item.Id" class="btn btn-small waves-effect waves-light orange" title="Editar"><i class="material-icons">edit</i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script>
+        $(function(){
+            $(".icheckbox").click(function(){
+                var g_id = $(this).data('id');
+                var chk = $(this).prop("checked");      
+                $.get(`/gerencia/contas/?id=${g_id}&blk=${chk}&handler=LockUnlock`,
+                    function(returnedData){                        
+                });
+            });
+        });
+    </script>
+}
+

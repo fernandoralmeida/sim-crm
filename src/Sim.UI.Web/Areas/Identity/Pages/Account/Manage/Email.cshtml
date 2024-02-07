@@ -1,0 +1,45 @@
+﻿@page "/perfil/meusdados/email/"
+@model EmailModel
+@{
+    ViewData["Title"] = "Gerenciar Email";
+    ViewData["ActivePageIdentityManager"] = ManageNavPages.Email;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<div class="card">
+
+    <form id="email-form" method="post">
+        <div class="card-header grey-text">@ViewData["Title"]<i class="left material-icons">email</i></div>
+        <div class="card-content">
+            <div class="row">
+                <div class="input-field col s12 m6 l6">
+                    @if (Model.IsEmailConfirmed)
+                    {
+                        <span class="green-text">✓</span>
+                        <input asp-for="Email" disabled />
+                    }
+                    else
+                    {
+                        <input asp-for="Email" disabled />
+                        <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-small waves-effect">Enviar e-mail de verificação</button>
+                    }
+                    <label asp-for="Email"></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 m6 l6">
+                    <input asp-for="Input!.NewEmail" />
+                    <label asp-for="Input!.NewEmail"></label>                    
+                </div>
+            </div>
+
+        </div>                    
+        <div class="card-action">
+            <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="btn waves-effect waves-light">Alterar e-mail</button>
+        </div>            
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

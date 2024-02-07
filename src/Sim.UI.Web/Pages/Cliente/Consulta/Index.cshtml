@@ -1,0 +1,95 @@
+﻿@page "/cliente/consulta/"
+@model Sim.UI.Web.Pages.Cliente.Consulta.IndexModel
+
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+
+<form method="post">
+    <nav class="row transparent">
+        <div class="nav-wrapper">            
+            <div class="input-field col s6 m6 l6 no-padding">
+                <input id="search" placeholder="Digite o nome aqui para pesquisar!" onkeypress="handle(event)" asp-for="Input!.Nome!"  type="search" autofocus required>
+                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+            </div>            
+            <ul class="right">
+                <li><a asp-page="/Cliente/Index"><i class="material-icons">manage_search</i></a></li>
+            </ul>            
+        </div>
+    </nav>
+</form>
+
+    <div class="card">
+        <table class="responsive-table">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        CPF
+                    </th>
+                    <th>
+                        Nome
+                    </th>
+                    <th>
+                        Tel
+                    </th>
+                    <th>
+                        E-mail
+                    </th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (Model.Input!.ListaPessoas == null)
+                { }
+                else
+                {
+                    foreach (var item in Model.Input.ListaPessoas)
+                    {
+                <tr>
+                    <td>
+                        <a asp-area="" asp-page="/Atendimento/Iniciar" asp-route-id="@item.Id" class="btn-small btn-floating waves-light waves-effect" title="Iniciar atendimento"><i class="material-icons">access_time</i></a>
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CPF)
+                    </td>
+                    <td>
+                        @{ var nome = item.Nome?.ToUpper();
+                            var email = item.Email;
+
+                            if (email != null)
+                                email = email.ToLower();
+                        }
+
+                        @Html.DisplayFor(modelItem => nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tel_Movel)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => email)
+                    </td>
+                    <td>
+                        <a asp-page="/Cliente/Manager/Index" asp-route-id="@item.Id" class="btn-small orange lighten-1 waves-effect" title="Modificar"><i class="material-icons">edit</i></a>
+                    </td>
+                </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/jquery.mask.min.js"></script>
+    <script>
+        $('#inputCPF').mask('000.000.000-00');
+    </script>
+}

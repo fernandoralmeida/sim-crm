@@ -1,0 +1,23 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+    {
+        Layout = (string)parentLayout!;
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+    ViewData["ActivePage"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.Login;
+    ViewData["ActivePageLi"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.LoginPerfil;
+}
+
+
+<partial name="_ManageNav" />
+
+<div>
+    @RenderBody()
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

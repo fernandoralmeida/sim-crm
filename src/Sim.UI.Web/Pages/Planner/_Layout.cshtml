@@ -1,0 +1,21 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+    {
+        Layout = (string)parentLayout!;
+    }
+    else
+    {
+        Layout = "/Pages/Shared/_Layout.cshtml";
+    }
+
+    ViewData["ActivePage"] = Web.Pages.Shared.LayoutNavPages.Agenda;
+    ViewData["ActivePageLi"] = Web.Pages.Shared.LayoutNavPages.AgendaPlanner;
+}
+
+<div>
+    @RenderBody()
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

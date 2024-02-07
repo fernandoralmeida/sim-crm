@@ -1,0 +1,104 @@
+﻿@page "/agenda/eventos/inscricoes/consulta/"
+@model Sim.UI.Web.Pages.Agenda.Inscricoes.Consulta.IndexModel
+@{
+    ViewData["Title"] = "Lista Eventos";
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<nav class="row transparent">
+    <div class="nav-wrapper">            
+        <form method="post">
+            <div class="input-field col s6 m6 l6 no-padding">
+                <input id="search" placeholder="Digite o CPF para pesquisar!" onkeypress="handle(event)" asp-for="Input!.GetCPF"  type="search" autofocus required>
+                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+            </div>            
+            <ul class="right">       
+                <li><a asp-page="/Agenda/Index" asp-route-m="ativos" title="Voltar"><i class="material-icons">arrow_back</i></a></li>                
+            </ul>   
+        </form>         
+    </div>
+</nav>
+
+<div class="card">
+    <div class="card-header">Eventos<i class="material-icons left">event</i></div>
+    <table class="responsive-table">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    Inscrição
+                </th>
+                <th>
+                    Cliente
+                </th>
+                <th>
+                    Tipo
+                </th>
+                <th>
+                    Evento
+                </th>
+                <th>
+                    Formato
+                </th>
+                <th>
+                    Data
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int cont = 0;
+            }
+
+            @if (Model.Input!.ListaInscricoes != null)
+            {
+
+                @foreach (var item in Model.Input.ListaInscricoes)
+                {
+                    <tr>
+                        <td>
+                            @{cont++;}
+                            @cont.ToString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Numero)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Participante!.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Evento!.Tipo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Evento!.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Evento!.Formato)
+                        </td>
+                        <td>
+                            @{
+                                var d1 = Convert.ToDateTime(item.Evento!.Data);
+                                var datainicial = d1.ToString("dd-MM-yyyy");
+                            }
+
+                            @Html.DisplayFor(modelItem => datainicial)
+                        </td>
+                    </tr>
+                }}
+        </tbody>
+    </table>
+</div>
+
+@section scripts
+{
+    <script src="~/js/jquery.cep.js"></script>
+    <script src="~/js/jquery.mask.min.js"></script>
+    <script>
+        $('#search').mask('000.000.000-00');
+        $('#inputCNPJ').mask('00.000.000/0000-00');
+    </script>
+}

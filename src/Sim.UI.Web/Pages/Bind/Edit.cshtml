@@ -1,0 +1,119 @@
+@page "/bindings/edit/{id}"
+@model Sim.UI.Web.Pages.Bind.EditModel
+
+@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Alterar Vínculo";
+    ViewData["ActivePage"] = Web.Pages.Shared.LayoutNavPages.Clientes;
+    ViewData["ActivePageLi"] = Web.Pages.Shared.LayoutNavPages.ClientesVincular;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+@if (Model._result == false)
+{
+    <form method="post">
+        <section>
+            <input asp-for="EditID" hidden />
+            <div class="card">
+                <div class="card-header grey-text">Vinculo Pessoa | Empresa</div>
+                <div class="row no-padding mgn-b-0">
+                    <input asp-for="Id2" id="inputId2" hidden />
+                    <div class="col s12 m6 l4 input-field">
+                        <input asp-for="GetCNPJ" id="inputCNPJ" readonly />
+                        <label>CNPJ</label>
+                    </div>
+                    <div class="col s12 m6 l8 input-field">
+                        <input asp-for="NomeEmpresarial" id="inputNE" readonly />
+                    </div>
+                    <input asp-for="Id1" id="inputId1" hidden />
+                    <div class="col s12 m4 l4 input-field valign-wrapper">
+                        <input asp-for="GetCPF" id="inputCPF" readonly />
+                        <label>CPF</label>
+                    </div>
+                    <div class="col s12 m5 l5 input-field">
+                        <input asp-for="Nome" id="inputNome" readonly />
+                    </div>
+                    <div class="col s12 m3 l3 input-field">
+                        <select asp-for="VinculoSelecionado" asp-items="Model.Vinculos"></select>
+                        <label>Tipo Vínculo</label>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <a asp-page="./Index" class="waves-effect waves-light btn blue-grey"><i
+                            class="material-icons">arrow_back</i></a>
+                    <button class="waves-effect waves-light btn right"><i class="material-icons">save</i></button>
+                </div>
+            </div>
+        </section>
+    </form>
+}
+else
+{
+    <div class="row">
+        <a class="waves-effect waves-light btn blue-grey" asp-page="./Index"><i class="material-icons">arrow_back</i></a>
+    </div>
+
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Empresa</th>
+                    <th>Pessoa</th>
+                    <th>Vínculo</th>
+                    <th>Manager</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Listar != null)
+                {
+                    var _c = 0;
+                    @foreach (var item in Model.Listar)
+                    {
+                        _c++;
+                        var _vinculo = item.Vinculo;
+                        <tr>
+                            <td>@_c</td>
+                            <td>@Html.DisplayFor(model => item.Empresa!.CNPJ)<br>@Html.DisplayFor(model =>
+                    item.Empresa!.Nome_Empresarial)
+                            </td>
+                            <td class="t-uppercase">@Html.DisplayFor(model => item.Pessoa!.CPF)<br>@Html.DisplayFor(model =>
+                    item.Pessoa!.Nome)</td>
+                            <td>@Html.DisplayFor(model => _vinculo)</td>
+                            <td>
+                                <a class="waves-effect waves-light orange btn-small" asp-page="./edit" asp-route-id="@item.Id"><i
+                                        class="material-icons">edit</i></a>
+                                |
+                                <a href="#" class="waves-effect waves-light red btn-small bindremove" data-id="@item.Id"><i
+                                        class="material-icons">delete</i></a>
+
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@section Scripts {
+    <script src="~/js/jquery.mask.min.js"></script>
+    <script>
+        $('#inputCNPJ').mask('00.000.000/0000-00');
+        $('#inputCPF').mask('000.000.000-00');
+
+        $(function () {
+            $(".bindremove").click(function () {
+                var _id = $(this).data('id');
+                $(".loadingpage").append(`<div class="progress"><div class="indeterminate"></div></div>`);
+                $.getJSON(`/bindings/?id=${_id}&handler=Delete`, function (data) {
+                    $(".loadingpage").empty();
+                    $.each(data, function (i, item) {
+                        alert(`Víncuilo ID:${_id} | ${item.empresa.nome_Empresarial} <> ${item.pessoa.nome} Removido!`);
+                        location.reload();
+                    });
+                });
+            });
+        });
+    </script>
+}

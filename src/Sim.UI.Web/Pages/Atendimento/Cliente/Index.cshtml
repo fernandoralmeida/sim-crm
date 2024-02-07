@@ -1,0 +1,168 @@
+﻿@page "/atendimento/cliente/"
+@model Sim.UI.Web.Pages.Atendimento.Cliente.IndexModel
+@{
+    ViewData["Title"] = "Clientes";
+    ViewData["ActivePageLi"] = Web.Pages.Shared.LayoutNavPages.AtendimentoAtivo;
+}
+@{ string? _isdesabled = "hidden"; }
+@if(Model.Input!.ListaPessoas != null)
+{
+    @if (!Model.Input.ListaPessoas.Any())
+    {   
+        _isdesabled = Model.CpfValido ? null : "hidden";
+    }
+}   
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<form method="post">
+    <nav class="row transparent">
+        <div class="nav-wrapper">            
+            <div class="input-field col s6 m6 l6 no-padding">
+                <input id="search" placeholder="Digite o CPF ou Nome aqui para pesquisar!" onkeypress="handle(event)" asp-for="Input!.Valor"  type="search" autofocus required>
+                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+            </div>            
+            <ul @_isdesabled class="right">       
+                <li><a asp-page="/Cliente/Novo/Index" asp-route-id="@Model.Input.RouteCPF"><i class="material-icons blue-text">person_add</i></a></li>                
+            </ul>            
+        </div>
+    </nav>
+</form>
+
+<div class="card">
+    <div class="card-header">Cliente<i class="material-icons left">person</i></div>
+    <table class="responsive-table">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    CPF
+                </th>
+                <th>
+                    Nome
+                </th>
+                <th>
+                    Tel
+                </th>
+                <th>
+                    E-mail
+                </th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (Model.Input.ListaPessoas != null)  { 
+                foreach (var item in Model.Input.ListaPessoas)
+                {
+                    <tr>
+                        <td>
+                            <a asp-area="" asp-page="/Atendimento/Iniciar" asp-route-id="@item.Id" class="btn-floating btn-small waves-effect" title="Iniciar atendimento"><i class="material-icons">access_time</i></a>
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CPF)
+                        </td>
+                        <td>
+                            @{ var nome = item.Nome?.ToUpper();
+                                var email = item.Email;
+
+                                if (email != null)
+                                    email = email.ToLower();
+                            }
+
+                            @Html.DisplayFor(modelItem => nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Tel_Movel)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => email)
+                        </td>
+                        <td>
+                            <a asp-page="/Cliente/Manager/Index" asp-route-id="@item.Id" class="btn-floating btn-small orange lighten-1 waves-effect" title="Modificar"><i class="material-icons">edit</i></a>
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+@if(Model.Input.ListaAtendimentos != null) {
+    <div class="card">
+        <div class="card-header">Histórico de Atendimentos<i class="material-icons left">access_time</i></div>
+        <table class="responsive-table">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Data
+                    </th>
+                    <th>
+                        Servicos
+                    </th>
+                    <th>
+                        Setor
+                    </th>
+                    <th>
+                        Canal
+                    </th>
+                    <th>
+                        Descrição
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int cont1 = 0;}
+                @foreach (var item in Model.Input.ListaAtendimentos)
+                {
+                    <tr>
+
+                        <td>
+                            @{cont1++;}
+                            @cont1.ToString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Data)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Servicos)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Setor)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Canal)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Descricao)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>    
+}
+
+
+
+<div id="modal_cli" class="modal">
+    <div class="modal-content">
+        Cliente com CPF <stromg>@Model.Input.Valor</stromg> não encontrado!                
+        <a focu class="waves-effect waves-light btn-small blue" asp-page="/Cliente/Novo/Index" asp-route-id="@Model.Input.RouteCPF">Incluir<i class="material-icons left">done</i></a>        
+        <a href="#!" class="modal-close waves-effect waves-light btn-small red">Sair<i class="material-icons left">close</i></a>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/jquery.mask.min.js"></script>
+    <script>
+        $('#inputsearch').mask('000.000.000-00');
+    </script>
+}

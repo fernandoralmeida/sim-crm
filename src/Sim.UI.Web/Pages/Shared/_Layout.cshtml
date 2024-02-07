@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Language" content="pt-br">
+    <!--
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    -->
+    <link rel="shortcut icon" href="~/favicon.ico" />
+    <link rel="stylesheet" href="~/lib/google/material-symbols-rounded.css" />
+    <link rel="stylesheet" href="~/lib/materialize/css/materialize.min.css" />
+    @{
+        var _theme = Context.Session.GetString("Theme") ?? "light";
+    }
+    <link rel="stylesheet" href="~/css/@{@_theme;}.css" asp-append-version="true">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIM - @ViewData["Title"]</title>
+</head>
+
+<body class="has-fixed-sidenav">
+    <header>
+        <partial name="_LoginPartial" />
+        <partial name="_SidebarNav" />
+    </header>
+    <main class="">
+        <!--<div class="progress" style="display: flex; position: fixed; margin-top: -0px; z-index:998; border-radius: 0px;"><div class="indeterminate"></div></div>-->
+        <div class="blackboxload">
+            <div id="loader" class="row center mgn-t-10">
+                <div class="preloader-wrapper big active">
+                    <div class="spinner-layer spinner-blue-only">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 
+        <div class="teal lighten-2 navbar-extended"></div>  
+        -->
+        <div class="container-m20">
+            @RenderBody()
+        </div>
+    </main>
+    <footer class="page-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 s12">
+                    <h6>Servidores</h6>
+                    <ul>
+                        <li><a class="blue-text" href="http://179.174.56.79:5661/sipweb/trabalhador/login/login.xhtml"
+                                target="_blank">Meu Holerite</a></li>
+                        <li><a class="blue-text" href="http://www.jau.sp.gov.br/arquivos/manual_do_servidor.pdf"
+                                target="_blank">Manual do Servidor Público</a></li>
+                        <li><a class="blue-text" href="http://pontodigital.jau.sp.gov.br/" target="_blank">Ponto
+                                Digital</a></li>
+                        <li><a class="blue-text" href="http://webmail.jau.sp.gov.br/" target="_blank">Web Mail</a></li>
+                    </ul>
+                </div>
+                <div class="col l4 offset-l2 s12 right">
+                    <h6>Links</h6>
+                    <ul>
+                        <li><a class="blue-text" href="https://jau.sp.gov.br/servicos-online" target="_blank">Serviços
+                                Online</a></li>
+                        <li><a class="blue-text" href="https://jau.sp.gov.br/jornal-oficial" target="_blank">Jornal
+                                Oficial</a></li>
+                        <li><a class="blue-text" href="https://leideacesso.etransparencia.com.br/jahu.prefeitura.sp"
+                                target="_blank">Transparencia Pública</a></li>
+                        <li><a class="blue-text" href="http://leis.jau.sp.gov.br/" target="_blank">Legislação
+                                Municipal</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright footer-overlay">
+            <div class="container">
+                &copy; @DateTime.Now.Year - Sim.Web
+                <a class="blue-text" href="http://www.jau.sp.gov.br" target="_blank">Jahu-SP</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/javascript" src="~/lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="~/js/site.js"></script>
+    <script type="text/javascript" src="~/lib/materialize/js/materialize.min.js"></script>
+    <script>
+        var div = document.getElementById("divmessagebox");
+        setTimeout(function () {
+            div.style.display = "none";
+        }, 5000);
+        $(window).on('load', function () {
+            //$(".progress").fadeOut("slow"); 
+            $("#loader").hide();
+            $(".blackboxload").fadeOut("slow");
+        });
+        $(function () {
+            $(".submit").click(function () {
+                $(".blackboxload").show();
+                $("#loader").show();
+                $(this).addClass('pre-active');
+            });
+        });
+        function handle(e) {
+            if (e.keyCode === 13) {
+                var v = $("#search").val();
+                if (v === "")
+                    return false;
+
+                $(".blackboxload").show();
+                $("#loader").show();
+            }
+        }
+        function voltar() {
+            window.history.back();
+        }
+        $(function () {
+            $('#settheme').click(function () {
+                var t = $(this).data('theme');
+                var u = $(this).data('id');
+                $.get(`/perfil/?id=${u}&theme=${t}&handler=SetTheme`);
+                window.location.reload();
+            });
+        });
+        $(function () {
+            $('.submitmsgpesquisa').click(function () {
+                alert("Lembre-se de incentivar os clientes a responderem nossa pesquisa de satisfação!");
+            });
+        });
+
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

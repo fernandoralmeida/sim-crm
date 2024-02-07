@@ -1,0 +1,95 @@
+@page "/bindings/"
+@model Sim.UI.Web.Pages.Bind.IndexModel
+@using Sim.Identity.Config;
+
+@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Vínculos";
+    ViewData["ActivePage"] = Web.Pages.Shared.LayoutNavPages.Clientes;
+    ViewData["ActivePageLi"] = Web.Pages.Shared.LayoutNavPages.ClientesVincular;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<form method="post">
+    <nav class="row transparent">
+        <div class="nav-wrapper">
+            <div class="input-field col s6 m6 l6 no-padding">
+                <input id="search" placeholder="Digite o CPF ou CNPJ aqui para pesquisar!" onkeypress="handle(event)"
+                    asp-for="Search" type="search" autofocus required>
+                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+            </div>
+            <ul class="right">
+                <li><a asp-page="./Add"><i class="material-icons blue-text">add</i></a></li>
+                @if (User.IsInRole(AccountType.Adm_Settings) ||
+                User.IsInRole(AccountType.Adm_Global))
+                {
+                    <li><a asp-page="./Admin"><i class="material-icons blue-text">settings</i></a></li>
+                }
+            </ul>
+        </div>
+    </nav>
+</form>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Empresa</th>
+                <th>Pessoa</th>
+                <th>Vínculo</th>
+                <th>Manager</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Listar != null)
+            {
+                var _c = 0;
+                @foreach (var item in Model.Listar)
+                {
+                    _c++;
+                    var _vinculo = item.Vinculo;
+                    <tr>
+                        <td>@_c</td>
+                        <td>@Html.DisplayFor(model => item.Empresa!.CNPJ)<br>@Html.DisplayFor(model =>
+                    item.Empresa!.Nome_Empresarial)
+                        </td>
+                        <td class="t-uppercase">@Html.DisplayFor(model => item.Pessoa!.CPF)<br>@Html.DisplayFor(model =>
+                    item.Pessoa!.Nome)</td>
+                        <td>@Html.DisplayFor(model => _vinculo)</td>
+                        <td>
+                            <a class="waves-effect waves-light orange btn-small btn-floating" asp-page="./edit" asp-route-id="@item.Id"><i
+                                    class="material-icons">edit</i></a>
+                            |
+                            <a href="#" class="waves-effect waves-light red btn-small btn-floating bindremove"
+                                data-id="@item.Id"><i class="material-icons">remove</i></a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/jquery.mask.min.js"></script>
+    <script>
+        $('#inputCNPJ').mask('00.000.000/0000-00');
+        $('#inputCPF').mask('000.000.000-00');
+
+        $(function () {
+            $(".bindremove").click(function () {
+                var _id = $(this).data('id');
+                $(".loadingpage").append(`<div class="progress"><div class="indeterminate"></div></div>`);
+                $.getJSON(`/bindings/?id=${_id}&handler=Delete`, function (data) {
+                    $(".loadingpage").empty();
+                    $.each(data, function (i, item) {
+                        alert(`Víncuilo ID:${_id} | ${item.empresa.nome_Empresarial} <> ${item.pessoa.nome} Removido!`);
+                        location.reload();
+                    });
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,167 @@
+﻿@page "/gerencia/contas/usuario/funcoes/{id}"
+@model Sim.UI.Web.Areas.Admin.Pages.Manager.UserRolesModel
+@{
+    Layout = "_Layout.cshtml";
+    ViewData["Title"] = "Perfil de Acesso";
+    ViewData["ActivePageAreaAdmin"] = AdminNavPages.Index;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<div class="row">
+
+    <form method="post">
+
+        <div class="card">
+            <div class="card-header grey-text">@ViewData["Title"]<i class="left material-icons">account_box</i></div>
+            <div class="card-content pdn-10">
+                <dl class="row">
+                    <dt class="col s12 m2 l2">
+                        @Html.DisplayNameFor(model => model.Input!.Id)
+                    </dt>
+                    <dd class="col s12 m10 l10">
+                        @Html.DisplayFor(model => model.Input!.Id)
+                    </dd>
+                    <dt class="col s12 m2 l2">
+                        Identificador
+                    </dt>
+                    <dd class="col s12 m10 l10">
+                        @Html.DisplayFor(model => model.Input!.UserName)
+                    </dd>
+                    <dt class="col s12 m2 l2">
+                        Nome
+                    </dt>
+                    <dd class="col s12 m10 l10">
+                        @Html.DisplayFor(model => model.Input!.Name)
+                        @Html.DisplayFor(model => model.Input!.LastName)
+                    </dd>
+                    <dt class="col s12 m2 l2">
+                        Genero
+                    </dt>
+                    <dd class="col s12 m10 l10">
+                        @Html.DisplayFor(model => model.Input!.Gender)
+                    </dd>
+                    <dt class="col s12 m2 l2">
+                        @Html.DisplayNameFor(model => model.Input!.Email)
+                    </dt>
+                    <dd class="col s12 m10 l10">
+                        @Html.DisplayFor(model => model.Input!.Email)
+                        @{
+                            if (!Model.Input!.EmailConfirmed)
+                            {
+                                <button type="submit" asp-page-handler="ConfirmEmail" asp-route-id="@Model.Input!.Id"
+                                    class="btn btn-small waves-effect">Confirmar Email</button>
+                            }
+                        }
+                    </dd>
+                    <dt class="col s12 m2 l2">
+
+                    </dt>
+                    <dd class="col s12 m10 l10">
+                        <a asp-area="Identity" asp-page="/Account/ResetPassword" asp-route-code="@Model.ResetCode"
+                            class="waves-effect waves-light btn">Resetar Senha</a>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header grey-text">Funções<i class="left material-icons">account_box</i></div>
+            <div class="row no-padding mgn-0">
+                <div class="col s12 m6 l6 mgn-b-10 valign-wrapper">
+                    <select class="browser-default" asp-for="Selecionado" asp-items="Model.RoleList">
+                        <option>-- Incluir Funcão --</option>
+                    </select>
+                    <button type="submit" asp-page-handler="AddRole" asp-route-id="@Model.Input!.Id"
+                        class="btn waves-effect mgn-l-10"><i class="material-icons">add</i></button>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <table class="responsive-table">
+                <tbody>
+                    @if (Model.Input!.ListRoles != null)
+                    {
+
+                        foreach (var item in Model.Input!.ListRoles)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item)
+                                </td>
+
+                                <td>
+                                    <button type="submit" asp-page-handler="RemoveRole" asp-route-id="@Model.Input!.Id"
+                                        asp-route-role="@item" class="btn-small waves-effect waves-light materialize-red"
+                                        title="Excluir Role"><i class="material-icons">remove</i></button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <div class="card-header grey-text">Vínculos<i class="left material-icons">account_box</i></div>
+            <div class="row no-padding mgn-0">
+                <div class="col s12 m6 l6 mgn-b-10 valign-wrapper">
+                    <select asp-for="OwnerSelect" class="browser-default">
+                        <option>-- Associar Vinculo --</option>
+                        @foreach (var item in Model.OwnerList!)
+                        {
+                            <optgroup label="@item.Key">
+                                @foreach (var subitem in item.Value)
+                                {
+                                    <option value="@subitem.Value">@subitem.Key</option>
+                                }
+                            </optgroup>
+                        }
+                    </select>
+                    <button type="submit" asp-page-handler="BindAccount" asp-route-id="@Model.Input!.Id"
+                        class="btn waves-effect mgn-l-10"><i class="material-icons">link</i></button>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <table class="responsive-table">
+                <tbody>
+                        @foreach (var item in Model.Input?.ListClaims!)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Type)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Value)
+                                </td>
+                                <td>
+                                    <button type="submit" asp-page-handler="UnbindAccount" asp-route-id="@Model.Input!.Id" asp-route-ct="@item.Type"
+                                         asp-route-cv="@item.Value" class="btn-small waves-effect waves-light materialize-red"
+                                        title="Excluir Vínculo"><i class="material-icons">remove</i></button>
+                                </td>
+                            </tr>
+                        }
+                    @* @if (Model.Input!.Vinculos != null)
+                    {
+                        foreach (var item in Model.Input!.Vinculos)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Dominio!.Acronimo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Data)
+                                </td>
+                                <td>
+                                    <button type="submit" asp-page-handler="UnbindAccount" asp-route-id="@item.Id" asp-route-u="@Model.Input.Id"
+                                        class="btn-small waves-effect waves-light materialize-red"
+                                        title="Excluir Vínculo"><i class="material-icons">remove</i></button>
+                                </td>
+                            </tr>
+                        }
+                    } *@
+
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>

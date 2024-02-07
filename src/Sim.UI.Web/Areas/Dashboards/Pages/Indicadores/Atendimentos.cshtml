@@ -1,0 +1,755 @@
+@page "/painel/atendimentos/{ano?}/{setor?}"
+@model Sim.UI.Web.Areas.Dashboards.Pages.Indicadores.DashAtendimentos;
+
+@{
+
+    ViewData["Title"] = "Indicadores";
+}
+
+<partial name="./Shared/_NavBar" model="Model.NavBar" />
+
+<div class="container-m10 row">
+    <div class="col s12 m8 l10">
+        <div class="row">
+            <div class="col s12 m6 l2">
+                <div class="card hoverable">
+                    <div id="atsvc"></div>
+                </div>
+            </div>
+            <div class="col s12 m6 l4">
+                <div class="card hoverable">
+                    <div id="total"></div>
+                </div>
+            </div>
+            <div class="col s12 m6 l3">
+                <div class="card hoverable">
+                    <div id="perfil"></div>
+                </div>
+            </div>
+            <div class="col s12 m6 l3">
+                <div class="card hoverable">
+                    <div id="canal"></div>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="card hoverable">
+                    <div id="atmonths"></div>
+                </div>
+            </div>
+            <div class="col s12 m12 l3">
+                <div class="card hoverable">
+                    <div id="chartatdistintos"></div>
+                </div>
+            </div>
+            <div class="col s12 m12 l3">
+                <div class="card hoverable">
+                    <div id="chartclidistintos"></div>
+                </div>
+            </div>
+            <div class="col s12 m12 l3">
+                <div class="card hoverable">
+                    <div id="chartcligenero"></div>
+                </div>
+            </div>
+            <div class="col s12 m12 l3">
+                <div class="card hoverable">
+                    <div id="chartfaixaetaria"></div>
+                </div>
+            </div>
+            <div class="col s12 m12 l6">
+                <div class="card hoverable">
+                    <div id="donutchartsegmentos"></div>
+                </div>
+            </div>
+            <div class="col s12 m12 l6">
+                <div class="card hoverable">
+                    <div id="funnelchartempfaixas"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col s12 m4 l2">
+        @foreach (var item in Model.LReports!.Top10Servicos!)
+        {
+            <div class="card hoverable">
+                <div title="@item.servico" class="card-content font-size-12">@item.valor - @item.servico</div>
+            </div>
+        }
+    </div>
+
+
+</div>
+
+<script>
+    window.onload = function () {
+
+        var atsvc = {
+            chart: {
+                type: 'bar',
+                height: 252,
+                zoom: { enabled: false }
+            },
+            series: [{
+                name: "Atendimentos",
+                data: [{ x: 'Atendimentos', y: @Model.LReports.Atendimentos.Value }],
+            }, {
+                name: "Servicos",
+                data: [{ x: 'Servicos', y: @Model.LReports.Serviços.Value }],
+            }],
+            dataLabels: {
+                enabled: true,
+                position: 'top'
+            },
+            xaxis: {
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                crosshairs: {
+                    show: false
+                },
+                labels: { show: false }
+            },
+            grid: {
+                xaxis: {
+                    lines: {
+                        show: false
+                    },
+                },
+                yaxis: {
+                    lines: {
+                        show: false
+                    }
+                }
+            },
+            yaxis: {
+                axisBorder: {
+                    show: false
+                },
+                labels: {
+                    show: false
+                }
+            },
+            legend: {
+                position: 'bottom'
+            },
+            title: {
+                text: 'Atendimentos',
+                align: 'left',
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            tooltip: {
+                shared: true,
+                intersect: false
+            },
+            theme: {
+                mode: 'light',
+                palette: 'palette1'
+            }
+        };
+
+        var chartAtSvc = new ApexCharts(document.querySelector("#atsvc"), atsvc);
+        chartAtSvc.render();
+
+        var total = {
+            chart: {
+                type: 'bar',
+                stacked: true,
+                height: 252,
+                zoom: {
+                    enabled: false
+                }
+            },
+            series: [{
+                name: "Atendimentos",
+                data: [@Model.AtTimeDay],
+            }, {
+                name: "Servicos",
+                data: [@Model.SvTimeDay],
+            }],
+            dataLabels: {
+                enabled: false,
+            },
+            xaxis: {
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                crosshairs: {
+                    show: false
+                }
+            },
+            grid: {
+                xaxis: {
+                    lines: {
+                        show: false
+                    },
+                },
+                yaxis: {
+                    lines: {
+                        show: false
+                    }
+                }
+            },
+            yaxis: {
+                axisBorder: {
+                    show: false
+                },
+                labels: {
+                    show: false
+                }
+            },
+            legend: {
+                floating: true,
+                position: 'top',
+                horizontalAlign: 'right',
+                offsetY: -36
+            },
+            title: {
+                text: 'Horario',
+                align: 'left',
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            tooltip: {
+                shared: true,
+                intersect: false
+            },
+            theme: {
+                mode: 'light',
+                palette: 'palette1'
+            }
+        };
+
+        var chartTotal = new ApexCharts(document.querySelector("#total"), total);
+        chartTotal.render();
+
+        // Perfil 
+        var perfil = {
+            title: {
+                text: 'Perfil',
+                align: 'left'
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            chart: {
+                type: 'donut',
+                height: 300,
+                zoom: {
+                    enabled: true
+                }
+            },
+            series: [@Model!.Perfil[0]],
+            labels: [@Model!.Perfil[1]],
+            legend: {
+                position: 'bottom'
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true
+                            }
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                enabled: false
+            },
+            theme: {
+                mode: 'ligth',
+                palette: 'palette1'
+            }
+        };
+
+        var cartPerfil = new ApexCharts(document.querySelector("#perfil"), perfil);
+        cartPerfil.render();
+
+        // Canais 
+        var canais = {
+            title: {
+                text: 'Canal',
+                align: 'left'
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            chart: {
+                type: 'donut',
+                height: 300,
+                zoom: {
+                    enabled: false
+                }
+            },
+            series: [@Model!.Canais[0]!],
+            labels: [@Model!.Canais[1]!],
+            legend: {
+                position: 'bottom'
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true
+                            }
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                enabled: false
+            },
+            theme: {
+                mode: 'light',
+                palette: 'palette1'
+            }
+        };
+
+        var cartCanal = new ApexCharts(document.querySelector("#canal"), canais);
+        cartCanal.render();
+        // Line
+        var months = {
+            chart: {
+                type: 'area',
+                height: 300,
+                width: '99%',
+                zoom: {
+                    enabled: false
+                }
+            },
+            series: [{
+                name: 'Atendimentos',
+                data: [@Model.AtendimentosMonth]
+            },
+            {
+                name: 'Serviços',
+                data: [@Model.ServicosMonth]
+            }],
+            yaxis: {
+                labels: {
+                    show: false
+                }
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'right',
+                floating: true,
+                offsetY: -25,
+                offsetX: -5
+            },
+            dataLabels: {
+                enabled: true,
+            },
+            title: {
+                text: 'Variação Mensal',
+                align: 'left'
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            theme: {
+                mode: 'light',
+                palette: 'palette1'
+            },
+            stroke: {
+                curve: 'smooth',
+            },
+            grid: {
+                xaxis: {
+                    lines: {
+                        show: false
+                    },
+                },
+                yaxis: {
+                    lines: {
+                        show: false
+                    }
+                }
+            }
+        };
+
+        var cartMonths = new ApexCharts(document.querySelector("#atmonths"), months);
+        cartMonths.render();
+
+        var at_distintos = {
+            title: {
+                text: 'Distintos',
+                align: 'left'
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            chart: {
+                type: 'donut',
+                height: 298,
+                zoom: {
+                    enabled: true
+                }
+            },
+            series: [@Model!.AtendimentosDistintos[0]],
+            labels: [@Model!.AtendimentosDistintos[1]],
+            legend: {
+                position: 'bottom'
+            },
+            plotOptions: { 
+                pie: {
+                    donut: {
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true
+                            }
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                enabled: false
+            },
+            theme: {
+                mode: 'light',
+                palette: 'palette1'
+            }
+        };
+
+        var chartAtdistintos = new ApexCharts(document.querySelector("#chartatdistintos"), at_distintos);
+        chartAtdistintos.render();
+
+        var cli_distintos = {
+            chart: {
+                type: 'bar',
+                stacked: true,
+                height: 250,
+                zoom: {
+                    enabled: false
+                }
+            },
+            series: [{
+                name: "Pessoas",
+                data: [@Model!.ClientesDistintos]
+            },
+            {
+                name: "Empresas",
+                data: [@Model!.EmpresasDistintas]
+            }],
+            dataLabels: {
+                enabled: true,
+            },
+            xaxis: {
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                crosshairs: {
+                    show: false
+                }
+            },
+            grid: {
+                xaxis: {
+                    lines: {
+                        show: false
+                    },
+                },
+                yaxis: {
+                    lines: {
+                        show: false
+                    }
+                }
+            },
+            yaxis: {
+                axisBorder: {
+                    show: false
+                },
+                labels: {
+                    show: false
+                }
+            },
+            legend: {
+                floating: true,
+                position: 'top',
+                horizontalAlign: 'right',
+                offsetY: -36
+            },
+            title: {
+                text: 'Novos/Recorrentes',
+                align: 'left',
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            tooltip: {
+                shared: true,
+                intersect: false
+            },
+            theme: {
+                mode: 'light',
+                palette: 'palette1'
+            }
+        };
+
+        var chartCliDistintos = new ApexCharts(document.querySelector("#chartclidistintos"), cli_distintos);
+        chartCliDistintos.render();
+
+        var faixa_etaria = {
+            plotOptions: {
+                bar: {
+                    distributed: true
+                }
+            },
+            chart: {
+                type: 'bar',
+                height: 250,
+                zoom: {
+                    enabled: false
+                }
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    //isFunnel: true,
+                },
+            },
+            series: [{
+                name: "Faixas",
+                data: [@Model.FaixaEtaria],
+            }],
+            dataLabels: {
+                enabled: true,
+            },
+            title: {
+                text: 'Faixa Etaria',
+                align: 'left',
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            tooltip: {
+                shared: true,
+                intersect: false
+            },
+            theme: {
+                mode: 'light',
+                palette: 'palette1'
+            },
+            xaxis: {
+                labels: {
+                    show: false
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                crosshairs: {
+                    show: false
+                }
+            },
+            grid: {
+                xaxis: {
+                    lines: {
+                        show: false
+                    },
+                },
+                yaxis: {
+                    lines: {
+                        show: false
+                    }
+                }
+            },
+            legend: {
+                floating: true,
+                position: 'top',
+                horizontalAlign: 'right',
+                offsetY: -36
+            }
+
+        };
+
+        var chartFaixaEtaria = new ApexCharts(document.querySelector("#chartfaixaetaria"), faixa_etaria);
+        chartFaixaEtaria.render();
+
+        var cli_genero = {
+            title: {
+                text: 'Genero',
+                align: 'left'
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            chart: {
+                type: 'donut',
+                height: 298,
+                zoom: {
+                    enabled: true
+                }
+            },
+            series: [@Model!.Genero[0]],
+            labels: [@Model!.Genero[1]],
+            legend: {
+                position: 'bottom'
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true
+                            }
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                enabled: false
+            },
+            theme: {
+                mode: 'light',
+                palette: 'palette1'
+            }
+        };
+
+        var chartCliGenero = new ApexCharts(document.querySelector("#chartcligenero"), cli_genero);
+        chartCliGenero.render();
+
+        var emp_segmentos = {
+            title: {
+                text: 'Segmentos',
+                align: 'left'
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            chart: {
+                type: 'donut',
+                height: 298,
+                zoom: {
+                    enabled: true
+                }
+            },
+            series: [@Model!.Segmentos[0]],
+            labels: [@Model!.Segmentos[1]],
+            legend: {
+                position: 'bottom'
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true
+                            }
+                        }
+                    }
+                }
+            },
+            tooltip: {
+                enabled: false
+            },
+            theme: {
+                mode: 'light',
+                palette: 'palette1'
+            }
+        };
+
+        var donutChartEmpSegmentos = new ApexCharts(document.querySelector("#donutchartsegmentos"), emp_segmentos);
+        donutChartEmpSegmentos.render();
+
+        var emp_faixa_etaria = {
+            plotOptions: {
+                bar: {
+                    distributed: true
+                }
+            },
+            chart: {
+                type: 'bar',
+                height: 250,
+                zoom: {
+                    enabled: false
+                }
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    //isFunnel: true
+                },
+            },
+            series: [{
+                name: "Faixas",
+                data: [@Model.FaixaEtariaEmpresas],
+            }],
+            dataLabels: {
+                enabled: true,
+            },
+            title: {
+                text: 'Idade Empresas',
+                align: 'left',
+            },
+            subtitle: {
+                text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
+            },
+            tooltip: {
+                shared: true,
+                intersect: false
+            },
+            theme: {
+                mode: 'light',
+                palette: 'palette1'
+            },
+            xaxis: {
+                labels: {
+                    show: false
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                crosshairs: {
+                    show: false
+                }
+            },
+            grid: {
+                xaxis: {
+                    lines: {
+                        show: false
+                    },
+                },
+                yaxis: {
+                    lines: {
+                        show: false
+                    }
+                }
+            },
+            legend: {
+                floating: true,
+                position: 'top',
+                horizontalAlign: 'right',
+                offsetY: -36
+            }
+        };
+
+        var funnelchartEmpFaixaEtaria = new ApexCharts(document.querySelector("#funnelchartempfaixas"), emp_faixa_etaria);
+        funnelchartEmpFaixaEtaria.render();
+
+    };
+</script>

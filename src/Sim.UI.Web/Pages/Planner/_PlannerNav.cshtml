@@ -1,0 +1,19 @@
+﻿@using Sim.UI.Web.Pages.Planner
+
+<div class="navbar navbar-fixed">
+    <nav class="navbar">
+        <div class="nav-wrapper white">
+            <a href="#" data-target="sidenav-left" class="sidenav-trigger grey-text"><i class="material-icons">menu</i></a>
+            <span class="navbar-page-name grey-text">e-Planner</span>
+
+            <ul class="right">
+                <li>
+                    <a class="@PlannerNavPages.InicioNavClass(ViewContext) grey-text" asp-page="./Index">Meu Planner</a>
+                </li>
+                <li>
+                    <a class="@PlannerNavPages.AjudaNavClass(ViewContext) grey-text" asp-page="./Ajuda">Ajuda</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>

@@ -1,0 +1,65 @@
+﻿@page "/gerencia/contas/funcoes"
+@model Sim.UI.Web.Areas.Admin.Pages.Manager.RolesModel
+@{
+    Layout = "_Layout.cshtml";
+
+    ViewData["Title"] = "Funções";
+    ViewData["ActivePageAreaAdmin"] = AdminNavPages.Roles;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<form method="post">
+
+    <div class="card">
+        <div class="row">
+            <div class="input-field col s3 m3 l3 valign-wrapper">
+                <select asp-for="Funcao" asp-items="Model.Funcoes">
+                    <option selected>-- Funções --</option>
+                </select>
+                <label asp-for="Funcao"></label>
+                <button asp-page-handler="AddFunc" class="btn waves-effect" type="submit"><i
+                        class="material-icons">description add</i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+
+        <table class="responsive-table">
+            <thead>
+                <tr>
+                    <th>
+                        Função
+                    </th>
+                    <th>
+                        ID
+                    </th>
+                    <th>Comando</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Input!.Roles != null)
+                {
+                    foreach (var item in Model.Input.Roles)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                <button type="submit" asp-page-handler="Remove" asp-route-id="@item.Id"
+                                    class="btn btn-small materialize-red waves-effect waves-light" title="Excluir Role"><i
+                                        class="material-icons">remove</i></button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+</form>

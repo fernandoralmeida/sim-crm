@@ -1,0 +1,93 @@
+@page "/atendimento/anonimo/"
+@model Sim.UI.Web.Pages.Atendimento.Anonimo.IndexModel
+@{
+    ViewData["Title"] = "Anônimo";
+    ViewData["ActivePageLi"] = Web.Pages.Shared.LayoutNavPages.AtendimentoAnonimo;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<form method="post">
+    <div class="card">
+        <div class="card-header grey-text">Atendimento Anônimo</div>
+        <div class="row mgn-b-0">
+            <div class="input-field col s12 m6 l6">
+                <select id="Input_Setor" class="Input_Setor" asp-for="Input!.Setor!" asp-items="Model.Setores" autofocus>
+                    <option selected>-- Selecione um Setor --</option>
+                </select>
+                <label asp-for="Input!.Setor!"></label>
+            </div>
+            <div class="input-field col s12 m6 l6">
+                <select id="Input_Canal" asp-for="Input!.Canal!" asp-items="Model.Canais"></select>
+                <label asp-for="Input!.Canal!"></label>
+            </div>
+
+            <div class="input-field col s12 m12 l12">
+                <select id="Input_Servicos" asp-for="Input!.Servicos!" multiple size="2"></select>
+                <label asp-for="Input!.Servicos!"></label>
+            </div>
+
+            <div class="input-field col s12 m12 l12">
+                <textarea asp-for="Input!.Descricao!" class="materialize-textarea" id="input_descricao"></textarea>
+                <label asp-for="Input!.Descricao!" for="input_descricao"></label>
+            </div>
+        </div>
+        <div class="card-action">
+            <button id="onbtn" type="submit" role="button" class="btn btn-large waves-effect waves-light">Finalizar Atendimento</button>
+            <div class="input-field col s12 m6 l6" hidden>
+                <input asp-for="ServicosSelecionados" />
+                <label for="ServicosSelecionados">Serviços</label>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<!-- Modal -->
+<div class="modal fade" id="viewmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="viewmodalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="viewmodalLabel">Detalhes</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="viewmodalData"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function() {
+ 
+            document.querySelector('#Input_Setor').addEventListener("change", function() {
+                var getSetor = $("#Input_Setor").val();                 
+                $("#Input_Servicos").empty();
+                $.getJSON(`/api/v1/servicos/${getSetor}`, (data) => {
+                    data.forEach(function(item) {
+                        $("#Input_Servicos").append(`<option>${item.item1}</option>`);
+                    });
+                    $("#Input_Servicos").trigger('contentChanged');
+                });
+            });            
+            
+            $('#Input_Servicos').on('contentChanged', function() {
+                $(this).formSelect();
+            });
+                      
+            $("#onbtn").click(function () {
+                var selectedValues = [];
+                $("#Input_Servicos :selected").each(function () {
+                    selectedValues.push($(this).val());
+                });
+                document.getElementById("ServicosSelecionados").value = selectedValues;            
+                return true;
+            });         
+        });
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/jquery.validation.js"></script>
+}

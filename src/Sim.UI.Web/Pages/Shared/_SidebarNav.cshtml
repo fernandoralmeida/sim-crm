@@ -1,0 +1,96 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Sim.Identity.Entity
+@using Sim.UI.Web.Pages.Shared
+@inject Sim.Application.Interfaces.IAppServiceAtendimento MeuAtendimento
+@inject Sim.Application.Interfaces.IAppServiceSecretaria _appOrganizacao
+@inject UserManager<ApplicationUser> _usermanager;
+
+@{
+    var _CRM = "SimCRM";
+    var _claims = User.Claims;
+    var _setores = await _appOrganizacao.DoListAsync();
+
+    foreach (var _setor in _setores)
+    {
+        var _claim = _claims.FirstOrDefault(s => s.Type == _setor.Acronimo && s.Value == _setor.Id.ToString())?.Value;
+        if (_claim != null)
+        {            
+            var _dominio = _setores.Where(s => s.Id == _setor.Dominio!.Value).FirstOrDefault()!;
+            _CRM = _dominio.Acronimo ?? "SimCRM";
+        }
+    }
+}
+
+<ul id="sidenav-left" class="sidenav sidenav-fixed">
+
+    <li class="no-padding alpha-text-6">
+        <ul class="collapsible collapsible-accordion">
+            <div class="logo-left">@_CRM</div>
+
+            <li class="@LayoutNavPages.AtendimentoNavClass(ViewContext)">
+                <div class="collapsible-header">Atendimentos<i class="material-icons chevron">chevron_left</i></div>
+                <div class="collapsible-body">
+                    <ul>
+                        @{
+                            var _has_atendimento = await MeuAtendimento.DoListAsync(s => s.Owner_AppUser_Id ==
+                            User.Identity!.Name && s.Status == "Ativo");
+                        }
+                        @if (_has_atendimento.Any())
+                        {
+                            <li class="@LayoutNavPages.AtendimentoAtivoNavClass(ViewContext) submit"><a
+                                    asp-page="/Atendimento/Novo/Index" class="">Continuar<i
+                                        class="left material-icons">shortcut</i></a></li>
+                        }
+                        else
+                        {
+                            <li class="@LayoutNavPages.AtendimentoAtivoNavClass(ViewContext) submit"><a
+                                    asp-page="/Atendimento/Cliente/Index" class="">Novo<i
+                                        class="left material-icons">alarm_add</i></a></li>
+                        }
+                        <li class="@LayoutNavPages.AtendimentoDiarioNavClass(ViewContext) submit"><a
+                                asp-page="/Atendimento/Index" class="">Diários<i
+                                    class="left material-icons">access_time</i></a></li>
+                        <li class="@LayoutNavPages.AtendimentoConsultaNavClass(ViewContext) submit"><a
+                                asp-page="/Atendimento/Consulta/Index" class="">Consultar<i
+                                    class="left material-icons">search</i></a></li>
+                        <li class="@LayoutNavPages.AtendimentoAnonimoNavClass(ViewContext) submit"><a
+                                asp-page="/Atendimento/Anonimo/Index" class="">Anônimo<i
+                                    class="left material-icons">person_2</i></a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="@LayoutNavPages.ClientesNavClass(ViewContext)">
+                <div class="collapsible-header">Clientes<i class="material-icons chevron">chevron_left</i></div>
+                <div class="collapsible-body">
+                    <ul>
+                        <li class="@LayoutNavPages.ClientesPessoasNavClass(ViewContext) submit"><a
+                                asp-page="/Cliente/Index" class="">Pessoas<i class="left material-icons">group</i></a>
+                        </li>
+                        <li class="@LayoutNavPages.ClientesEmpresasNavClass(ViewContext) submit"><a
+                                asp-page="/Empresa/Index" class="">Empresas<i class="left material-icons">domain</i></a>
+                        </li>
+                        <li class="@LayoutNavPages.ClentesVincularNavClass(ViewContext) submit"><a
+                                asp-page="/Bind/Index" class="">Vínculos<i class="left material-icons">link</i></a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="@LayoutNavPages.AgendaNavClass(ViewContext)">
+                <div class="collapsible-header">Agenda<i class="material-icons chevron">chevron_left</i></div>
+                <div class="collapsible-body">
+                    <ul>
+                        <li class="@LayoutNavPages.AgendaEventosNavClass(ViewContext) submit"><a
+                                asp-page="/Agenda/Index" asp-route-m="ativos" class="">Eventos<i
+                                    class="left material-icons">event</i></a></li>
+                        <li class="@LayoutNavPages.AgendaPlannerNavClass(ViewContext) submit"><a
+                                asp-page="/Planner/Index" class="">e-Planner<i
+                                    class="left material-icons">description</i></a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="@LayoutNavPages.PowerBINavClass(ViewContext)">
+                <a class="collapsible-header" asp-area="Dashboards" asp-page="/Indicadores/Atendimentos"
+                    target="_blank">Indicadores</a>
+            </li>
+        </ul>
+    </li>
+</ul>

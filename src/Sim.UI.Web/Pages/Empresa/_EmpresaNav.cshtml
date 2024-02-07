@@ -1,0 +1,33 @@
+﻿@using Sim.UI.Web.Pages.Empresa
+
+<div class="navbar navbar-fixed">
+    <nav class="navbar">
+        <div class="nav-wrapper white">
+            <a href="#" data-target="sidenav-left" class="sidenav-trigger grey-text"><i class="material-icons">menu</i></a>
+            <span class="navbar-page-name grey-text">Empresas</span>
+            <ul class="right">
+                <li>
+                    <a class="grey-text" asp-area="" asp-page="/Empresa/Index">
+                        <i class="material-icons">domain</i>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-trigger @EmpresaNavPages.ConsultaNomeNavClass(ViewContext) grey-text" data-target="dropdownrfb" href="#"><i class="material-icons right">pageview</i></a>
+                    <ul id="dropdownrfb" class="dropdown-content">
+                        <li><a asp-area="Censo" asp-page="/Empresas/Index">por CNPJ</a></li>
+                        <li><a asp-area="Censo" asp-page="/Empresas/Consulta-razao-social">Razao Social</a></li>
+                        <li><a asp-area="Censo" asp-page="/Empresas/Consulta-socio">Nome Sócio</a></li>
+                        <li><a asp-area="Censo" asp-page="/Empresas/Consulta-cnae">Atividade</a></li>
+                        <li><a asp-area="Censo" asp-page="/Empresas/Consulta-logradouro">Logradouro</a></li>
+                        <li><a asp-area="Censo" asp-page="/Empresas/Consulta-bairro">Bairro</a></li>
+                    </ul>
+                </li>
+                <li class="blue lighten-1 waves-effect waves-light">
+                    <form>
+                        <a asp-area="" asp-page="/Empresa/Add">Adicionar Empresa</a>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>

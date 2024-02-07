@@ -1,0 +1,160 @@
+﻿@page "/atendimento/consulta/avancada/"
+@model Sim.UI.Web.Pages.Atendimento.Consulta.AvancadaModel
+@{
+
+    ViewData["Title"] = "Consultas por Periodos";
+    ViewData["ActivePageLi"] = Web.Pages.Shared.LayoutNavPages.AtendimentoConsulta;
+
+    var data1 = Model.Input!.DataI.ToString("MM-dd-yyyy HH:mm");
+    var data2 = Model.Input!.DataF.ToString("MM-dd-yyyy HH:mm");
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<form class="card" method="post">
+
+    <div class="row">
+        <div class="col s12 mgn-b-0">
+            <div class="input-field col s6 m4 l2">
+                <input asp-for="Input!.DataI" />
+            </div>
+            <div class="input-field col s6 m4 l2">
+                <input asp-for="Input!.DataF" />
+            </div>
+            <div class="input-field col s6 m4 l2">
+                <input asp-for="Input!.CPF" id="inputCPF" />
+                <label asp-for="Input!.CPF"></label>
+            </div>
+            <div class="input-field col s6 m4 l2">
+                <input asp-for="Input!.Nome" />
+                <label asp-for="Input!.Nome"></label>
+            </div>
+            <div class="input-field col s6 m4 l2">
+                <input asp-for="Input!.CNPJ" id="inputCNPJ" />
+                <label asp-for="Input!.CNPJ"></label>
+            </div>
+            <div class="input-field col s6 m4 l2">
+                <input asp-for="Input!.RazaSocial" />
+                <label asp-for="Input!.RazaSocial"></label>
+            </div>
+            <div class="input-field col s6 m4 l2">
+                <input asp-for="Input!.CNAE" id="inputCNAE" />
+                <label asp-for="Input!.CNAE"></label>
+            </div>
+            <div class="input-field col s6 m4 l2">
+                <select asp-for="Input!.Setor" asp-items="@Model.ListaSetores">
+                    <option selected></option>
+                </select>
+                <label asp-for="Input!.Setor"></label>
+            </div>
+            <div class="input-field col s6 m4 l2">
+                <select asp-for="Input!.Servico" asp-items="@Model.ListaServicos">
+                    <option selected></option>
+                </select>
+                <label asp-for="Input!.Servico"></label>
+            </div>
+            <div class="input-field col s6 m4">
+                <select asp-for="Input!.Atendente" asp-items="@Model.ListaAtendentes">
+                    <option selected></option>
+                </select>
+                <label asp-for="Input!.Atendente"></label>
+            </div>
+            <div class="input-field col right">
+                <button class="btn waves-effect waves-light submit">Pesquisar</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="card">
+    <partial name="_AtendimentoList" model="Model.Input.ListaAtendimento" />
+
+    @{
+        var _isdisabled = Model.Input!.ListaAtendimento!.Any() ? null : "disabled";
+    }
+
+    <div class="card-action">
+        <a asp-page="/Atendimento/Export/Index" asp-route-src="" asp-route-d1="@data1" asp-route-d2="@data2"
+            asp-route-cpf="@Model.Input.CPF" asp-route-nome="@Model.Input.Nome" asp-route-cnpj="@Model.Input.CNPJ"
+            asp-route-rsocial="@Model.Input.RazaSocial" asp-route-cnae="@Model.Input.CNAE"
+            asp-route-svc="@Model.Input.Servico" asp-route-user="@Model.Input.Atendente"
+            asp-route-sto="@Model.Input.Setor" class="btn-small waves-effect waves-light green @_isdisabled"
+            title="Exportar Atendimentos"><i class="material-icons">description file_download</i></a>
+        <a asp-page="/Atendimento/Export/Unicos" asp-route-src="" asp-route-d1="@data1" asp-route-d2="@data2"
+            asp-route-cpf="@Model.Input.CPF" asp-route-nome="@Model.Input.Nome" asp-route-cnpj="@Model.Input.CNPJ"
+            asp-route-rsocial="@Model.Input.RazaSocial" asp-route-cnae="@Model.Input.CNAE"
+            asp-route-svc="@Model.Input.Servico" asp-route-user="@Model.Input.Atendente"
+            asp-route-sto="@Model.Input.Setor" class="btn-small waves-effect waves-light blue @_isdisabled"
+            title="Exportar Clientes Distintos"><i class="material-icons">description file_download</i></a>
+        <a asp-page="/Atendimento/Export/Novos" asp-route-src="" asp-route-d1="@data1" asp-route-d2="@data2"
+            asp-route-cpf="@Model.Input.CPF" asp-route-nome="@Model.Input.Nome" asp-route-cnpj="@Model.Input.CNPJ"
+            asp-route-rsocial="@Model.Input.RazaSocial" asp-route-cnae="@Model.Input.CNAE"
+            asp-route-svc="@Model.Input.Servico" asp-route-user="@Model.Input.Atendente"
+            asp-route-sto="@Model.Input.Setor" class="btn-small waves-effect waves-light purple @_isdisabled"
+            title="Exportar Clientes Distintos Novos"><i class="material-icons">description
+                file_download</i></a>
+        <a asp-page="/Atendimento/Export/EmpresasDistintas" asp-route-src="" asp-route-d1="@data1" asp-route-d2="@data2"
+            asp-route-cpf="@Model.Input.CPF" asp-route-nome="@Model.Input.Nome" asp-route-cnpj="@Model.Input.CNPJ"
+            asp-route-rsocial="@Model.Input.RazaSocial" asp-route-cnae="@Model.Input.CNAE"
+            asp-route-svc="@Model.Input.Servico" asp-route-user="@Model.Input.Atendente"
+            asp-route-sto="@Model.Input.Setor" class="btn-small waves-effect waves-light orange @_isdisabled"
+            title="Exportar Empresas Distintas"><i class="material-icons">description
+                file_download</i></a>
+        <a asp-page="/Atendimento/Export/EmpresasDistintasNovas" asp-route-src="" asp-route-d1="@data1"
+            asp-route-d2="@data2" asp-route-cpf="@Model.Input.CPF" asp-route-nome="@Model.Input.Nome"
+            asp-route-cnpj="@Model.Input.CNPJ" asp-route-rsocial="@Model.Input.RazaSocial"
+            asp-route-cnae="@Model.Input.CNAE" asp-route-svc="@Model.Input.Servico"
+            asp-route-user="@Model.Input.Atendente" asp-route-sto="@Model.Input.Setor"
+            class="btn-small waves-effect waves-light amber @_isdisabled"
+            title="Exportar Empresas Distintas Novas"><i class="material-icons">description
+                file_download</i></a>
+    </div>
+
+</div>
+
+@section scripts{
+    <script src="~/js/jquery.mask.min.js"></script>
+    <script>
+        //$('#inputDataI').mask('00/00/0000', { placeholder: "data inicial" });
+        //$('#inputDataF').mask('00/00/0000', { placeholder: "data final" });
+        $('#inputCPF').mask('000.000.000-00');
+        $('#inputCNPJ').mask('00.000.000/0000-00');
+        $('#inputCNAE').mask('00.00-0-00');
+    </script>
+    <script>
+        $(function () {
+            $(".modal-trigger").click(function () {
+                var customerId = $(this).data('id');
+                $(".modal-content").empty();
+                $.getJSON(`/api/v1/atendimento/${customerId}`, (data) => {
+                    $(".modal-content").append(`<div>Protocolo: ${data.protocolo}</div>`);
+                    $(".modal-content").append(`<div>Data: ${data.data}</div>`);
+                    $(".modal-content").append(`<div>Setor: ${data.setor}</div>`);
+                    $(".modal-content").append(`<div>Canal: ${data.canal}</div>`);
+                    $(".modal-content").append(`<div>Serviços: ${data.servicos}</div>`);
+                    $(".modal-content").append(`<div>Descricao: ${data.descricao}</div>`);
+                    $(".modal-content").append(`<div class="divider"></div>`);
+                    $(".modal-content").append(`<div>Nome: ${data.pessoa.nome}</div>`);
+                    $(".modal-content").append(`<div>CPF: ${data.pessoa.cpf}</div>`);
+                    $(".modal-content").append(`<div>Data Nascimento: ${data.pessoa.data_Nascimento}</div>`);
+                    $(".modal-content").append(`<div>CEP: ${data.pessoa.cep}</div>`);
+                    $(".modal-content").append(`<div>${data.pessoa.logradouro} ${data.pessoa.numero}</div>`);
+                    $(".modal-content").append(`<div>${data.pessoa.bairro}, ${data.pessoa.cidade} - ${data.pessoa.uf}</div>`);
+                    $(".modal-content").append(`<div>Telefone: ${data.pessoa.tel_Movel}, E-mail: ${data.pessoa.email}</div>`);
+                    $(".modal-content").append(`<div class="divider"></div>`);
+                    $(".modal-content").append(`<div>${data.empresa.cnpj} ${data.empresa.situacao_Cadastral}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.nome_Empresarial}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.nome_Fantasia}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.data_Abertura}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.cnaE_Principal} ${data.empresa.atividade_Principal}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.atividade_Secundarias}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.cep} ${data.empresa.logradouro} ${data.empresa.numero}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.bairro} ${data.empresa.municipio} ${data.empresa.uf}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.telefone} ${data.empresa.email}</div>`);
+                });
+
+            });
+        });
+    </script>
+}

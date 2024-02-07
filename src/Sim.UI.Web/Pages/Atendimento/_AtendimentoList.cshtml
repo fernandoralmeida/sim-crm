@@ -1,0 +1,85 @@
+﻿@using Sim.Domain.Entity;
+@model IEnumerable<EAtendimento>
+
+
+    <table class="responsive-table">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    Protocolo
+                </th>
+                <th>
+                    Horário
+                </th>
+                <th>
+                    Cliente
+                </th>
+                <th>
+                    Servicos
+                </th>
+                <th>
+                    Setor
+                </th>
+                <th>
+                    Canal
+                </th>
+                <th>
+                    Ação
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int cont = 0;
+            }
+
+
+            @foreach (var item in Model)
+            {
+            <tr>
+
+                <td>
+                    @{cont++;}
+                    @cont.ToString()
+                </td>
+                <td>
+                    <a class="modal-trigger" href="#viewmodal" data-id="@item.Id">@Html.DisplayFor(modelItem => item.Protocolo)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data)
+                </td>
+                <td class="t-uppercase">
+                    @Html.DisplayFor(modelItem => item.Pessoa!.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Servicos)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Setor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Canal)
+                </td>
+                <td>
+                    <a class="btn-floating btn-small waves-effect waves-light orange" asp-page="/Atendimento/Manager/Index"
+                        asp-route-id="@item.Id"><i class="material-icons">edit</i></a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+
+<!-- Modal Structure -->
+<div id="viewmodal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close btn waves-effect">Fechar</a>
+    </div>
+</div>
+

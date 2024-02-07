@@ -1,0 +1,92 @@
+﻿@page "/configuracoes/unidade/"
+@model Sim.UI.Web.Areas.Settings.Pages.Common.Unidade.IndexModel
+@{
+    ViewData["Title"] = "Unidade";
+    ViewData["ActivePageSettings"] = SettingsNavPages.Unidade;
+    ViewData["ActivePage"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.Configuracoes;
+    ViewData["ActivePageLi"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.ConfigSistema;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<div>
+    <form method="post">
+        <div class="col s12" hidden>
+            <input asp-for="Input!.Id"/>
+            <input asp-for="Organizacao!.Id"/>
+        </div>
+        <div class="row">
+            <div class="card-header">
+                <a asp-area="Settings" asp-page="/Common/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i class="material-icons">undo</i></a><span class="pdn-10">Inclua e gerencie as unidades da organização</span>
+            </div>
+            <div class="input-field col s12 m3 l3">
+                <select asp-for="Input!.Hierarquia" asp-items="Model.Hierarquia" ></select>
+                <label asp-for="Input!.Hierarquia"></label>                         
+            </div>   
+            <div class="input-field col s12 m4 l4">
+                <input asp-for="Input!.Nome" />
+                <label asp-for="Input!.Nome"></label>                         
+            </div>    
+            <div class="input-field col s12 m5 l5 valign-wrapper">
+                <input asp-for="Input!.Acronimo" />
+                <label asp-for="Input!.Acronimo"></label>   
+                <button class="btn waves-effect waves-light"><i class="material-icons">add</i></button>                       
+            </div> 
+        </div>
+   </form>
+   <div class="card">
+        <table class="responsive-table">
+            <thead>
+                <tr>
+                    <th>Nível</th>
+                    <th>Nome</th>
+                    <th>Situação</th>
+                    <th>Ações</th>
+                    <th>Gerênciar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Unidades != null)
+                {
+                    foreach (var item in Model.Unidades)
+                    {
+                        <tr>
+                            @{ var _hierarquia = item.Hierarquia.ToString();}
+                            <td>@Html.DisplayFor(modelItem => _hierarquia)</td>
+
+                            <td>@Html.DisplayFor(modelItem => item.Acronimo)</td>
+                            <td>
+                                <div class="switch">
+                                    <label><input class="icheckbox" data-id="@item.Id" checked="@item.Ativo" type="checkbox" /><span class="lever"></span></label>
+                                </div>   
+                            </td>
+                            <td>
+                                <a asp-area="Settings" asp-page="Manage/Index" asp-route-id="@item.Id" class="btn-small waves-effect waves-light orange"><i class="material-icons">edit</i></a>
+                                <a asp-area="Settings" asp-page-handler="Remove" asp-route-id="@item.Id" class="btn-small waves-effect waves-light red"><i class="material-icons">remove</i></a>
+                            </td>
+                            <td>
+                                <a asp-area="Settings" asp-page="/Common/Setor/Index" asp-route-id="@item.Id" class="btn-small waves-effect waves-light blue" title="Setor"><i class="material-icons right">navigate_next</i>Setor</a>
+                                <a asp-area="Settings" asp-page="/Common/Parceiros/Index" asp-route-id="@item.Id" class="btn-small waves-effect waves-light blue" title="Parceiros"><i class="material-icons right">navigate_next</i>Parceiros</a>
+                                <a asp-area="Settings" asp-page="/Common/Canal/Index" asp-route-id="@item.Id" class="btn-small waves-effect waves-light blue" title="Canal"><i class="material-icons right">navigate_next</i>Canal</a>
+                                <a asp-area="Settings" asp-page="/Common/Eventos/Index" asp-route-id="@item.Id" class="btn-small waves-effect waves-light blue" title="Eventos"><i class="material-icons right">navigate_next</i>Eventos</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>  
+   </div>
+   
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $(".icheckbox").click(function () {
+                var g_id = $(this).data('id');
+                var chk = $(this).prop("checked");                
+                $.get(`/Settings/Common?id=${g_id}&st=${chk}&handler=Status`);
+            });
+        });
+    </script>
+}
