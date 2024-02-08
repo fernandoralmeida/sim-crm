@@ -27,15 +27,15 @@ namespace Sim.Domain.Organizacao.Model
 
         public bool IsMatriz(EOrganizacao obj)
         {
-            return obj.Hierarquia == EHierarquia.Matriz || Hierarquia == null;
+            return obj.Hierarquia == EHierarquia.Matriz;
         }
         public bool IsSecretaria(EOrganizacao obj)
         {
-            return obj.Hierarquia == EHierarquia.Secretaria || Hierarquia == null;
+            return obj.Hierarquia == EHierarquia.Secretaria;
         }
         public bool IsSetor(EOrganizacao obj)
         {
-            return obj.Hierarquia == EHierarquia.Setor || Hierarquia == null;
+            return obj.Hierarquia == EHierarquia.Setor;
         }
 
         public bool IsSecOfOrganizacao(EOrganizacao obj, Guid dominio)
@@ -45,7 +45,7 @@ namespace Sim.Domain.Organizacao.Model
 
         public bool IsSetorOfSecretaria(EOrganizacao obj, Guid dominio)
         {
-            return obj.Hierarquia == EHierarquia.Setor && obj.Dominio == dominio;
+            return obj.Hierarquia == EHierarquia.Setor && obj.Dominio == dominio || (obj.Id == dominio);
         }
         public bool IsSetorOfMatriz(EOrganizacao obj, Guid dominio)
         {

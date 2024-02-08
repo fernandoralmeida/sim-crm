@@ -6,6 +6,8 @@ using Sim.Identity.Entity;
 using Sim.Identity.Context;
 using Sim.UI.Web.AutoMapper;
 using Sim.IoC;
+using Sim.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 

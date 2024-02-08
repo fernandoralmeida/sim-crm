@@ -95,9 +95,7 @@
         <div class="card-header grey-text">Informações</div>
         <div class="row mgn-b-0">
             <div class="input-field col s12 m6 l6">
-                <select id="Input_Setor" class="Input_Setor" ty asp-for="Input!.Setor" asp-items="Model.Setores"
-                    autofocus>
-                    <option selected>-- Selecione um Setor --</option>
+                <select id="Input_Setor" class="Input_Setor" asp-for="Input!.Setor" asp-items="Model.Setores" autofocus>
                 </select>
                 <label asp-for="Input!.Setor"></label>
             </div>
@@ -106,7 +104,18 @@
                 <label asp-for="Input!.Canal"></label>
             </div>
             <div class="input-field col s12 m12 l12">
-                <select id="Input_Servicos" asp-for="Input!.Servicos" multiple size="2"></select>
+                <select id="Input_Servicos" asp-for="Input!.Servicos" multiple size="2">
+
+                    @foreach (var item in Model.ListaServicos!)
+                    {
+                        <optgroup label="@item.Key">
+                            @foreach (var subitem in item.Value)
+                            {
+                                <option value="@subitem">@subitem</option>
+                            }
+                        </optgroup>
+                    }
+                </select>
                 <label asp-for="Input!.Servicos"></label>
             </div>
             <div class="input-field col s12 m12 l12">
@@ -147,30 +156,30 @@
     <script>
         $(function () {
 
-            document.querySelector('#Input_Setor').addEventListener("change", function () {
-                var getSetor = $("#Input_Setor").val();
+        @* document.querySelector('#Input_Setor').addEventListener("change", function () {
+            var getSetor = $("#Input_Setor").val();
 
-                $("#Input_Servicos").empty();
-                $.getJSON(`/api/v1/servicos/${getSetor}`, (data) => {
-                    data.forEach(function (item) {
-                        $("#Input_Servicos").append(`<option>${item.item1}</option>`);
-                    });
-                    $("#Input_Servicos").trigger('contentChanged');
-                });
+            $("#Input_Servicos").empty();
+            $.getJSON(`/api/v1/servicos/${getSetor}`, (data) => {
+            data.forEach(function (item) {
+            $("#Input_Servicos").append(`<option>${item.item1}</option>`);
+            });
+            $("#Input_Servicos").trigger('contentChanged');
+            });
             });
 
             $('#Input_Servicos').on('contentChanged', function () {
-                $(this).formSelect();
-            });
+            $(this).formSelect();
+            }); *@
 
-            $("#onbtn").click(function () {
-                var selectedValues = [];
-                $("#Input_Servicos :selected").each(function () {
-                    selectedValues.push($(this).val());
+                $("#onbtn").click(function () {
+                    var selectedValues = [];
+                    $("#Input_Servicos :selected").each(function () {
+                        selectedValues.push($(this).val());
+                    });
+                    document.getElementById("ServicosSelecionados").value = selectedValues;
+                    return true;
                 });
-                document.getElementById("ServicosSelecionados").value = selectedValues;
-                return true;
-            });
         });
     </script>
 

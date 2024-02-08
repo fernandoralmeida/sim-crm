@@ -6,26 +6,14 @@
 @inject UserManager<ApplicationUser> _usermanager;
 
 @{
-    var _CRM = "SimCRM";
-    var _claims = User.Claims;
-    var _setores = await _appOrganizacao.DoListAsync();
-
-    foreach (var _setor in _setores)
-    {
-        var _claim = _claims.FirstOrDefault(s => s.Type == _setor.Acronimo && s.Value == _setor.Id.ToString())?.Value;
-        if (_claim != null)
-        {            
-            var _dominio = _setores.Where(s => s.Id == _setor.Dominio!.Value).FirstOrDefault()!;
-            _CRM = _dominio.Acronimo ?? "SimCRM";
-        }
-    }
+    var _headname = Context.Session.GetString("Dominio");
 }
 
 <ul id="sidenav-left" class="sidenav sidenav-fixed">
 
     <li class="no-padding alpha-text-6">
         <ul class="collapsible collapsible-accordion">
-            <div class="logo-left">@_CRM</div>
+            <div class="logo-left">@_headname</div>
 
             <li class="@LayoutNavPages.AtendimentoNavClass(ViewContext)">
                 <div class="collapsible-header">Atendimentos<i class="material-icons chevron">chevron_left</i></div>

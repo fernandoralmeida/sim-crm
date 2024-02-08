@@ -6,6 +6,10 @@ using System.ComponentModel.DataAnnotations;
 using Sim.Application.Interfaces;
 using Sim.Domain.Organizacao.Model;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Sim.Identity.Entity;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Sim.UI.Web.Pages.Atendimento.Novo
 {
@@ -19,16 +23,20 @@ namespace Sim.UI.Web.Pages.Atendimento.Novo
         private readonly IAppServiceServico _appServiceServico;
         private readonly IMapper _mapper;
 
+        private readonly UserManager<ApplicationUser> _userManager;
+
         public IndexModel(IAppServiceAtendimento appServiceAtendimento,
             IAppServiceCanal appServiceCanal,
             IAppServiceServico appServiceServico,
             IAppServiceSecretaria appSecretaria,
+            UserManager<ApplicationUser> userManager,
             IMapper mapper)
         {
             _appServiceAtendimento = appServiceAtendimento;
             _appServiceCanal = appServiceCanal;
             _appServiceServico = appServiceServico;
             _appSecretaria = appSecretaria;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
@@ -46,6 +54,7 @@ namespace Sim.UI.Web.Pages.Atendimento.Novo
         public string? GetCNPJ { get; set; }
         public SelectList? Setores { get; set; }
         public SelectList? Canais { get; set; }
+        public IEnumerable<KeyValuePair<string, IEnumerable<string>>>? ListaServicos { get; set; }
         public string? GetServico { get; set; }
 
         [BindProperty(SupportsGet = true)]
@@ -53,23 +62,46 @@ namespace Sim.UI.Web.Pages.Atendimento.Novo
 
         private async Task OnLoad()
         {
-            var _myclains = User.Claims;
-            var _setorID = _myclains.FirstOrDefault(c => c.Type == "SetorID")?.Value;
-            var _dominioID = _myclains.FirstOrDefault(c => c.Type == "DominioID")?.Value;
+            try
+            {
+                var _claims = await
+                                _userManager.GetClaimsAsync(
+                                    await _userManager.GetUserAsync(User));
 
-            if (_setorID == null)
-                return;
+                var _setores = new List<EOrganizacao>();
 
-            var _org = await _appSecretaria.DoListAsync(s => s.Dominio == Guid.Parse(_setorID!));
+                foreach (var claim in _claims)
+                    _setores.Add(await _appSecretaria!.GetAsync(Guid.Parse(claim.Value)));
 
-            if (!_org.Any())
-                return;
+                var _sec = await _appSecretaria.DoListAsync(s => s.Dominio == _setores.FirstOrDefault()!.Dominio);
 
-            var _setores = await _appSecretaria.DoListAsync(s => s.Dominio == _org.FirstOrDefault()!.Id);
-            var _canais = await _appServiceCanal.DoListAsync(s => s.Dominio!.Id == _org.FirstOrDefault()!.Id);
+                var _canais = await _appServiceCanal.DoListAsync(s => s.Dominio!.Id == _sec.FirstOrDefault()!.Dominio);
 
-            Setores = new SelectList(_setores, nameof(EOrganizacao.Nome), nameof(EOrganizacao.Nome), null);
-            Canais = new SelectList(_canais, nameof(ECanal.Nome), nameof(ECanal.Nome), null);
+                Setores = new SelectList(_setores, nameof(EOrganizacao.Nome), nameof(EOrganizacao.Nome), null);
+                Canais = new SelectList(_canais, nameof(ECanal.Nome), nameof(ECanal.Nome), null);
+
+                var _dominio = HttpContext.Session.GetString("Dominio");
+
+                var _lista = new List<KeyValuePair<string, IEnumerable<string>>>
+                {
+                    new(_dominio!,
+                        from d in await _appServiceServico.DoListAsync(s => s.Dominio!.Acronimo == _dominio)
+                        select d.Nome)
+                };
+
+                foreach (var item in _claims)
+                    _lista.Add(new KeyValuePair<string, IEnumerable<string>>(
+                        item.Type, from c in await _appServiceServico.DoListAsync(s => s.Dominio!.Id == Guid.Parse(item.Value))
+                                   select c.Nome
+                    ));
+
+                ListaServicos = _lista;
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Erro: {ex.Message}";
+            }
+
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -86,6 +118,7 @@ namespace Sim.UI.Web.Pages.Atendimento.Novo
 
             Input = _mapper.Map<InputModelAtendimento>(atendimemnto_ativio.FirstOrDefault());
 
+            Input!.Setor = HttpContext.Session.GetString("SetorAtivo");
             return Page();
         }
 

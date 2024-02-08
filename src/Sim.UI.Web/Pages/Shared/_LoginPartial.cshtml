@@ -6,17 +6,24 @@
 @inject UserManager<ApplicationUser> _userManager
 @inject IAppServiceStatusAtendimento MeuStatus
 @{
-    var _user = await _userManager.GetUserAsync(User);
-    var _mstatus = await MeuStatus.DoListAsync(s => s.UnserName == _user.UserName);
+    var _mstatus = await MeuStatus.DoListAsync(s => s.UnserName == User.Identity!.Name);
     var _lstatus = _mstatus.FirstOrDefault()!;
     var _status = _lstatus == null ? false : _lstatus.Online;
     var _idstatus = _lstatus == null ? Guid.Empty : _lstatus.Id;
-    var DisplayName = _user.Name;
-    var _mytheme = _user.Theme ?? "light";
+    var DisplayName = Context.Session.GetString("FirstName");
+    var _mytheme = Context.Session.GetString("Theme");
     var _changetheme = _mytheme == "light" ? "dark" : "light";
     var _icon = _mytheme == "dark" ? "dark_mode" : "light_mode";
     var account_color = "";
-    var _claims = await _userManager.GetClaimsAsync(_user);
+
+    var _claims = new List<KeyValuePair<string, Guid>>();
+    var json = Context.Session.GetString("ClaimList");
+
+    if (json != null)
+        _claims = Newtonsoft.Json.JsonConvert.DeserializeObject<List<KeyValuePair<string, Guid>>>(json!);
+
+    var _setorativo = Context.Session.GetString("SetorAtivo");
+    var _url = Url.ActionContext.HttpContext.Request.Path.Value;
 }
 <input id="meustatusonline" type="text" value="@_idstatus" hidden />
 
@@ -35,10 +42,10 @@
                         </li>
                         <li>
                             <a class="dropdown-trigger alpha-w-text-8" data-target="dropsection">
-                                @_claims.FirstOrDefault()?.Type
+                                @_setorativo
                             </a>
                         </li>
-                        
+
                         <li>
                             <i class="material-icons left">arrow_right</i>
                             @ViewData["Title"]
@@ -64,8 +71,8 @@
                             </li>
                         }
                         <li>
-                            <a id="settheme" data-id="@_user.Id" data-theme="@_changetheme" href="#"><i
-                                    class="material-icons online">@_icon</i></a>
+                            <a asp-area="Identity" asp-page="/Theme" asp-route-url="@_url"
+                                asp-route-theme="@_changetheme"><i class="material-icons online">@_icon</i></a>
                         </li>
                         @if (User.Identity!.IsAuthenticated)
                         {
@@ -88,11 +95,15 @@
 </div>
 
 <div id="dropsection" class="dropdown-content rounded-default row">
-    @foreach (var setor in _claims)
+    @if (_claims != null)
     {
-        <div>
-            <a class="grey-text" href="#">@setor.Type</a>
-        </div>
+        @foreach (var setor in _claims!)
+        {
+            <div>
+                <a class="grey-text" asp-area="Identity" asp-page="/Session" asp-route-id="@setor.Value"
+                    asp-route-url="@_url">@setor.Key</a>
+            </div>
+        }
     }
 </div>
 

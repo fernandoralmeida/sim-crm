@@ -33,7 +33,7 @@ namespace Sim.UI.Web.Pages.Cliente
         }
 
         public async Task<IActionResult> OnGetAsync()
-        { 
+        {
             //por default mostra os 10 ultimos registros
             Input!.ListaPessoas = await _pessoaApp.GetLastAsync();
             return Page();
@@ -56,7 +56,8 @@ namespace Sim.UI.Web.Pages.Cliente
                         if (_valor.Length == 11)
                             _valor = _valor.Mask("###.###.###-##");
 
-                        Input.ListaPessoas = await _pessoaApp.DoListAsync(s => s.CPF == _valor);
+                        Input.ListaPessoas = await _pessoaApp
+                                                    .DoListAsync(s => s.CPF == _valor);
 
                         if (!Input.ListaPessoas.Any())
                         {
@@ -73,7 +74,10 @@ namespace Sim.UI.Web.Pages.Cliente
                 else
                 {
                     CpfValido = false;
-                    Input.ListaPessoas = await _pessoaApp.DoListAsync(c => c.CPF == Input.Valor);
+                    Input.ListaPessoas = await _pessoaApp
+                                                    .DoListAsync(c => 
+                                                        c.Nome!.Contains(Input.Valor!)
+                                                        || c.Nome_Social!.Contains(Input.Valor!));
                     if (!Input.ListaPessoas.Any())
                         throw new Exception($"Alerta: {Input.Valor} não cadastrado(a)!");
                 }

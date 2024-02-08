@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Sim.Identity.Entity;
+using Sim.Application.Interfaces;
+using Newtonsoft.Json;
 
 namespace Sim.UI.Web.Areas.Identity.Pages.Account
 {
@@ -12,12 +14,15 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IAppServiceSecretaria _appSecretaria;
         private readonly ILogger<LoginModel> _logger;
 
         public LoginModel(SignInManager<ApplicationUser> signInManager,
+            IAppServiceSecretaria appServiceSecretaria,
             ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
+            _appSecretaria = appServiceSecretaria;
             _logger = logger;
         }
 
@@ -82,25 +87,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
                         return RedirectToPage("./Lockout");
                     }
 
-                    //var _mybindings = await _bindaccount.DoListAsync(s => s.AccountId == Guid.Parse(first_name.Id));
-
-                    //Cria claims
-                    // var _claims = new List<Claim>(){
-                    //     new("UserID", first_name.Id),
-                    //     new("FName", first_name.Name),
-                    //     new("LName", first_name.LastName)
-                    // };
-                    // var _claimsIdentity = new ClaimsIdentity(_claims);
-
-                    // foreach (var u in User.Claims)
-                    //     _claimsIdentity.AddClaim(new Claim(u.Type, u.Value));
-
-                    // var _userPrincipal = new ClaimsPrincipal(_claimsIdentity);
-
-                    // await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, _userPrincipal);
-
-                    //theme
-                    HttpContext.Session.SetString("Theme", first_name.Theme ?? "light");
+                    await CreateSessions(first_name);
 
                     _logger.LogInformation($"Usuário {User?.Identity!.Name} conectado.");
 
@@ -126,6 +113,43 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
             }
 
             return Page();
+        }
+
+        //cria 5 session para ser usadno no titulo do app, setorativo e o tema do app.
+        private async Task CreateSessions(ApplicationUser appuser)
+        {
+            try
+            {
+                var _CRM = "SimCRM";
+                var _claims = await _signInManager.UserManager.GetClaimsAsync(appuser);
+                var _list = await _appSecretaria.DoListAsync();
+                var collection = new List<KeyValuePair<string, Guid>>();
+
+                HttpContext.Session.SetString("FirstName", appuser.Name);
+                HttpContext.Session.SetString("Theme", appuser.Theme ?? "light");
+
+                foreach (var claim in _claims)
+                {
+                    collection.Add(new KeyValuePair<string, Guid>(claim.Type, Guid.Parse(claim.Value)));
+                    var _setor = _list.Where(s => s.Id == Guid.Parse(claim.Value)).FirstOrDefault()!;
+                    var _dominio = _list.Where(s => s.Id == _setor.Dominio).FirstOrDefault()!;
+                    _CRM = _dominio.Acronimo ?? "SimCRM";
+                }
+
+                HttpContext.Session.SetString("Dominio", _CRM);
+                HttpContext.Session.SetString("SetorAtivo", _claims.First()?.Type!);
+                
+                var json = JsonConvert.SerializeObject(collection);
+                HttpContext.Session.SetString("ClaimList", json);
+
+            }
+            catch (Exception ex)
+            {
+                TempData["StatusMessage"] = ex.Message;
+                HttpContext.Session.SetString("Dominio", "SimCRM");
+                HttpContext.Session.SetString("ClaimList", "");
+                HttpContext.Session.SetString("SetorAtivo", "");
+            }
         }
     }
 }

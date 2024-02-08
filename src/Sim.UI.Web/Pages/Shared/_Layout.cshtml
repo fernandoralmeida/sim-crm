@@ -117,18 +117,12 @@
                 $(".blackboxload").show();
                 $("#loader").show();
             }
-        }
+        };
+        
         function voltar() {
             window.history.back();
-        }
-        $(function () {
-            $('#settheme').click(function () {
-                var t = $(this).data('theme');
-                var u = $(this).data('id');
-                $.get(`/perfil/?id=${u}&theme=${t}&handler=SetTheme`);
-                window.location.reload();
-            });
-        });
+        };
+
         $(function () {
             $('.submitmsgpesquisa').click(function () {
                 alert("Lembre-se de incentivar os clientes a responderem nossa pesquisa de satisfação!");

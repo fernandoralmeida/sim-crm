@@ -6,11 +6,26 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject IAppServiceStatusAtendimento MeuStatus
 @inject HttpContextAccessor httpcontextaccessor
+@inject Sim.Application.Interfaces.IAppServiceSecretaria _appOrganizacao
 
 @model (int Ano, string Setor, string Page, IEnumerable<string> Setores)
 
 
 @{
+    var _CRM = "SimCRM";
+    var _claims = User.Claims;
+    var _setores = await _appOrganizacao.DoListAsync();
+
+    foreach (var _setor in _setores)
+    {
+        var _claim = _claims.FirstOrDefault(s => s.Type == _setor.Acronimo && s.Value == _setor.Id.ToString())?.Value;
+        if (_claim != null)
+        {            
+            var _dominio = _setores.Where(s => s.Id == _setor.Dominio!.Value).FirstOrDefault()!;
+            _CRM = _dominio.Acronimo ?? "SimCRM";
+        }
+    }
+
     var _mstatus = await MeuStatus.DoListAsync(s => s.UnserName == User.Identity!.Name);
     var _user = UserManager.Users.FirstOrDefault(m => m.UserName == User.Identity!.Name);
     var _lstatus = _mstatus.FirstOrDefault();
@@ -30,8 +45,7 @@
             <a href="#" data-target="sidenav-left" class="sidenav-trigger hide-on-extra-large-only"><i
                     class="material-icons">menu</i></a>
 
-            <div class="left"><img src="~/icons/idnet-normal-white.svg"
-                    style="padding-top: 14px; padding-left: 10px; margin-left: 10px;" width="48px" alt="IDNet" /></div>
+            <div class="left alpha-w-text-8 mgn-l-10">@_CRM</div>
 
             <ul class="right hide-on-med-and-down">
                 <li><a class="dropdown-trigger alpha-w-text-9" href="#!" data-target="pagnames">@Model.Page<i

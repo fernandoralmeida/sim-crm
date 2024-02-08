@@ -118,17 +118,17 @@ public class DashAtendimentos : PageModel
 
         AtTimeDay = _attimeday.Length > 0 ? _attimeday[..^1] : _attimeday;
         SvTimeDay = _svtimeday.Length > 0 ? _svtimeday[..^1] : _svtimeday;
-        Perfil = _perfil!;
-        Canais = _canal!;
+        Perfil = _perfil;
+        Canais = _canal;
         AtendimentosMonth = _atmonth.Length > 0 ? _atmonth[..^1] : _atmonth;
         ServicosMonth = _svmonth.Length > 0 ? _svmonth[..^1] : _svmonth;
-        AtendimentosDistintos = _atdistintos!;
+        AtendimentosDistintos = _atdistintos;
         ClientesDistintos = _cli_distintos.Length > 0 ? _cli_distintos[..^1] : _cli_distintos;
         EmpresasDistintas = _emp_distintas.Length > 0 ? _emp_distintas[..^1] : _emp_distintas;
         FaixaEtaria = _faixa_etaria.Length > 0 ? _faixa_etaria[..^1] : _faixa_etaria;
-        Genero = _cli_genero!;
+        Genero = _cli_genero;
         FaixaEtariaEmpresas = _emp_faixa_etaria.Length > 0 ? _emp_faixa_etaria[..^1] : _emp_faixa_etaria;
-        Segmentos = _segmento!;
+        Segmentos = _segmento;
     }
 
     private async Task<IEnumerable<string>> Setores()

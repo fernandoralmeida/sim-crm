@@ -74,6 +74,13 @@ public class IndexModel : PageModel
             StatusMessage = "Erro: " + ex.Message;
         }
     }
+
+    public async Task<IActionResult> OnGettSetSessionSetor(string id, string url)
+    {
+        var _unidade = await _appSecretaria.GetAsync(Guid.Parse(id));
+        HttpContext.Session.SetString("SetorAtivo", _unidade.Acronimo!);
+        return RedirectToPage(url);
+    }
 }
 
 
