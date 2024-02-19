@@ -6,8 +6,6 @@ using Sim.Identity.Entity;
 using Sim.Identity.Context;
 using Sim.UI.Web.AutoMapper;
 using Sim.IoC;
-using Sim.Data.Context;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,15 +34,18 @@ builder.Services.AddScoped<HttpContextAccessor>();
 
 builder.Services.AddSession(options =>
     {
-        options.IdleTimeout = TimeSpan.FromMinutes(20);
+        options.IdleTimeout = TimeSpan.FromMinutes(30);
         options.Cookie.HttpOnly = true;
         options.Cookie.IsEssential = true;
+        options.Cookie.Name = $"{AppDomain.CurrentDomain.FriendlyName}.Session";
     });
 
 builder.Services.ConfigureApplicationCookie(options =>
     {
         options.LoginPath = new PathString("/contas/autenticacao/entrar");
         options.AccessDeniedPath = new PathString("/contas/acessonegado/");
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        options.SlidingExpiration = true;
     });
 
 var app = builder.Build();
@@ -68,17 +69,19 @@ CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CreateSpecificCulture("pt-
 CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.CreateSpecificCulture("pt-BR");
 
 // Aplicar migrações automaticamente
-// using var scope = app.Services.CreateScope();
+using var scope = app.Services.CreateScope();
 // var _idcontext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
 // _idcontext.Database.Migrate();
 // var _appcontext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
 // _appcontext.Database.Migrate();
 
 app.UseSession();
+// app.UseMiddleware<SessionIdleTimeoutMiddleware>();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseCookiePolicy(new CookiePolicyOptions{
+app.UseCookiePolicy(new CookiePolicyOptions
+{
     MinimumSameSitePolicy = SameSiteMode.Strict,
     HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always
 });

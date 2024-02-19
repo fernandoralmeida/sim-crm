@@ -25,7 +25,7 @@ public static class Container
         if (services == null) throw new ArgumentNullException(nameof(services));
 
         services.AddScoped<IServiceUser, RepositoryUser>();
-
+        
         services.Configure<IdentityOptions>(options =>
         {
             options.SignIn.RequireConfirmedAccount = true;

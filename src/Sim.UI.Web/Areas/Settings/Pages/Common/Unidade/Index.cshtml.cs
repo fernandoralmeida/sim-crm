@@ -10,7 +10,7 @@ using Sim.Identity.Config;
 
 namespace Sim.UI.Web.Areas.Settings.Pages.Common.Unidade;
 
-[Authorize(Roles = $"{AccountType.Adm_Global},{AccountType.Adm_Settings}")]
+[Authorize(Roles = $"{AccountType.Adm_Global}")]
 public class IndexModel : PageModel
 {
     //private readonly IAppServicePrefeitura _appServicePrefeitura;

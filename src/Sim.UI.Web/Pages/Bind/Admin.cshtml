@@ -32,11 +32,14 @@
                                     </div>
                                 }
                             }
-                            <button asp-page-handler="Bindings"
-                                class="box-cell-item-flex font-size-12 btn-nobg waves-effect">
-                                <p class="grey-text">Verificar</p>
-                                <p class="orange-text font-h5">Iniciar Vinculos</p>
-                            </button>
+                            @if (User.IsInRole(Identity.Config.AccountType.Adm_Global))
+                            {
+                                <button asp-page-handler="Bindings"
+                                    class="box-cell-item-flex font-size-12 btn-nobg waves-effect">
+                                    <p class="grey-text">Verificar</p>
+                                    <p class="orange-text font-h5">Iniciar Vinculos</p>
+                                </button>
+                            }
                         </div>
                     </div>
                 </div>
@@ -68,19 +71,19 @@
 @if (Model.Listar != null)
 {
     <div class="card">
-        <div class="card-header grey-text">Vínculos<i class="material-icons left">text_snippet</i></div>
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Empresa</th>
-                    <th>Pessoa</th>
-                    <th>Vínculo</th>
-                    <th>Manager</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.Listar != null)
+    <div class="card-header grey-text">Vínculos<i class="material-icons left">text_snippet</i></div>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Empresa</th>
+                <th>Pessoa</th>
+                <th>Vínculo</th>
+                <th>Manager</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Listar != null)
                 {
                     var _c = 0;
                     @foreach (var item in Model.Listar)

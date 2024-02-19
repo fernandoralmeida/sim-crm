@@ -29,7 +29,7 @@ namespace Sim.UI.Web.Areas.Settings.Pages.Common
         public VMSecretaria? Input { get; set; }
         public IEnumerable<VMSecretaria>? Listar { get; set; }
         public SelectList? Hierarquia { get; set; }
-        
+
         private async Task OnLoad()
         {
             var t = await _appServicePrefeitura.DoListHierarquia0Async(await _appServicePrefeitura.DoListAsync());
@@ -37,16 +37,29 @@ namespace Sim.UI.Web.Areas.Settings.Pages.Common
             Hierarquia = new SelectList(Enum.GetNames(typeof(EHierarquia)).Where(x => x == "Matriz"));
         }
 
-        public async Task OnGetAsync() => await OnLoad();
+        public async Task<IActionResult> OnGetAsync(string id)
+        {
+            if (User.IsInRole(AccountType.Adm_Settings))
+            {
+                var _dominioativo = HttpContext.Session.GetString("Dominio");
+                var _dominioID = await _appServicePrefeitura.DoListAsync(s => s.Acronimo == _dominioativo);
+
+                return RedirectToPage("/Common/Setor/Index", new { id = _dominioID.FirstOrDefault()?.Id });
+            }
+            await OnLoad();
+            return Page();
+        }
 
         public async Task<IActionResult> OnPostAddAsync()
         {
-            try{
-                Input!.Ativo = true;                
+            try
+            {
+                Input!.Ativo = true;
                 await _appServicePrefeitura.AddAsync(_mapper.Map<EOrganizacao>(Input));
-                await OnLoad();                
+                await OnLoad();
             }
-            catch(Exception ex) {
+            catch (Exception ex)
+            {
                 StatusMessage = "Erro ao tentar incluir!" + "\n" + ex.Message;
             }
 
@@ -68,7 +81,8 @@ namespace Sim.UI.Web.Areas.Settings.Pages.Common
             }
         }
 
-        public async Task OnGetRemove(Guid id) {
+        public async Task OnGetRemove(Guid id)
+        {
             try
             {
                 var canal = await _appServicePrefeitura.GetAsync(id);

@@ -8,8 +8,6 @@ using Sim.Domain.Organizacao.Model;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Sim.Identity.Entity;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Sim.UI.Web.Pages.Atendimento.Novo
 {
@@ -22,7 +20,6 @@ namespace Sim.UI.Web.Pages.Atendimento.Novo
         private readonly IAppServiceCanal _appServiceCanal;
         private readonly IAppServiceServico _appServiceServico;
         private readonly IMapper _mapper;
-
         private readonly UserManager<ApplicationUser> _userManager;
 
         public IndexModel(IAppServiceAtendimento appServiceAtendimento,
@@ -101,7 +98,6 @@ namespace Sim.UI.Web.Pages.Atendimento.Novo
             {
                 StatusMessage = $"Erro: {ex.Message}";
             }
-
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -153,22 +149,28 @@ namespace Sim.UI.Web.Pages.Atendimento.Novo
                     return RedirectToPage();
                 }
 
+                var _dominioativo = await _appSecretaria.DoListAsync(s => s.Acronimo == HttpContext.Session.GetString("Dominio"));
+                var _dominio_selecionado = await _appSecretaria.GetAsync((Guid)_dominioativo.FirstOrDefault()?.Id!);
+
                 var atold = await _appServiceAtendimento.GetAsync(Input.Id);
                 atold.DataF = DateTime.Now;
-                atold.Setor = Input.Setor;
+                atold.Setor = Input.Setor!;
                 atold.Canal = Input.Canal;
                 atold.Servicos = ServicosSelecionados;
                 atold.Descricao = Input.Descricao;
                 atold.Status = "Finalizado";
                 atold.Ultima_Alteracao = DateTime.Now;
+                atold.Dominio = _dominio_selecionado;
                 await _appServiceAtendimento.UpdateAsync(atold);
 
+                StatusMessage = "Lembre-se de incentivar os clientes a responderem nossa pesquisa de satisfação!";
                 return RedirectToPage("/Atendimento/Index");
 
             }
             catch (Exception ex)
             {
                 StatusMessage = "Erro: " + ex.Message;
+                await OnLoad();
                 return Page();
             }
 

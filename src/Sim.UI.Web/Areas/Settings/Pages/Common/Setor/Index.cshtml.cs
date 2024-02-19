@@ -37,37 +37,51 @@ public class IndexModel : PageModel
     public SelectList? Hierarquia { get; set; }
     public IEnumerable<EOrganizacao>? Setores { get; set; }
 
-    private async Task OnLoad(Guid id) {
+    private async Task OnLoad(Guid id)
+    {
         var _list = await _appSecretaria.DoListAsync();
         Setores = await _appSecretaria.DoListHierarquia2from1Async(_list, id);
-        Unidade = _mapper.Map<VMSecretaria>(await _appSecretaria.GetAsync(id));  
+        Unidade = _mapper.Map<VMSecretaria>(await _appSecretaria.GetAsync(id));
         Hierarquia = new SelectList(Enum.GetNames(typeof(EHierarquia)).Where(x => x == "Setor"));
     }
 
-    public async Task OnGetAsync(string id) {
-        await OnLoad(new Guid(id));
-    }
-
-    public async Task<IActionResult> OnPostAsync() {
-        try{
-            Input!.Ativo = true;     
-            Input.Dominio = Unidade!.Id;
-            Input.Acronimo = Input.Nome;           
-            await _appSecretaria.AddAsync(_mapper.Map<EOrganizacao>(Input));
-            await OnLoad(Unidade.Id);                
-        }
-        catch(Exception ex) {
-            StatusMessage = "Erro: " +  ex.Message;
-        }
-        return Page();  
-    }
-
-    public async Task OnGetRemove(string id, Guid dm) {
+    public async Task<IActionResult> OnGetAsync(string? id)
+    {
         try
-        {   
-            var _unidade = await _appSecretaria.GetAsync(new Guid(id));         
-            await _appSecretaria.RemoveAsync(_unidade);    
-            await OnLoad(dm); 
+        {
+            await OnLoad(Guid.Parse(id!));
+            return Page();
+        }
+        catch
+        {
+            return RedirectToPage("/Common/Index");
+        }
+    }
+
+    public async Task<IActionResult> OnPostAsync()
+    {
+        try
+        {
+            Input!.Ativo = true;
+            Input.Dominio = Unidade!.Id;
+            Input.Acronimo = Input.Nome;
+            await _appSecretaria.AddAsync(_mapper.Map<EOrganizacao>(Input));
+            await OnLoad(Unidade.Id);
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = "Erro: " + ex.Message;
+        }
+        return Page();
+    }
+
+    public async Task OnGetRemove(string id, Guid dm)
+    {
+        try
+        {
+            var _unidade = await _appSecretaria.GetAsync(new Guid(id));
+            await _appSecretaria.RemoveAsync(_unidade);
+            await OnLoad(dm);
         }
         catch (Exception ex)
         {

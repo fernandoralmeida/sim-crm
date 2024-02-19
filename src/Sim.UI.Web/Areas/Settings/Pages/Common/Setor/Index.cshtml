@@ -1,4 +1,4 @@
-﻿@page "/configuracoes/setor/"
+﻿@page "/configuracoes/setor/{id?}"
 @model Sim.UI.Web.Areas.Settings.Pages.Common.Setor.IndexModel;
 @{
     //Layout = "../_Layout.cshtml";
@@ -11,26 +11,32 @@
 <div>
     <form method="post">
         <div class="col s12" hidden>
-            <input asp-for="Input!.Id"/>
-            <input asp-for="Unidade!.Id"/>
+            <input asp-for="Input!.Id" />
+            <input asp-for="Unidade!.Id" />
         </div>
         <div class="row">
             <div class="card-header">
-                <a asp-area="Settings" asp-page="/Common/Unidade/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i class="material-icons">undo</i></a><span class="pdn-10">Inclua e gerencie os setores da unidade</span>
+                @if (User.IsInRole(Sim.Identity.Config.AccountType.Adm_Global))
+                {
+                    <a asp-area="Settings" asp-page="/Common/Unidade/Index" class="btn-small waves-effect waves-light grey"
+                        title="Voltar"><i class="material-icons">undo</i></a>
+                }
+                <span class="pdn-10">Inclua e gerencie os
+                    setores da unidade</span>
             </div>
             <div class="input-field col s12 m5 l3">
-                <select asp-for="Input!.Hierarquia" asp-items="Model.Hierarquia" ></select>
-                <label asp-for="Input!.Hierarquia"></label>                         
-            </div>   
+                <select asp-for="Input!.Hierarquia" asp-items="Model.Hierarquia"></select>
+                <label asp-for="Input!.Hierarquia"></label>
+            </div>
             <div class="input-field col s12 m7 l9 valign-wrapper">
                 <input asp-for="Input!.Nome" />
-                <label asp-for="Input!.Nome"></label>          
-                <button class="btn waves-effect waves-light"><i class="material-icons">add</i></button>               
-            </div>    
+                <label asp-for="Input!.Nome"></label>
+                <button class="btn waves-effect waves-light"><i class="material-icons">add</i></button>
+            </div>
             <div class="input-field col s12 m5 l5" hidden>
                 <input asp-for="Input!.Acronimo" />
-                <label asp-for="Input!.Acronimo"></label>                     
-            </div>   
+                <label asp-for="Input!.Acronimo"></label>
+            </div>
         </div>
     </form>
     <div class="card">
@@ -52,23 +58,36 @@
                         <tr>
                             <td>@Html.DisplayFor(modelItem => item.Acronimo)</td>
                             <td>
-                                @if(item.Servicos != null) {
-                                    @foreach (var srv in item.Servicos) {
-                                    <div class="font-size-10">@Html.DisplayFor(modelItem => srv.Nome)</div>
+                                @if (item.Servicos != null)
+                                {
+                                    @foreach (var srv in item.Servicos)
+                                    {
+                                        <div class="font-size-10">@Html.DisplayFor(modelItem => srv.Nome)</div>
                                     }
                                 }
                             </td>
                             <td>
                                 <div class="switch">
-                                    <label><input class="icheckbox" data-id="@item.Id" checked="@item.Ativo" type="checkbox" /><span class="lever"></span></label>
-                                </div>   
-                            </td>
-                            <td>                      
-                                <a asp-area="Settings" asp-page="Manage/Index" asp-route-id="@item.Id" asp-route-dm="@Model.Unidade!.Id" class="btn-small waves-effect waves-light orange"><i class="material-icons">edit</i></a>
-                                <a asp-area="Settings" asp-page-handler="Remove" asp-route-id="@item.Id" asp-route-dm="@Model.Unidade!.Id" class="btn-small waves-effect waves-light red"><i class="material-icons">remove</i></a>
+                                    <label><input class="icheckbox" data-id="@item.Id" checked="@item.Ativo"
+                                            type="checkbox" /><span class="lever"></span></label>
+                                </div>
                             </td>
                             <td>
-                                <a asp-area="Settings" asp-page="/Common/Servicos/Index" asp-route-id="@item.Id" asp-route-dm="@Model.Unidade!.Id" class="btn-small waves-effect waves-light blue" title="Gerênciar Serviços"><i class="material-icons right">navigate_next</i>Serviços</a>
+                                <a asp-area="Settings" asp-page="Manage/Index" asp-route-id="@item.Id"
+                                    asp-route-dm="@Model.Unidade!.Id" class="btn-small waves-effect waves-light orange"><i
+                                        class="material-icons">edit</i></a>
+                                @if (User.IsInRole(Sim.Identity.Config.AccountType.Adm_Global))
+                                {
+                                    <a asp-area="Settings" asp-page-handler="Remove" asp-route-id="@item.Id"
+                                        asp-route-dm="@Model.Unidade!.Id" class="btn-small waves-effect waves-light red"><i
+                                            class="material-icons">remove</i></a>
+
+                                }
+                            </td>
+                            <td>
+                                <a asp-area="Settings" asp-page="/Common/Servicos/Index" asp-route-id="@item.Id"
+                                    asp-route-dm="@Model.Unidade!.Id" class="btn-small waves-effect waves-light blue"
+                                    title="Gerênciar Serviços"><i class="material-icons right">navigate_next</i>Serviços</a>
                             </td>
                         </tr>
                     }
@@ -78,12 +97,12 @@
     </div>
 </div>
 
-@section scripts{
+@section scripts {
     <script>
         $(function () {
             $(".icheckbox").click(function () {
                 var g_id = $(this).data('id');
-                var chk = $(this).prop("checked");                
+                var chk = $(this).prop("checked");
                 $.get(`/Settings/Common?id=${g_id}&st=${chk}&handler=Status`);
             });
         });

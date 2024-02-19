@@ -10,6 +10,7 @@ namespace Sim.UI.Web.Pages.Agenda
     public class IndexModel : PageModel
     {
         private readonly IAppServiceEvento _appServiceEvento;
+        private readonly IAppServiceSecretaria _appSecretaria;
 
         [BindProperty(SupportsGet = true)]
         public InputModelIndex? Input { get; set; }
@@ -24,16 +25,18 @@ namespace Sim.UI.Web.Pages.Agenda
         [TempData]
         public string? StatusMessage { get; set; }
 
-        public IndexModel(IAppServiceEvento appServiceEvento)
+        public IndexModel(IAppServiceEvento appServiceEvento,
+                            IAppServiceSecretaria appSecretaria)
         {
             _appServiceEvento = appServiceEvento;
+            _appSecretaria = appSecretaria;
         }
 
         public async Task Load(EEvento.ESituacao situacao, string m)
         {
             var _eventos_vencidos = false;
             EEvento.ESituacao sto = EEvento.ESituacao.Ativo;
-            switch(m)
+            switch (m)
             {
                 case "ativos":
                     ViewData["ActivePageEvento"] = AgendaNavPages.EventoAtivo;
@@ -51,22 +54,30 @@ namespace Sim.UI.Web.Pages.Agenda
                     ViewData["ActivePageEvento"] = AgendaNavPages.EventoAtivo;
                     break;
             }
-            Input!.ListaEventosMes = await _appServiceEvento
-                .ListEventosPorMesAsync(await _appServiceEvento.DoListAsync(s => s.Situacao == sto));
 
-            foreach(var item in Input.ListaEventosMes){
-                foreach(var evento in item.Item3){
-                    if(evento.Data <= DateTime.Now && evento.Situacao == EEvento.ESituacao.Ativo)
+            var _dominioativo = await _appSecretaria.DoListAsync(s => s.Acronimo == HttpContext.Session.GetString("Dominio"));
+
+            Input!.ListaEventosMes = await _appServiceEvento
+                                                    .ListEventosPorMesAsync(await
+                                                                        _appServiceEvento.DoListAsync(
+                                                                                s => s.Situacao == sto
+                                                                                && s.Dominio == _dominioativo.FirstOrDefault()));
+
+            foreach (var item in Input.ListaEventosMes)
+            {
+                foreach (var evento in item.Item3)
+                {
+                    if (evento.Data <= DateTime.Now && evento.Situacao == EEvento.ESituacao.Ativo)
                         _eventos_vencidos = true;
                 }
             }
 
-            if(_eventos_vencidos)
+            if (_eventos_vencidos)
                 StatusMessage = "Alerta: Há eventos vencidos não finalizados!";
         }
 
         public async Task OnGetAsync(string m)
-        {            
+        {
             var _p = m! == null ? "ativos" : m;
 
             await Load(EEvento.ESituacao.Ativo, _p);
@@ -74,14 +85,16 @@ namespace Sim.UI.Web.Pages.Agenda
 
         public async Task OnPostAsync()
         {
+            var _dominioativo = await _appSecretaria.DoListAsync(s => s.Acronimo == HttpContext.Session.GetString("Dominio"));
             Input!.ListaEventosMes = await _appServiceEvento
                 .ListEventosPorMesAsync(await _appServiceEvento
-                .DoListAsync(s => s.Nome!.Contains(Input.Search!) 
+                .DoListAsync(s => s.Nome!.Contains(Input.Search!)
                                 || s.Tipo!.Contains(Input.Search!)
                                 || s.Parceiro!.Contains(Input.Search!)
                                 || s.Descricao!.Contains(Input.Search!)
                                 || s.Inscritos!.FirstOrDefault()!.Participante!.Nome!.Contains(Input.Search!)
-                                || s.Inscritos!.FirstOrDefault()!.Participante!.CPF == Input.Search!));
+                                || s.Inscritos!.FirstOrDefault()!.Participante!.CPF == Input.Search!
+                                && s.Dominio == _dominioativo.FirstOrDefault()));
         }
 
         private int QuantosDiasFaltam(DateTime dataalvo)

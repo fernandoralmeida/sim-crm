@@ -1,4 +1,7 @@
 ﻿
+using Sim.Domain.Entity;
+using Sim.Domain.Evento.Model;
+
 namespace Sim.Domain.Organizacao.Model
 {
     public enum EHierarquia { Matriz = 0, Secretaria = 1, Setor = 2 }
@@ -24,6 +27,10 @@ namespace Sim.Domain.Organizacao.Model
         public bool Ativo { get; set; }
         public virtual ICollection<ECanal>? Canais { get; set; }
         public virtual ICollection<EServico>? Servicos { get; set; }
+        public virtual ICollection<EAtendimento>? Atendimentos { get; set; }
+        public virtual ICollection<EEvento>? Eventos { get; set; }
+        public virtual ICollection<EParceiro>? Parceiros { get; set; }
+        public virtual ICollection<ETipo>? Tipos { get; set; }
 
         public bool IsMatriz(EOrganizacao obj)
         {

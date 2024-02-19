@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using Sim.Application.Interfaces;
 using Sim.Domain.Organizacao.Model;
+using Microsoft.AspNetCore.Identity;
+using Sim.Identity.Entity;
 
 namespace Sim.UI.Web.Pages.Atendimento.Manager
 {
@@ -15,16 +17,19 @@ namespace Sim.UI.Web.Pages.Atendimento.Manager
         private readonly IAppServiceSecretaria _appSecretaria;
         private readonly IAppServiceCanal _appServiceCanal;
         private readonly IAppServiceServico _appServiceServico;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public IndexModel(IAppServiceAtendimento appServiceAtendimento,
             IAppServiceCanal appServiceCanal,
             IAppServiceSecretaria appSecretaria,
-            IAppServiceServico appServiceServico)
+            IAppServiceServico appServiceServico,
+            UserManager<ApplicationUser> userManager)
         {
             _appServiceAtendimento = appServiceAtendimento;
             _appServiceCanal = appServiceCanal;
             _appServiceServico = appServiceServico;
             _appSecretaria = appSecretaria;
+            _userManager = userManager;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -40,6 +45,7 @@ namespace Sim.UI.Web.Pages.Atendimento.Manager
         public SelectList? Setores { get; set; }
         public SelectList? Canais { get; set; }
         public SelectList? Servicos { get; set; }
+        public IEnumerable<KeyValuePair<string, IEnumerable<string>>>? ListaServicos { get; set; }
         public string? GetServico { get; set; }
 
         [BindProperty(SupportsGet = true)]
@@ -47,12 +53,45 @@ namespace Sim.UI.Web.Pages.Atendimento.Manager
 
         private async Task OnLoad()
         {
-            var _org = await _appSecretaria.DoListAsync(s => s.Hierarquia == EHierarquia.Secretaria);
-            var _setores = await _appSecretaria.DoListAsync(s => s.Hierarquia == EHierarquia.Setor && s.Dominio == _org.FirstOrDefault()!.Id);
-            var _canais = await _appServiceCanal.DoListAsync(s => s.Dominio!.Id == _org.FirstOrDefault()!.Id);
+            try
+            {
+                var _claims = await
+                                _userManager.GetClaimsAsync(
+                                    await _userManager.GetUserAsync(User));
 
-            Setores = new SelectList(_setores, nameof(EOrganizacao.Nome), nameof(EOrganizacao.Nome), null);
-            Canais = new SelectList(_canais, nameof(ECanal.Nome), nameof(ECanal.Nome), null);
+                var _setores = new List<EOrganizacao>();
+
+                foreach (var claim in _claims)
+                    _setores.Add(await _appSecretaria!.GetAsync(Guid.Parse(claim.Value)));
+
+                var _sec = await _appSecretaria.DoListAsync(s => s.Dominio == _setores.FirstOrDefault()!.Dominio);
+
+                var _canais = await _appServiceCanal.DoListAsync(s => s.Dominio!.Id == _sec.FirstOrDefault()!.Dominio);
+
+                Setores = new SelectList(_setores, nameof(EOrganizacao.Nome), nameof(EOrganizacao.Nome), null);
+                Canais = new SelectList(_canais, nameof(ECanal.Nome), nameof(ECanal.Nome), null);
+
+                var _dominio = HttpContext.Session.GetString("Dominio");
+
+                var _lista = new List<KeyValuePair<string, IEnumerable<string>>>
+                {
+                    new(_dominio!,
+                        from d in await _appServiceServico.DoListAsync(s => s.Dominio!.Acronimo == _dominio)
+                        select d.Nome)
+                };
+
+                foreach (var item in _claims)
+                    _lista.Add(new KeyValuePair<string, IEnumerable<string>>(
+                        item.Type, from c in await _appServiceServico.DoListAsync(s => s.Dominio!.Id == Guid.Parse(item.Value))
+                                   select c.Nome
+                    ));
+
+                ListaServicos = _lista;
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Erro: {ex.Message}";
+            }
         }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
@@ -88,7 +127,8 @@ namespace Sim.UI.Web.Pages.Atendimento.Manager
                 Ativo = atendimemnto_ativio.Ativo,
                 Owner_AppUser_Id = atendimemnto_ativio.Owner_AppUser_Id,
                 Pessoa = atendimemnto_ativio.Pessoa,
-                Empresa = atendimemnto_ativio.Empresa
+                Empresa = atendimemnto_ativio.Empresa,
+                Dominio = atendimemnto_ativio.Dominio
             };
 
             var serv = await _appServiceServico.DoListAsync(
@@ -133,6 +173,7 @@ namespace Sim.UI.Web.Pages.Atendimento.Manager
             catch (Exception ex)
             {
                 StatusMessage = "Erro: " + ex.Message;
+                await OnLoad();
                 return Page();
             }
 

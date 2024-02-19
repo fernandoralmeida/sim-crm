@@ -115,7 +115,18 @@
                 <label for="ServicosSelecionados">Serviços</label>
             </div>
             <div class="input-field col s12 m12 l12">
-                <select asp-for="Input!.Servicos" multiple size="2" asp-items="Model.Servicos"></select>
+                <select id="Input_Servicos" asp-for="Input!.Servicos" multiple size="2">
+
+                    @foreach (var item in Model.ListaServicos!)
+                    {
+                        <optgroup label="@item.Key">
+                            @foreach (var subitem in item.Value)
+                            {
+                                <option value="@subitem">@subitem</option>
+                            }
+                        </optgroup>
+                    }
+                </select>
                 <label>Alterar Serviços por:</label>
             </div>
             <div class="input-field col s12 m12 l12">
@@ -153,7 +164,7 @@
 @section scripts{
     <script>
         $(function () {
-            document.querySelector('#Input_Setor').addEventListener("change", function () {
+            @* document.querySelector('#Input_Setor').addEventListener("change", function () {
                 var getSetor = $("#Input_Setor").val();
 
                 $("#Input_Servicos").empty();
@@ -167,7 +178,7 @@
 
             $('#Input_Servicos').on('contentChanged', function () {
                 $(this).formSelect();
-            });
+            }); *@
 
             $("#onbtn").click(function () {
                 var selectedValues = [];

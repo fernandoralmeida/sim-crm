@@ -22,6 +22,7 @@ namespace Sim.Data.Repository
                     .Where(filter ?? (p => true))
                     .Include(i => i.Inscritos!).ThenInclude(i => i.Participante!)
                     .Include(i => i.Inscritos!).ThenInclude(i => i.Empresa!)
+                    .Include(d => d.Dominio)
                     .OrderByDescending(o => o.Data)
                     .AsNoTrackingWithIdentityResolution()
                     .ToListAsync();
@@ -33,6 +34,7 @@ namespace Sim.Data.Repository
             return await _db.Evento!
                         .Include(i => i.Inscritos!).ThenInclude(i => i.Participante!)
                         .Include(i => i.Inscritos!).ThenInclude(i => i.Empresa!)
+                        .Include(d => d.Dominio)
                         .FirstOrDefaultAsync(s => s.Id == id);
 #pragma warning restore CS8603 // Possible null reference return.
         }

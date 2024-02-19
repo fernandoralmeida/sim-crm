@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sim.Data.Context;
 
@@ -11,9 +12,10 @@ using Sim.Data.Context;
 namespace Sim.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240208112805_add-atendimento-domain")]
+    partial class addatendimentodomain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -407,9 +409,6 @@ namespace Sim.Data.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("varchar(max)");
 
-                    b.Property<Guid?>("DominioId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Formato")
                         .HasColumnType("varchar(255)");
 
@@ -432,8 +431,6 @@ namespace Sim.Data.Migrations
                         .HasColumnType("varchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DominioId");
 
                     b.ToTable("Evento", (string)null);
                 });
@@ -612,19 +609,10 @@ namespace Sim.Data.Migrations
                     b.Navigation("Participante");
                 });
 
-            modelBuilder.Entity("Sim.Domain.Evento.Model.EEvento", b =>
-                {
-                    b.HasOne("Sim.Domain.Organizacao.Model.EOrganizacao", "Dominio")
-                        .WithMany("Eventos")
-                        .HasForeignKey("DominioId");
-
-                    b.Navigation("Dominio");
-                });
-
             modelBuilder.Entity("Sim.Domain.Evento.Model.EParceiro", b =>
                 {
                     b.HasOne("Sim.Domain.Organizacao.Model.EOrganizacao", "Dominio")
-                        .WithMany("Parceiros")
+                        .WithMany()
                         .HasForeignKey("DominioId");
 
                     b.Navigation("Dominio");
@@ -633,7 +621,7 @@ namespace Sim.Data.Migrations
             modelBuilder.Entity("Sim.Domain.Evento.Model.ETipo", b =>
                 {
                     b.HasOne("Sim.Domain.Organizacao.Model.EOrganizacao", "Dominio")
-                        .WithMany("Tipos")
+                        .WithMany()
                         .HasForeignKey("DominioId");
 
                     b.Navigation("Dominio");
@@ -686,13 +674,7 @@ namespace Sim.Data.Migrations
 
                     b.Navigation("Canais");
 
-                    b.Navigation("Eventos");
-
-                    b.Navigation("Parceiros");
-
                     b.Navigation("Servicos");
-
-                    b.Navigation("Tipos");
                 });
 #pragma warning restore 612, 618
         }

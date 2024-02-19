@@ -163,6 +163,19 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
                 var _user = await _userManager.FindByIdAsync(id);
 
                 var _setor = await _secretaria.GetAsync(Guid.Parse(OwnerSelect!));
+
+                var _clains = await _userManager.GetClaimsAsync(_user);
+
+                foreach (var item in _clains)
+                {
+                    var _verificardominio = await _secretaria.GetAsync(Guid.Parse(item.Value));
+                    if (_verificardominio != null && _setor.Dominio != _verificardominio.Dominio)
+                    {
+                        var _userdominio = await _secretaria.GetAsync((Guid)_verificardominio.Dominio!);
+                        throw new Exception($"Usuário vinculado ao Dominio {_userdominio.Acronimo}!");
+                    }
+                }
+
                 Claim _claim = new(_setor.Acronimo!, _setor.Id.ToString(), ClaimValueTypes.String);
 
                 IdentityResult result = await _userManager.AddClaimAsync(_user, _claim);

@@ -7,7 +7,7 @@ using Sim.Identity.Entity;
 
 namespace Sim.UI.Web.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
+    [Authorize]
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -19,10 +19,14 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
             _logger = logger;
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
+            await _signInManager.SignOutAsync();
+            //await HttpContext.SignOutAsync();
+            _logger.LogInformation("Usuário desconectado.");
+            return RedirectToPage("/Index");
         }
-        
+
         public async Task<IActionResult> OnPost(string? returnUrl = null)
         {
             await _signInManager.SignOutAsync();

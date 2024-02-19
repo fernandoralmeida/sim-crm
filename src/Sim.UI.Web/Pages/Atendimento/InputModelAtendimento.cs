@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using Sim.Domain.Entity;
+using Sim.Domain.Organizacao.Model;
 
 namespace Sim.UI.Web.Pages.Atendimento
 {
@@ -18,7 +19,7 @@ namespace Sim.UI.Web.Pages.Atendimento
         [DisplayName("Data")]
         [DataType(DataType.Date)]
         public DateTime? Data { get; set; }
-               
+
         [DisplayName("Fim")]
         [DataType(DataType.Time)]
         public DateTime? DataF { get; set; }
@@ -34,7 +35,7 @@ namespace Sim.UI.Web.Pages.Atendimento
         [Required(ErrorMessage = "Adicione um serviço ou mais!")]
         [DisplayName("Serviços")]
         public string? Servicos { get; set; }
-        
+
         //[Required]
         [DisplayName("Descrição do Atendimento")]
         public string? Descricao { get; set; }
@@ -50,6 +51,9 @@ namespace Sim.UI.Web.Pages.Atendimento
 
         [DisplayName("Empresa")]
         public virtual Empresas? Empresa { get; set; }
+
+        [DisplayName("Dominio")]
+        public virtual EOrganizacao? Dominio { get; set; }
 
     }
 }

@@ -47,12 +47,16 @@ namespace Sim.UI.Web.Pages.Agenda.Eventos.Edit
 
         private async Task Onload()
         {
-            var _org = await _appSecretaria.DoListAsync(s => s.Hierarquia == EHierarquia.Secretaria);
-            var _setores = await _appSecretaria.DoListAsync(s => s.Hierarquia == EHierarquia.Setor && s.Dominio == _org.FirstOrDefault()!.Id);
-            Setores = new SelectList(_setores, nameof(EOrganizacao.Nome), nameof(EOrganizacao.Nome), null);
-            var t = await _appServiceTipo.DoListAsync();
+            var _dominioativo = await _appSecretaria.DoListAsync(s => s.Acronimo == HttpContext.Session.GetString("Dominio"));
 
-            var p = await _appServiceParceiro.DoListAsync();
+            if (!_dominioativo.Any())
+                return;
+
+            var _setores = await _appSecretaria.DoListAsync(s => s.Dominio == _dominioativo.FirstOrDefault()!.Id!); Setores = new SelectList(_setores, nameof(EOrganizacao.Nome), nameof(EOrganizacao.Nome), null);
+            
+            var t = await _appServiceTipo.DoListAsync(s => s.Dominio!.Id == _dominioativo.FirstOrDefault()!.Id!);
+
+            var p = await _appServiceParceiro.DoListAsync(s => s.Dominio!.Id == _dominioativo.FirstOrDefault()!.Id!);
 
             if (t != null)
             {

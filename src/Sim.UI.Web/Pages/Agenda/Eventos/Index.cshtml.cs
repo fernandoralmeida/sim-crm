@@ -46,17 +46,18 @@ namespace Sim.UI.Web.Pages.Agenda.Eventos
         private async Task Onload()
         {
 
-            var _org = await _appSecretaria.DoListAsync(s => s.Hierarquia == EHierarquia.Secretaria);
+            var _dominioativo = await _appSecretaria.DoListAsync(s => s.Acronimo == HttpContext.Session.GetString("Dominio"));
 
-            if (_org.Count() == 0)
+            if (!_dominioativo.Any())
                 return;
 
-            var _setores = await _appSecretaria.DoListAsync(s => s.Hierarquia == EHierarquia.Setor && s.Dominio == _org!.FirstOrDefault()!.Id);
+            var _setores = await _appSecretaria.DoListAsync(s => s.Dominio == _dominioativo.FirstOrDefault()!.Id!);
+
             Setores = new SelectList(_setores, nameof(EOrganizacao.Nome), nameof(EOrganizacao.Nome), null);
 
-            var t = await _appServiceTipo.DoListAsync();
+            var t = await _appServiceTipo.DoListAsync(s => s.Dominio!.Id == _dominioativo.FirstOrDefault()!.Id!);
 
-            var p = await _appServiceParceiro.DoListAsync();
+            var p = await _appServiceParceiro.DoListAsync(s => s.Dominio!.Id == _dominioativo.FirstOrDefault()!.Id!);
 
             if (t != null)
             {
@@ -86,7 +87,12 @@ namespace Sim.UI.Web.Pages.Agenda.Eventos
                     return Page();
                 }
 
-                Input!.Codigo = Convert.ToInt32(DateTime.Now.ToUniversalTime());
+                Input!.Codigo = DateTime.Now.GetHashCode();
+
+                var _dominioativo = await _appSecretaria.DoListAsync(s => s.Acronimo == HttpContext.Session.GetString("Dominio"));
+                var _dominio_selecionado = await _appSecretaria.GetAsync((Guid)_dominioativo.FirstOrDefault()?.Id!);
+
+                Input.Dominio = await _appSecretaria.GetAsync(_dominio_selecionado!.Id);
 
                 await _appServiceEvento.AddAsync(_mapper.Map<EEvento>(Input));
 

@@ -73,7 +73,6 @@ namespace Sim.UI.Web.Pages.Atendimento.Consulta
             Input!.DataF = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
             Input.ListaAtendimento = new List<EAtendimento>();
             await LoadUsers();
-            await LoadServicos();
             await LoadSetores();
         }
 
@@ -82,19 +81,28 @@ namespace Sim.UI.Web.Pages.Atendimento.Consulta
             ListaAtendentes = new SelectList(await _appIdentity.ListAllAsync(), nameof(ApplicationUser.UserName), nameof(ApplicationUser.UserName), null);
         }
 
-        private async Task LoadServicos()
-        {
-            ListaServicos = new SelectList(await _appServiceServico.DoListAsync(), nameof(EServico.Nome), nameof(EServico.Nome), null);
-        }
+        // private async Task LoadServicos()
+        // {
+        //     var _dominioativo = await _appServiceSecretaria.DoListAsync(s => s.Acronimo == HttpContext.Session.GetString("Dominio"));
+        //     ListaServicos = new SelectList(await _appServiceServico.DoListAsync(s => s.Dominio == _dominioativo.FirstOrDefault()), nameof(EServico.Nome), nameof(EServico.Nome), null);
+        // }
 
         public async Task LoadSetores()
         {
-            var _org = await _appServiceSecretaria.DoListAsync(s => s.Hierarquia == EHierarquia.Secretaria);
-            if (_org.Count() == 0)
+            var _dominioativo = await _appServiceSecretaria.DoListAsync(s => s.Acronimo == HttpContext.Session.GetString("Dominio"));
+
+            if (!_dominioativo.Any())
                 return;
 
-            var _setores = await _appServiceSecretaria.DoListAsync(s => s.Hierarquia == EHierarquia.Setor && s.Dominio == _org.FirstOrDefault()!.Id);
+            var _setores = await _appServiceSecretaria.DoListAsync(s => s.Dominio == _dominioativo.FirstOrDefault()!.Id);
             ListaSetores = new SelectList(_setores, nameof(EOrganizacao.Nome), nameof(EOrganizacao.Nome), null);
+
+            var _list_servicos = new List<EServico>();
+            foreach (var item in _setores)
+                foreach (var servico in await _appServiceServico.DoListAsync(s => s.Dominio!.Id == item.Id))
+                    _list_servicos.Add(servico);
+
+            ListaServicos = new SelectList(_list_servicos, nameof(EServico.Nome), nameof(EServico.Nome), null);
         }
 
 
@@ -122,7 +130,6 @@ namespace Sim.UI.Web.Pages.Atendimento.Consulta
                 Input!.ListaAtendimento = new List<EAtendimento>();
             }
 
-            await LoadServicos();
             await LoadUsers();
             await LoadSetores();
         }

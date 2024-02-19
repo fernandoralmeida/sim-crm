@@ -20,6 +20,7 @@ namespace Sim.Data.Repository
                                 //.Where(a => a.Ativo == true)
                                 .Include(p => p.Pessoa)
                                 .Include(e => e.Empresa)
+                                .Include(e => e.Dominio)
                                 .OrderBy(o => o.Data)
                                 .AsNoTrackingWithIdentityResolution()
                                 .ToListAsync();
@@ -31,6 +32,7 @@ namespace Sim.Data.Repository
             return await _db.Atendimento!
                             .Include(p => p.Pessoa)
                             .Include(e => e.Empresa)
+                            .Include(d => d.Dominio)
                             .Where(i => i.Id == id).FirstOrDefaultAsync();
 #pragma warning restore CS8603 // Possible null reference return.
         }
@@ -56,6 +58,7 @@ namespace Sim.Data.Repository
             return await _db.Atendimento!
                                 .Include(p => p.Pessoa)
                                 .Include(e => e.Empresa)
+                                .Include(d => d.Dominio)
                                 .Where(a => a.Data >= dataI && a.Data <= dataF)
                                 .Where(a => a.Status == "Finalizado" && a.Ativo == true)
                                 .Where(a => a.Pessoa!.CPF!.Contains(cpf))

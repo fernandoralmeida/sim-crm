@@ -44,6 +44,7 @@ public class ServiceRFB : IServiceRFB
             var _company = new ECompany();
 
             var request = (HttpWebRequest)WebRequest.Create($"{_url}{_validatepage}");
+                      
             request.ProtocolVersion = HttpVersion.Version10;
             request.CookieContainer = _cookies;
             request.Method = "POST";

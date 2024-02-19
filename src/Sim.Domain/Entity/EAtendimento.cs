@@ -1,4 +1,6 @@
 ﻿
+using Sim.Domain.Organizacao.Model;
+
 namespace Sim.Domain.Entity
 {
 
@@ -23,6 +25,7 @@ namespace Sim.Domain.Entity
         public string? Owner_AppUser_Id { get; set; }
         public virtual Pessoa? Pessoa { get; set; }
         public virtual Empresas? Empresa { get; set; }
+        public virtual EOrganizacao? Dominio { get; set; }
 
         public bool BySetor(EAtendimento obj, string setor_name)
         {

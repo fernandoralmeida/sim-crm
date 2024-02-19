@@ -163,7 +163,7 @@ namespace Sim.UI.Web.Pages.Agenda.Inscricoes.Novo
                     DataF = DateTime.Now,
                     Pessoa = await _appServicePessoa.GetAsync(Input.Participante.Id),
                     Empresa = Input.Empresa != null ? await _appServiceEmpresa.GetAsync(Input.Empresa.Id) : null,
-                    Setor = inscricao.Evento.Owner,
+                    Setor = HttpContext.Session.GetString("SetorAtivo"),
                     Servicos = "Inscrição em Evento",
                     Descricao =  string.Format("Incrição Nº:{0}, Evento: {1} {2}", inscricao.Numero, inscricao.Evento.Tipo, inscricao.Evento.Nome),
                     Canal = "Presencial",
