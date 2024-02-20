@@ -1,4 +1,4 @@
-﻿@page 
+﻿@page
 @model Sim.UI.Web.Pages.IndexModel
 
 @{
@@ -7,142 +7,21 @@
     ViewData["ActivePageLi"] = Web.Pages.Shared.LayoutNavPages.InicioHome;
 }
 
-<div class="card center rounded-4 pdn-10">    
+<div class="card center rounded-4 pdn-10">
     <div class="row mgn-0">
         <div class="col s6 m6 l6 no-padding">
             <img class="right" src="~/css/imgs/sim_logo.png" title="SIM" width="100px">
         </div>
         <div class="col s6 m6 l6 no-padding">
-            <strong class="left" style="margin-top: 69px;">App v2.3</strong>
+            <strong class="left" style="margin-top: 69px;">IM-CRM</strong>
         </div>
-    </div>     
-    <h6 class="mgn-0 no-padding" style="font-size:10px;"><strong>SECRETARIA DE DESENVOLVIMENTO ECONÔMICO, EMPREENDEDORISMO E INOVAÇÃO</strong></h6>
+    </div>
 </div>
 <div class="font-size-12">
-    <h5>Notas sobre atualizações -02/01/2023</h5>
-    <h6>Sebrae Aqui</h6>
+    <h5>Notas sobre atualizações</h5>
+    <h6>SIM CRM</h6>
     <ul>
-        <li>- Adicionado o filtro por ano para consultar os lançamentos pendentes e concluídos.</li>
-    </ul>
-    <h6>Eventos</h6>
-    <ul>
-        <li>- Quando realizado uma inscrição em algum evento, automaticamente é gerado um atendimento dessa inscrição.</li>
-    </ul>
-    <hr />
-    <h5>Notas sobre atualizações -16/12/2022</h5>
-    <h6>PAT</h6>
-    <ul>
-        <li>- Adicionado o modulo Relatórios do PAT</li>
-    </ul>
-    <h6>Sebrae</h6>
-    <ul>
-        <li>- Adicionado o modulo Relatórios do Sebrae Aqui</li>
-    </ul>
-    <h6>Banco do Povo</h6>
-    <ul>
-        <li>- Adicionado o modulo Relatórios do Banco do Povo</li>
-    </ul>
-    <h6>Power BI</h6>
-    <ul>
-        <li>- Adicionado o BI de Eventos</li>
-    </ul>
-    <hr />
-    <h5>Notas sobre atualizações -12/12/2022</h5>
-    <h6>Sim - v2.2</h6>
-    <ul>
-        <li>- Melhorias internas de desempenho</li>
-        <li>- Adicionado o módulo para Contratos do Banco do Povo</li>
-    </ul>
-    <hr />
-    <h5>Notas sobre atualizações - 06/11/2022</h5>
-    <h6>Power BI - Empresas</h6>
-    <ul>
-        <li>- Banco de Dados das empresas atualizado até 10-10-2022 com a RFB</li>
-    </ul>
-    <h6>Global</h6>
-    <ul>
-        <li>- foi adicionado a opção de escolher tema claro ou escuro, clicando no icone na frente no nome de usuário na parte superior direito</li>
-    </ul>
-    <hr />
-    <h5>Notas sobre atualizações - 18/10/2022</h5>
-    <h6>Sebrae Aqui</h6>
-    <ul>
-        <li>- Corrigido a ordenação dos atendimentos lançados e não lançados no RAE</li>
-    </ul>
-    <h6>PAT</h6>
-    <ul>
-        <li>- Adicionado botão para confirmar preenchimentos de vagas de emprego</li>
-    </ul>
-    <hr />
-    <h5>Notas sobre atualizações - 05/09/2022</h5>
-    <h6>Power BI - Empresas</h6>
-    <ul>
-        <li>- Banco de Dados atualizado até 13-08-2022 com a RFB</li>
-    </ul>
-    <h6>PAT</h6>
-    <ul>
-        <li>- Correções no formulário de cadastro de Vagas</li>
-        <li>- Não é mais possivel cadastrar vagas com quantidade menor ou igual a '0'</li>
-    </ul>
-    <hr />
-    <h5>Notas sobre atualizações - 25/08/2022</h5>
-    <h6>PAT</h6>
-    <ul>
-        <li>- Adicionado o BI de vagas de emprego</li>
-    </ul>
-    <hr />
-    <h5>Notas sobre atualizações - 22/08/2022</h5>
-    <h6>Barra de pesquisa</h6>
-    <ul>
-        <li>- Barra de pesquisa na parte superior das paginas foram simplificadas, digite o conteúdo a ser pesquisado e pressionar a tecla "ENTER"</li>
-    </ul>
-    <hr />
-    <h6>Atendimento</h6>
-    <ul>
-        <li>- Adicionado o modo anônimo para atendimentos quando não há informações minimas sobre o antendimento, ou para casos onde a pessoa não queira se identificar</li>
-    </ul>
-    <hr />
-    <h6>PAT</h6>
-    <ul>
-        <li>- Adicionado o cadastro de vagas de emprego</li>
-        <li>- Adicionado a alteração ou exclusão de vagas de emprego</li>
-        <li>- Adicionado a consulta de vagas de emprego</li>
-    </ul>
-    <hr />
-    <h5>Atualização 12/07/2022</h5>
-    <h6>Seção Sedempi</h6>
-    <ul>
-        <li>- Seção Setor foi unificada com a SEDEMPi.</li>
-        <li>- Foi adicionado o botão "Inicio".</li>
-    </ul>
-    <hr />
-    <h6>Seção Atendimento</h6>
-    <ul>
-        <li>- Foi removido o botão "ATIVO".</li>
-        <li>- Foi foi adicionado o botão "NOVO".</li>
-        <li>- Sempre que estiver com atendimento ativo, o botão "NOVO" muda para "CONTINUAR".</li>
-        <li>- Na tela de atendimento foi removido o botão para carregar os serviços, agora é automático.</li>
-    </ul>
-    <hr />
-    <h6>Seção Agenda</h6>
-    <ul>
-        <li>- Foi alterado a barra de pesquisa, adicionando a possibilidade de pesquisar evento por nome e setor.</li>
-        <li>- Foi adicionado botões superior que filtra em ativos (verde), finalizados(ambar) e cancelados(vermelho).</li>
-        <li>- Agora os eventos aparecem ordenados por mês</li>
-        <li>- Adicionado botão de incluir participante direto na lista de inscritos</li>
-        <li>- Adicionado botão para ordenar em ordem alfabética</li>
-    </ul>
-    <hr />
-    <h6>Seção BI</h6>
-    <ul>
-        <li>- O layout do BI de atendimentos foi remodelado.</li>
-        <li>- O layout do BI de empresas foi remodelado.</li>
-        <li>- O layout do BI de cnaes foi remodelado.</li>
-    </ul>
-    <hr />
-    <h6>Seção Meu Perfil</h6>
-    <ul>
-        <li>- O "Nome do Usuário" foi removido do menu lateral e fixado na parte superior direita.</li>
+        <li>- Versão 1.0</li>
     </ul>
 
 </div>
@@ -164,7 +43,7 @@
         var diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
         var oneDay = 1000 * 60 * 60 * 24;
         var day = Math.floor(diff / oneDay);
-        if(day <= 10)
+        if (day <= 10)
             alert(`Que ${now.getFullYear()} seja leve, calmo, cheio de alegrias e conquistas.\n\nFeliz Ano Novo!`); //instance.open();
     });
 </script>
