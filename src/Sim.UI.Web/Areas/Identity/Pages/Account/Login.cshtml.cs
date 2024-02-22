@@ -121,6 +121,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
             try
             {
                 var _CRM = "SimCRM";
+                var _CRMID = new Guid().ToString();
                 var _claims = await _signInManager.UserManager.GetClaimsAsync(appuser);
                 var _list = await _appSecretaria.DoListAsync();
                 var collection = new List<KeyValuePair<string, Guid>>();
@@ -134,11 +135,13 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
                     var _setor = _list.Where(s => s.Id == Guid.Parse(claim.Value)).FirstOrDefault()!;
                     var _dominio = _list.Where(s => s.Id == _setor.Dominio).FirstOrDefault()!;
                     _CRM = _dominio.Acronimo ?? "SimCRM";
+                    _CRMID = _dominio.Id.ToString() ?? _CRMID;
                 }
 
                 HttpContext.Session.SetString("Dominio", _CRM);
+                HttpContext.Session.SetString("DominioID", _CRMID);
                 HttpContext.Session.SetString("SetorAtivo", _claims.First()?.Type!);
-                
+
                 var json = JsonConvert.SerializeObject(collection);
                 HttpContext.Session.SetString("ClaimList", json);
 
@@ -147,8 +150,9 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
             {
                 TempData["StatusMessage"] = ex.Message;
                 HttpContext.Session.SetString("Dominio", "SimCRM");
+                HttpContext.Session.SetString("DominioID", new Guid().ToString());
                 HttpContext.Session.SetString("ClaimList", "");
-                HttpContext.Session.SetString("SetorAtivo", "");
+                HttpContext.Session.SetString("SetorAtivo", "Setor");
             }
         }
     }

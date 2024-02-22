@@ -63,16 +63,6 @@ namespace Sim.Data.Context
             modelBuilder.ApplyConfiguration(new Config.Entity.StatusAtendimentoMap());
             base.OnModelCreating(modelBuilder);
         }
-        
-
-        /**/
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(@"Server=127.0.0.1,1433;Database=sim-application-crm;User Id=sa;Password=sql@1234;");
-            }
-        }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

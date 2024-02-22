@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Sim.Application.Indicadores.Interfaces;
 using Sim.Application.Indicadores.VModel;
 using Sim.Application.Interfaces;
-using Sim.Domain.Organizacao.Model;
 using Sim.Domain.Helpers;
 
 namespace Sim.UI.Web.Areas.Dashboards.Pages.Indicadores;
@@ -13,10 +12,8 @@ public class DashAtendimentos : PageModel
 {
     private readonly IAppIndicadores _indicadores;
     private readonly IAppServiceSecretaria _organizacao;
-
     public VmRAtendimentos? LReports { get; set; }
     public (int Ano, string Setor, string Page, IEnumerable<string> Setores) NavBar { get; set; }
-
     public string? AtendimentosMonth { get; set; }
     public string[]? Perfil { get; set; }
     public string[]? Canais { get; set; }
@@ -133,7 +130,9 @@ public class DashAtendimentos : PageModel
 
     private async Task<IEnumerable<string>> Setores()
     {
-        return from st in await _organizacao.DoListAsync(s => s.Hierarquia >= EHierarquia.Secretaria)
+        var _dominioID = HttpContext.Session.GetString("DominioID");
+        var _org = await _organizacao.GetAsync(Guid.Parse(_dominioID!));
+        return from st in await _organizacao.DoListAsync(s => s.Dominio == _org.Id)
                select st.Acronimo;
     }
 }

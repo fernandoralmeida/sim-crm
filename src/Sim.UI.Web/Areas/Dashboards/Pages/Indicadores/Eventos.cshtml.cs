@@ -114,7 +114,9 @@ public class DashEventos : PageModel
 
     private async Task<IEnumerable<string>> Setores()
     {
-        return from st in await _organizacao.DoListAsync(s => s.Hierarquia >= EHierarquia.Secretaria)
+        var _dominioID = HttpContext.Session.GetString("DominioID");
+        var _org = await _organizacao.GetAsync(Guid.Parse(_dominioID!));
+        return from st in await _organizacao.DoListAsync(s => s.Dominio == _org.Id)
                select st.Acronimo;
     }
 }

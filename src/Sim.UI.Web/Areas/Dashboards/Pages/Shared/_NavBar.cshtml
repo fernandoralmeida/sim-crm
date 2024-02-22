@@ -2,42 +2,7 @@
 @using Sim.Identity.Entity
 @using Sim.Application.Interfaces
 
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
-@inject IAppServiceStatusAtendimento MeuStatus
-@inject HttpContextAccessor httpcontextaccessor
-@inject Sim.Application.Interfaces.IAppServiceSecretaria _appOrganizacao
-
 @model (int Ano, string Setor, string Page, IEnumerable<string> Setores)
-
-
-@{
-    var _CRM = "SimCRM";
-    var _claims = User.Claims;
-    var _setores = await _appOrganizacao.DoListAsync();
-
-    foreach (var _setor in _setores)
-    {
-        var _claim = _claims.FirstOrDefault(s => s.Type == _setor.Acronimo && s.Value == _setor.Id.ToString())?.Value;
-        if (_claim != null)
-        {            
-            var _dominio = _setores.Where(s => s.Id == _setor.Dominio!.Value).FirstOrDefault()!;
-            _CRM = _dominio.Acronimo ?? "SimCRM";
-        }
-    }
-
-    var _mstatus = await MeuStatus.DoListAsync(s => s.UnserName == User.Identity!.Name);
-    var _user = UserManager.Users.FirstOrDefault(m => m.UserName == User.Identity!.Name);
-    var _lstatus = _mstatus.FirstOrDefault();
-    var _status = _lstatus == null ? false : _lstatus.Online;
-    var _idstatus = _lstatus == null ? Guid.Empty : _lstatus.Id;
-    var DisplayName = _user!.Name;
-    var DisplayLastName = _user.LastName;
-    var _mytheme = _user.Theme == null ? "light" : _user.Theme;
-    var _changetheme = _mytheme == "light" ? "dark" : "light";
-    var _icon = _mytheme == "dark" ? "dark_mode" : "light_mode";
-}
-<input id="meustatusonline" type="text" value="@_idstatus" hidden />
 
 <div class="navbar-fixed">
     <nav class="navbar z-depth-0">
@@ -45,7 +10,7 @@
             <a href="#" data-target="sidenav-left" class="sidenav-trigger hide-on-extra-large-only"><i
                     class="material-icons">menu</i></a>
 
-            <div class="left alpha-w-text-8 mgn-l-10">@_CRM</div>
+            <div class="left alpha-w-text-8 mgn-l-10">Dashboard Analítico!</div>
 
             <ul class="right hide-on-med-and-down">
                 <li><a class="dropdown-trigger alpha-w-text-9" href="#!" data-target="pagnames">@Model.Page<i
@@ -84,7 +49,7 @@
     @foreach (var item in @Model.Setores)
     {
         <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/@Model.Page" asp-route-ano="@Model.Ano"
-                asp-route-setor="@item" onclick="CloseDropdown()" target="_blank">@item</a></li>
+                asp-route-setor="@item" onclick="CloseDropdown()">@item</a></li>
     }
 </ul>
 
@@ -93,5 +58,5 @@
             asp-route-setor="@Model.Setor" onclick="CloseDropdown()">Atendimentos</a></li>
     <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/Eventos" asp-route-ano="@Model.Ano"
             asp-route-setor="@Model.Setor" onclick="CloseDropdown()">Eventos</a></li>
-    <li><a class="submit" href="https://www.indicadores.net/empresas/jau" onclick="CloseDropdown()" target="_blank">Empresas</a></li>
+    <li><a class="submit" href="https://www.indicadores.net" onclick="CloseDropdown()" target="_blank">Empresas</a></li>
 </ul>

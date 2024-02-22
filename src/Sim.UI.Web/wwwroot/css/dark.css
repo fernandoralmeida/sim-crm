@@ -205,6 +205,10 @@ footer {
     text-transform: uppercase;
 }
 
+.left-text{
+    text-align: left !important;
+}
+
 .borderless {
     border: 0px solid transparent !important;
 }
@@ -906,6 +910,8 @@ nav,
     margin: .5rem 0 1rem 0;
 }
 
+/* Collection */
+
 .collection {
     margin: .5rem 0 1rem 0;
     background-color: var(--bgwhite);
@@ -913,6 +919,12 @@ nav,
     border-radius: 4px;
     overflow: hidden;
     position: relative;
+}
+
+.collection.with-header .collection-header {
+    background-color: var(--bgwhite);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+    padding: 10px 20px;
 }
 
 .collection .collection-item {

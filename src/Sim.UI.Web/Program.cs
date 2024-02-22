@@ -6,6 +6,8 @@ using Sim.Identity.Entity;
 using Sim.Identity.Context;
 using Sim.UI.Web.AutoMapper;
 using Sim.IoC;
+using Microsoft.EntityFrameworkCore;
+using Sim.Data.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,7 +71,7 @@ CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CreateSpecificCulture("pt-
 CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.CreateSpecificCulture("pt-BR");
 
 // Aplicar migrações automaticamente
-using var scope = app.Services.CreateScope();
+// using var scope = app.Services.CreateScope();
 // var _idcontext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
 // _idcontext.Database.Migrate();
 // var _appcontext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();

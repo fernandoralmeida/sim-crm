@@ -14,7 +14,7 @@
         <br />Data: @Model.Input?.Data
     </div>
     <div class="col s3 m3 l3">
-        <img class="right" src="~/icons/sedempi_166p.svg" style="height:60px;">
+        <h4 class="right"><strong>@HttpContext.Session.GetString("Dominio")</strong></h4>        
     </div>
 </div>
 
@@ -100,8 +100,8 @@
         </tbody>
     </table>
 </div>
-<span>Secretaria de Desenvolvimento Econômico, Empreendedorismo e Inovação: @User.Identity!.Name</span>
-<span class="right">Prefeitura do Município de Jahu</span>
+<span>Usuário: @User.Identity!.Name</span>
+<span class="right">@Model.Organizacao</span>
 <!---->
 <div class="row">
     <p class="center">
