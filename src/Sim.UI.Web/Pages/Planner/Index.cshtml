@@ -13,7 +13,7 @@
 }
 
 <form method="post">
-    <div class="row valign-wrapper">
+    <div class="row valign-wrapper pdn-t-10">
         <div class="col s2 m2 l2">
             <button type="submit" class="btn-small waves-effect waves-light">Gravar<i class="left material-icons">save</i></button>
         </div>
@@ -22,7 +22,7 @@
             <input asp-for="Input!.Owner_AppUser_Id" hidden />
             <input asp-for="Input!.DataFinal" hidden />
             <input asp-for="Input!.DataInicial" hidden />
-            <span class="new badge darken-2 font-size-14" data-badge-caption="@d1 à @d2">Semana de</span>
+            <span class="new badge darken-2 font-size-14 bg-color-grey" data-badge-caption="@d1 à @d2">Semana de</span>
         </div>
         <div class="col s1 m1 l1">
             <a class="blue-text valign-wrapper right" asp-page="/Planner/Ajuda"><i class="material-icons">help</i></a>
@@ -30,76 +30,76 @@
     </div>
     <div class="row">
         <div class="col s12 m4 l2">
-            <div class="card">
+            <div class="card border-a">
                 <div class="card-header grey-text lighten-2">Segunda</div>
                 <div class="card-content pdn-10">
-                    <textarea asp-for="Input!.Segunda" class="materialize-textarea no-padding mgn-0" style="height: 300px;"></textarea>                    
+                    <textarea asp-for="Input!.Segunda" class="materialize-textarea no-padding mgn-0 borderless" style="height: 300px;"></textarea>                    
                 </div>                
             </div>
         </div>
         <div class="col s12 m4 l2">
-            <div class="card">
+            <div class="card border-a">
                 <div class="card-header grey-text lighten-2">Terça</div>
                 <div class="card-content pdn-10">
-                    <textarea asp-for="Input!.Terca" class="materialize-textarea no-padding mgn-0" style="height: 300px;"></textarea>                    
+                    <textarea asp-for="Input!.Terca" class="materialize-textarea no-padding mgn-0 borderless" style="height: 300px;"></textarea>                    
                 </div>                
             </div>
         </div>
         <div class="col s12 m4 l2">
-            <div class="card">
+            <div class="card border-a">
                 <div class="card-header grey-text lighten-2">Quarta</div>
                 <div class="card-content pdn-10">
-                    <textarea asp-for="Input!.Quarta" class="materialize-textarea no-padding mgn-0" style="height: 300px;"></textarea>                    
+                    <textarea asp-for="Input!.Quarta" class="materialize-textarea no-padding mgn-0 borderless" style="height: 300px;"></textarea>                    
                 </div>                
             </div>
         </div>
         <div class="col s12 m4 l2">
-            <div class="card">
+            <div class="card border-a">
                 <div class="card-header grey-text lighten-2">Quinta</div>
                 <div class="card-content pdn-10">
-                    <textarea asp-for="Input!.Quinta" class="materialize-textarea no-padding mgn-0" style="height: 300px;"></textarea>                    
+                    <textarea asp-for="Input!.Quinta" class="materialize-textarea no-padding mgn-0 borderless" style="height: 300px;"></textarea>                    
                 </div>                
             </div>
         </div>
         <div class="col s12 m4 l2">
-            <div class="card">
+            <div class="card border-a">
                 <div class="card-header grey-text lighten-2">Sexta</div>
                 <div class="card-content pdn-10">
-                    <textarea asp-for="Input!.Sexta" class="materialize-textarea no-padding mgn-0" style="height: 300px;"></textarea>                    
+                    <textarea asp-for="Input!.Sexta" class="materialize-textarea no-padding mgn-0 borderless" style="height: 300px;"></textarea>                    
                 </div>                
             </div>
         </div>
         <div class="col s12 m4 l2">
-            <div class="card">
+            <div class="card border-a">
                 <div class="card-header grey-text lighten-2">Sábado</div>
                 <div class="card-content pdn-10">
-                    <textarea asp-for="Input!.Sabado" class="materialize-textarea no-padding mgn-0" style="height: 300px;"></textarea>                    
+                    <textarea asp-for="Input!.Sabado" class="materialize-textarea no-padding mgn-0 borderless" style="height: 300px;"></textarea>                    
                 </div>                
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col s12 m4 l4">
-            <div class="card">
+            <div class="card bg-color-light">
                 <div class="card-header grey-text lighten-2">Próxima Semana</div>
                 <div class="card-content pdn-10">
-                    <textarea asp-for="Input!.ProximaSemana" class="materialize-textarea no-padding mgn-0" style="height: 150px;"></textarea>                    
+                    <textarea asp-for="Input!.ProximaSemana" class="materialize-textarea no-padding mgn-0 borderless" style="height: 150px;"></textarea>                    
                 </div>                
             </div>
         </div>
         <div class="col s12 m4 l4">
-            <div class="card">
+            <div class="card bg-color-light">
                 <div class="card-header grey-text lighten-2">Prioridades</div>
                 <div class="card-content pdn-10">
-                    <textarea asp-for="Input!.Prioridades" class="materialize-textarea no-padding mgn-0" style="height: 150px;"></textarea>                    
+                    <textarea asp-for="Input!.Prioridades" class="materialize-textarea no-padding mgn-0 borderless" style="height: 150px;"></textarea>                    
                 </div>                
             </div>
         </div>
         <div class="col s12 m4 l4">
-            <div class="card">
+            <div class="card bg-color-light">
                 <div class="card-header grey-text lighten-2">Anotações</div>
                 <div class="card-content pdn-10">
-                    <textarea asp-for="Input!.Anotacao" class="materialize-textarea no-padding mgn-0" style="height: 150px;"></textarea>                    
+                    <textarea asp-for="Input!.Anotacao" class="materialize-textarea no-padding mgn-0 borderless" style="height: 150px;"></textarea>                    
                 </div>                
             </div>
         </div>

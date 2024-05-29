@@ -16,7 +16,7 @@
     @if (item.Value.Any())
     {
         <div class="row">
-    <div class="box-column">
+    <div class="box-column border-a">
         <div class="box-column-row">
             <div class="box-card">
                 <div class="card-header grey-text">@item.Key<i class="material-icons left">view_module</i>
@@ -26,23 +26,23 @@
                             {
                                 @if (subitem.Value.Any())
                                 {
-                                    <div class="box-cell-item-flex">
+                                    <div class="box-cell-item-flex borderless">
                                         <ul class="collection with-header borderless">
-                                            <li class="collection-header">
+                                            <li class="collection-header borderless">
                                                 <h6>@subitem.Key</h6>
                                             </li>
                                             @foreach (var u in subitem.Value)
                                             {
                                                 @if (u.Value == "Em Atendimento")
                                                 {
-                                                    <li class="collection-item left-text">
+                                                    <li class="collection-item left-text borderless">
                                                         <div>@u.Key<a class="secondary-content" href="#" title="Em Atendimento"><i
                                                                     class="material-icons orange-text">do_not_disturb_on</i></a></div>
                                                     </li>
                                                 }
                                                 else
                                                 {
-                                                    <li class="collection-item left-text">
+                                                    <li class="collection-item left-text borderless">
                                                         <div>@u.Key<a class="secondary-content" href="#" title="Disponível"><i
                                                                     class="material-icons green-text">check_circle</i></a></div>
                                                     </li>

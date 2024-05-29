@@ -2,18 +2,18 @@
 @model RegisterModel
 @{
     ViewData["Title"] = "Registrar";
-    ViewData["ActivePage"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.Configuracoes;
-    ViewData["ActivePageLi"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.ConfigContas;
+    ViewData["ActivePage"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.ConfigContas;
+    @* ViewData["ActivePageLi"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.ConfigContas; *@
 }
 
 <div class="card">
         
     <form asp-route-returnUrl="@Model.ReturnUrl" method="post">        
-        <div class="card-header grey-text">
+        <div class="card-header">
             Novo Usuário<i class="left material-icons">person_add</i>
         </div>
-        <div class="card-content">
-            <div class="row">
+        <div class="card-content no-padding">
+            <div class="row mgn-0">
                 <div class="input-field col s12 m6 l4">
                     <input asp-for="Input!.UserName" />
                     <label asp-for="Input!.UserName" ></label>
@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-action">
+        <div class="card-action pdn-10">
             <button type="submit" class="btn waves-effect waves-light">Registrar</button>
         </div>        
     </form>

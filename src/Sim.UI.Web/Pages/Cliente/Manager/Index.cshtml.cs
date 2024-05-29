@@ -32,7 +32,7 @@ namespace Sim.UI.Web.Pages.Cliente.Manager
                 return NotFound();
             }
 
-            var t = await _pessoa.GetAsync((Guid)id);          
+            var t = await _pessoa.GetAsync((Guid)id);
 
             Input = _mapper.Map<InputModelPessoa>(t);
 
@@ -62,7 +62,11 @@ namespace Sim.UI.Web.Pages.Cliente.Manager
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-                return Page();            
+            {
+                StatusMessage = "Alerta: Verifique se todos os campos foram preenchidos corretamente!";
+                return Page();
+            }
+
 
             try
             {

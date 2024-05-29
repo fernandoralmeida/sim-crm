@@ -5,23 +5,23 @@
 @model (int Ano, string Setor, string Page, IEnumerable<string> Setores)
 
 <div class="navbar-fixed">
-    <nav class="navbar z-depth-0">
+    <nav class="navbar z-depth-0 bg-color-light">
         <div class="nav-wrapper">
             <a href="#" data-target="sidenav-left" class="sidenav-trigger hide-on-extra-large-only"><i
                     class="material-icons">menu</i></a>
 
-            <div class="left alpha-w-text-8 mgn-l-10">Dashboard Analítico!</div>
+            <div class="left mgn-l-10">Dashboard Analítico!</div>
 
             <ul class="right hide-on-med-and-down">
-                <li><a class="dropdown-trigger alpha-w-text-9" href="#!" data-target="pagnames">@Model.Page<i
+                <li><a class="dropdown-trigger" href="#!" data-target="pagnames">@Model.Page<i
                             class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a class="dropdown-trigger alpha-w-text-9" href="#!" data-target="dropdown1">@Model.Ano<i
+                <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">@Model.Ano<i
                             class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a class="dropdown-trigger alpha-w-text-9" href="#!" data-target="dropdown2">@Model.Setor<i
+                <li><a class="dropdown-trigger" href="#!" data-target="dropdown2">@Model.Setor<i
                             class="material-icons right">arrow_drop_down</i></a></li>
                  
                 @* <li class="dropdown-trigger" data-target="dropdownuser">
-                    <a id="btnstatus" href="#" class="alpha-w-text-9
+                    <a id="btnstatus" href="#" class=
                     ">@DisplayName<i class="left material-icons">person</i></a>
                 </li> *@
             </ul>
@@ -29,15 +29,15 @@
     </nav>
 </div>
 
-<div id="dropdownuser" class="dropdown-content rounded-default row">
-    <div class="center-align"><a class="grey-text" asp-area="Identity" asp-page="/Account/Manage/Index">Meu Perfil</a>
+<div id="dropdownuser" class="dropdown-content rounded-default row bg-color-white">
+    <div class="center-align"><a asp-area="Identity" asp-page="/Account/Manage/Index">Meu Perfil</a>
     </div>
     <div class="divider"></div>
-    <div><a asp-area="Identity" asp-page="/Account/Logout" class="grey-text">Sair<i
+    <div><a asp-area="Identity" asp-page="/Account/Logout">Sair<i
                 class="left material-icons">logout</i></a></div>
 </div>
 
-<ul id="dropdown1" class="dropdown-content">
+<ul id="dropdown1" class="dropdown-content bg-color-white">
     @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 10; i--)
     {
         <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/@Model.Page" asp-route-ano="@i"
@@ -45,7 +45,7 @@
     }
 </ul>
 
-<ul id="dropdown2" class="dropdown-content">
+<ul id="dropdown2" class="dropdown-content bg-color-white">
     @foreach (var item in @Model.Setores)
     {
         <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/@Model.Page" asp-route-ano="@Model.Ano"
@@ -53,7 +53,7 @@
     }
 </ul>
 
-<ul id="pagnames" class="dropdown-content">
+<ul id="pagnames" class="dropdown-content bg-color-white">
     <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/Atendimentos" asp-route-ano="@Model.Ano"
             asp-route-setor="@Model.Setor" onclick="CloseDropdown()">Atendimentos</a></li>
     <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/Eventos" asp-route-ano="@Model.Ano"

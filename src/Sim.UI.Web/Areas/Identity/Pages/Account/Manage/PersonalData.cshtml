@@ -9,21 +9,24 @@
 
 <div class="card">
     <div class="card-header grey-text">@ViewData["Title"]<i class="left material-icons">assignment_ind</i></div>
-    <div class="card-content">
-            <div class="row">
+    <div class="card-content pdn-12">
+        <div class="row mgn-0">
 
-                <p>Sua conta contém dados pessoais que você nos forneceu. Esta página permite que você baixe ou exclua esses dados.</p>
-                <p>
-                    <strong>A exclusão desses dados removerá permanentemente sua conta, e isso não pode ser recuperado.</strong>
-                </p>
+            <p>Sua conta contém dados pessoais que você nos forneceu. Esta página permite que você baixe ou exclua esses
+                dados.</p>
+            <p>
+                <strong>A exclusão desses dados removerá permanentemente sua conta, e isso não pode ser
+                    recuperado.</strong>
+            </p>
 
-            </div>
-    </div>    
-    <div class="card-action">
+        </div>
+    </div>
+    <div class="card-action pdn-10">
         <form id="download-data" asp-page="DownloadPersonalData" method="post">
             <button class="btn waves-effect waves-light" type="submit">Baixar dados pessoais</button>
-            <a id="delete" asp-page="DeletePersonalData" class="btn materialize-red waves-effect waves-ligth right">Excluir dados pessoais</a>
-        </form>        
+            <a id="delete" asp-page="DeletePersonalData"
+                class="btn materialize-red waves-effect waves-ligth right">Excluir dados pessoais</a>
+        </form>
     </div>
 </div>
 

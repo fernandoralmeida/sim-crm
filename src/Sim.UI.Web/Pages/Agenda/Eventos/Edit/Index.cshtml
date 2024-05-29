@@ -10,13 +10,17 @@
 
 <div class="row">
     <form method="post" class="card">
-        <div class="card-content">
-            <div class="row">
+        <div class="card-header alpha-text-5">
+            <a asp-page="/Agenda/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i
+                    class="material-icons">undo</i></a><span class="pdn-10">Evento</span>
+        </div>
+        <div class="card-content no-padding">
+            <div class="row mgn-0">
                 <div class="row" hidden>
                     <input asp-for="Input!.Id" />
                     <label asp-for="Input!.Id"></label>
                 </div>
-                <div class="row" hidden> 
+                <div class="row" hidden>
                     <input asp-for="Input!.Codigo" />
                     <label asp-for="Input!.Codigo"></label>
                 </div>
@@ -68,14 +72,16 @@
                 </div>
             </div>
         </div>
-        <div class="card-action">
+        <div class="card-action pdn-10">
             <button type="submit" class="btn waves-effect waves-light">Alterar Evento</button>
-            <a asp-page="/Agenda/Index" asp-route-m="ativos" class="btn waves-effect waves-light grey">Voltar</a>
+            @* <a asp-page="/Agenda/Index" asp-route-m="ativos" class="btn waves-effect waves-light grey">Voltar</a> *@
         </div>
     </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/js/jquery.validation.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+<script src="~/js/jquery.validation.js"></script>
 }

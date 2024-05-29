@@ -7,8 +7,12 @@
 
 <div class="card">
     <form method="post">
-        <div class="card-content">
-            <div class="row">
+        <div class="card-header alpha-text-5">
+            <a asp-page="/Agenda/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i
+                    class="material-icons">undo</i></a><span class="pdn-10">Evento</span>
+        </div>
+        <div class="card-content no-padding">
+            <div class="row mgn-0">
                 <div class="col s12 input-field" hidden>
                     <input asp-for="Input!.Id" />
                     <label asp-for="Input!.Id"></label>
@@ -61,14 +65,16 @@
                 </div>
             </div>
         </div>
-        <div class="card-action">
+        <div class="card-action pdn-10">
             <button type="submit" class="btn waves-effect waves-light">Gravar Novo Evento</button>
-            <a asp-page="/Agenda/Index" class="btn grey lighten-1 waves-effect waves-light">Voltar</a>
+            @* <a asp-page="/Agenda/Index" class="btn grey lighten-1 waves-effect waves-light">Voltar</a> *@
         </div>
     </form>
 
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -12,7 +12,10 @@
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 
 <form class="card" method="post">
-
+    <div class="card-header alpha-text-5">
+        <a asp-page="/Atendimento/Consulta/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i
+                class="material-icons">undo</i></a><span class="pdn-10">Consulta avançada</span>
+    </div>
     <div class="row">
         <div class="col s12 mgn-b-0">
             <div class="input-field col s6 m4 l2">
@@ -53,14 +56,17 @@
                 </select>
                 <label asp-for="Input!.Servico"></label>
             </div>
-            <div class="input-field col s6 m4">
+            <div class="input-field col s6 m4 l2">
                 <select asp-for="Input!.Atendente" asp-items="@Model.ListaAtendentes">
                     <option selected></option>
                 </select>
                 <label asp-for="Input!.Atendente"></label>
             </div>
-            <div class="input-field col right">
-                <button class="btn waves-effect waves-light submit">Pesquisar</button>
+            <div class="col s6 m4 l2">
+
+            </div>
+            <div class="input-field col s6 m4 l2">
+                <button class=" waves-effect waves-light btn-small w-100p line-3r submit">Pesquisar</button>
             </div>
         </div>
     </div>
@@ -106,14 +112,14 @@
             asp-route-cnpj="@Model.Input.CNPJ" asp-route-rsocial="@Model.Input.RazaSocial"
             asp-route-cnae="@Model.Input.CNAE" asp-route-svc="@Model.Input.Servico"
             asp-route-user="@Model.Input.Atendente" asp-route-sto="@Model.Input.Setor"
-            class="btn-small waves-effect waves-light amber @_isdisabled"
-            title="Exportar Empresas Distintas Novas"><i class="material-icons">description
+            class="btn-small waves-effect waves-light amber @_isdisabled" title="Exportar Empresas Distintas Novas"><i
+                class="material-icons">description
                 file_download</i></a>
     </div>
 
 </div>
 
-@section scripts{
+@section scripts {
     <script src="~/js/jquery.mask.min.js"></script>
     <script>
         //$('#inputDataI').mask('00/00/0000', { placeholder: "data inicial" });

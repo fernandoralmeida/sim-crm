@@ -9,8 +9,8 @@
 <form id="profile-form" method="post">
     <div class="card">
         <div class="card-header grey-text">@ViewData["Title"]<i class="left material-icons">assignment_ind</i></div>
-        <div class="card-content">
-            <div class="row">
+        <div class="card-content no-padding">
+            <div class="row mgn-0">
                 <div class="input-field col s12 m7 l7">
                     <input asp-for="UserName" disabled />
                     <label asp-for="UserName"></label>
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-action">
+        <div class="card-action pdn-10">
             <button id="update-profile-button" type="submit" class="btn waves-effect waves-ligth">Gravar
                 Alterações</button>
         </div>

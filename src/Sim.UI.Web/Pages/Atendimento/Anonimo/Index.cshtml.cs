@@ -96,6 +96,7 @@ namespace Sim.UI.Web.Pages.Atendimento.Anonimo
                     ));
 
                 ListaServicos = _lista;
+
             }
             catch (Exception ex)
             {

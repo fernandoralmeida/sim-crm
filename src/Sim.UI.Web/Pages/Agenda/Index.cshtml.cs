@@ -22,7 +22,7 @@ namespace Sim.UI.Web.Pages.Agenda
             public IEnumerable<(string Mes, int Qtde, IEnumerable<EEvento>)>? ListaEventosMes { get; set; }
         }
 
-        [TempData]
+        //[TempData]
         public string? StatusMessage { get; set; }
 
         public IndexModel(IAppServiceEvento appServiceEvento,

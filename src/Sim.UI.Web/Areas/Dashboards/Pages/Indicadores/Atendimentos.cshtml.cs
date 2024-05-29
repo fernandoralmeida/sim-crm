@@ -130,9 +130,16 @@ public class DashAtendimentos : PageModel
 
     private async Task<IEnumerable<string>> Setores()
     {
-        var _dominioID = HttpContext.Session.GetString("DominioID");
-        var _org = await _organizacao.GetAsync(Guid.Parse(_dominioID!));
-        return from st in await _organizacao.DoListAsync(s => s.Dominio == _org.Id)
-               select st.Acronimo;
+        try
+        {
+            var _dominioID = HttpContext.Session.GetString("DominioID");
+            var _org = await _organizacao.GetAsync(Guid.Parse(_dominioID!));
+            return from st in await _organizacao.DoListAsync(s => s.Dominio == _org.Id)
+                   select st.Acronimo;
+        }
+        catch
+        {
+            return new List<string>();
+        }
     }
 }

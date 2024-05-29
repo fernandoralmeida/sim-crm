@@ -28,7 +28,7 @@ public class DashEventos : PageModel
     public string? EventosMesesParticipantes { get; set; }
     public string? EventosMesesInscritos { get; set; }
     public string[]? ListaEventos { get; set; }
-    public string[]? Eventos {get; set; }
+    public string[]? Eventos { get; set; }
 
 
     public DashEventos(IAppIndicadores indicadores,
@@ -114,9 +114,17 @@ public class DashEventos : PageModel
 
     private async Task<IEnumerable<string>> Setores()
     {
-        var _dominioID = HttpContext.Session.GetString("DominioID");
-        var _org = await _organizacao.GetAsync(Guid.Parse(_dominioID!));
-        return from st in await _organizacao.DoListAsync(s => s.Dominio == _org.Id)
-               select st.Acronimo;
+        try
+        {
+            var _dominioID = HttpContext.Session.GetString("DominioID");
+            var _org = await _organizacao.GetAsync(Guid.Parse(_dominioID!));
+            return from st in await _organizacao.DoListAsync(s => s.Dominio == _org.Id)
+                   select st.Acronimo;
+        }
+        catch
+        {
+            return Enumerable.Empty<string>();
+        }
+
     }
 }

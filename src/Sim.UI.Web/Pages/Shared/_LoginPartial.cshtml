@@ -27,12 +27,12 @@
 }
 <input id="meustatusonline" type="text" value="@_idstatus" hidden />
 
-<div class="navbar-fixed">
+<div class="navbar-fixed bg-color-dark">
     <nav class="navbar z-depth-0">
         <div class="nav-wrapper">
             <div class="row">
                 <div class="col s6 m6 l6 no-padding">
-                    <ul class="alpha-w-text-8">
+                    <ul>
                         <li>
                             <a href="#" data-target="sidenav-left" class="sidenav-trigger ">
                                 <i class="material-icons">menu</i></a>
@@ -41,7 +41,7 @@
                             <i class="material-icons">arrow_right</i>
                         </li>
                         <li>
-                            <a class="dropdown-trigger alpha-w-text-8" data-target="dropsection">
+                            <a class="dropdown-trigger" data-target="dropsection">
                                 @_setorativo
                             </a>
                         </li>
@@ -70,10 +70,10 @@
                                         class="material-icons online">settings</i></a>
                             </li>
                         }
-                        <li>
+                        @* <li>
                             <a asp-area="Identity" asp-page="/Theme" asp-route-url="@_url"
                                 asp-route-theme="@_changetheme"><i class="material-icons online">@_icon</i></a>
-                        </li>
+                        </li> *@
                         @if (User.Identity!.IsAuthenticated)
                         {
                             @if (!_status)
@@ -94,21 +94,21 @@
     </nav>
 </div>
 
-<div id="dropsection" class="dropdown-content rounded-default row">
+<div id="dropsection" class="dropdown-content rounded-default row bg-color-white">
     @if (_claims != null)
     {
         @foreach (var setor in _claims!)
         {
             <div>
-                <a class="grey-text" asp-area="Identity" asp-page="/Session" asp-route-id="@setor.Value"
+                <a asp-area="Identity" asp-page="/Session" asp-route-id="@setor.Value"
                     asp-route-url="@_url">@setor.Key</a>
             </div>
         }
     }
 </div>
 
-<div id="dropdownuser" class="dropdown-content rounded-default row">
-    <div class="center-align"><a class="grey-text" asp-area="Identity" asp-page="/Account/Manage/Index">Meu Perfil</a>
+<div id="dropdownuser" class="dropdown-content rounded-default row bg-color-white">
+    <div class="center-align"><a asp-area="Identity" asp-page="/Account/Manage/Index">Meu Perfil</a>
     </div>
     <div class="divider"></div>
     <div class="center-align pdn-h-10">
@@ -116,7 +116,7 @@
                     type="checkbox" onclick="myStatus()" /><span class="lever"></span>ON</label></div>
     </div>
     <div class="divider"></div>
-    <div><a asp-area="Identity" asp-page="/Account/Logout" class="grey-text">Sair<i
+    <div><a asp-area="Identity" asp-page="/Account/Logout">Sair<i
                 class="left material-icons">logout</i></a></div>
 </div>
 

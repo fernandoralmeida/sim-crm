@@ -12,60 +12,61 @@
 @if (Model._result == false)
 {
     <form method="post">
-        <section>
-            <input asp-for="EditID" hidden />
-            <div class="card">
-                <div class="card-header grey-text">Vinculo Pessoa | Empresa</div>
-                <div class="row no-padding mgn-b-0">
-                    <input asp-for="Id2" id="inputId2" hidden />
-                    <div class="col s12 m6 l4 input-field">
-                        <input asp-for="GetCNPJ" id="inputCNPJ" readonly />
-                        <label>CNPJ</label>
-                    </div>
-                    <div class="col s12 m6 l8 input-field">
-                        <input asp-for="NomeEmpresarial" id="inputNE" readonly />
-                    </div>
-                    <input asp-for="Id1" id="inputId1" hidden />
-                    <div class="col s12 m4 l4 input-field valign-wrapper">
-                        <input asp-for="GetCPF" id="inputCPF" readonly />
-                        <label>CPF</label>
-                    </div>
-                    <div class="col s12 m5 l5 input-field">
-                        <input asp-for="Nome" id="inputNome" readonly />
-                    </div>
-                    <div class="col s12 m3 l3 input-field">
-                        <select asp-for="VinculoSelecionado" asp-items="Model.Vinculos"></select>
-                        <label>Tipo Vínculo</label>
-                    </div>
+    <section>
+        <input asp-for="EditID" hidden />
+        <div class="card">
+            <div class="card-header">
+                <a asp-page="/Bind/Index" class="btn-small waves-effect waves-light grey submit" title="Voltar"><i
+                        class="material-icons">undo</i></a><span class="pdn-10">Editar Vinculo Pessoa | Empresa</span>
+            </div>            
+            <div class="row no-padding mgn-b-0">
+                <input asp-for="Id2" id="inputId2" hidden />
+                <div class="input-field col s12 m6 l4">
+                    <input asp-for="GetCNPJ" id="inputCNPJ" readonly />
+                    <label>CNPJ</label>
                 </div>
-                <div class="card-action">
-                    <a asp-page="./Index" class="waves-effect waves-light btn blue-grey"><i
-                            class="material-icons">arrow_back</i></a>
-                    <button class="waves-effect waves-light btn right"><i class="material-icons">save</i></button>
+                <div class="input-field col s12 m6 l8">
+                    <input asp-for="NomeEmpresarial" id="inputNE" readonly />
+                </div>
+                <input asp-for="Id1" id="inputId1" hidden />
+                <div class="input-field col s12 m4 l4 valign-wrapper">
+                    <input asp-for="GetCPF" id="inputCPF" readonly />
+                    <label>CPF</label>
+                </div>
+                <div class="input-field col s12 m5 l5">
+                    <input asp-for="Nome" id="inputNome" readonly />
+                </div>
+                <div class="input-field col s12 m3 l3">
+                    <select asp-for="VinculoSelecionado" asp-items="Model.Vinculos"></select>
+                    <label>Tipo Vínculo</label>
                 </div>
             </div>
-        </section>
-    </form>
+            <div class="card-action">
+                <button class="waves-effect waves-light btn">Gravar</button>
+            </div>
+        </div>
+    </section>
+</form>
 }
 else
 {
     <div class="row">
-        <a class="waves-effect waves-light btn blue-grey" asp-page="./Index"><i class="material-icons">arrow_back</i></a>
-    </div>
+    <a class="waves-effect waves-light btn blue-grey" asp-page="./Index"><i class="material-icons">arrow_back</i></a>
+</div>
 
     <div class="card">
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Empresa</th>
-                    <th>Pessoa</th>
-                    <th>Vínculo</th>
-                    <th>Manager</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.Listar != null)
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Empresa</th>
+                <th>Pessoa</th>
+                <th>Vínculo</th>
+                <th>Manager</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Listar != null)
                 {
                     var _c = 0;
                     @foreach (var item in Model.Listar)

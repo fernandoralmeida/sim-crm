@@ -7,7 +7,7 @@
 <!---->
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 
-<div>
+<div class="row">
     <form method="post" asp-route="url" novalidate>
         <div id="dropdownacc" class="dropdown-content rounded-default row pdn-10">
             <div class="pdn-v-10"><div class="switch" title="Possui deficiência?"><label><input asp-for="Input!.Fisica" type="checkbox" /><span class="lever"></span>Física</label></div></div> 
@@ -17,7 +17,7 @@
         </div>
         <div class="card">
             <div class="card-header alpha-text-5">
-                Cliente<i class="material-icons left">person</i>
+                <a asp-page="/Cliente/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i class="material-icons">undo</i></a><span class="pdn-10"><i class="material-icons">person</i>Cliente</span>
             </div>
             <div class="row">
                 <div class="input-field col s12 m4 l4">
@@ -37,7 +37,7 @@
                     <label asp-for="Input!.Genero" for="inputGenero"></label>                    
                 </div>     
                 <div class="input-field col s12 m2 l2">
-                    <a class="dropdown-trigger blue-grey waves-effect waves-light btn-small right" data-target="dropdownacc" title="Deficência?">?<i class="material-icons left">accessible</i></a> 
+                    <a class="dropdown-trigger bg-color-light waves-effect waves-light btn-small w-100p line-3r" data-target="dropdownacc" title="Deficência?">?<i class="material-icons left">accessible</i></a> 
                 </div>         
             
                 <div class="input-field col s12 m4 l3">                        
@@ -138,7 +138,7 @@
         </div>
         <div class="card pdn-10">
             <button type="submit" role="button" class="waves-effect waves-light btn">Gravar Cadastro</button>
-            <a asp-page="/Cliente/Index" role="button" type="button" class="blue-grey lighten-1 right waves-effect waves-light btn">Voltar</a>
+            @* <a asp-page="/Cliente/Index" role="button" type="button" class="blue-grey lighten-1 right waves-effect waves-light btn">Voltar</a> *@
         </div>
     </form>
 </div>

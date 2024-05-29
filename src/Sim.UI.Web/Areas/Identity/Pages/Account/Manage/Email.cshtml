@@ -10,8 +10,8 @@
 
     <form id="email-form" method="post">
         <div class="card-header grey-text">@ViewData["Title"]<i class="left material-icons">email</i></div>
-        <div class="card-content">
-            <div class="row">
+        <div class="card-content no-padding">
+            <div class="row mgn-0">
                 <div class="input-field col s12 m6 l6">
                     @if (Model.IsEmailConfirmed)
                     {
@@ -26,7 +26,7 @@
                     <label asp-for="Email"></label>
                 </div>
             </div>
-            <div class="row">
+            <div class="row mgn-0">
                 <div class="input-field col s12 m6 l6">
                     <input asp-for="Input!.NewEmail" />
                     <label asp-for="Input!.NewEmail"></label>                    
@@ -34,7 +34,7 @@
             </div>
 
         </div>                    
-        <div class="card-action">
+        <div class="card-action pdn-10">
             <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="btn waves-effect waves-light">Alterar e-mail</button>
         </div>            
     </form>

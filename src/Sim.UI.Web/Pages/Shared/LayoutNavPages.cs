@@ -81,17 +81,24 @@ namespace Sim.UI.Web.Pages.Shared
         public static string? PowerBIEmpresasNavClass(ViewContext viewContext) => PageNavClassLi(viewContext, PowerBIEmpresas);
         public static string? PowerBIPessoasNavClass(ViewContext viewContext) => PageNavClassLi(viewContext, PowerBIPessoas);
         public static string? PowerBIEventosNavClass(ViewContext viewContext) => PageNavClassLi(viewContext, PowerBIEventos);
-        public static string? ConfiguracoesNavClass(ViewContext viewContext) => PageNavClass(viewContext, Configuracoes);
-        public static string? ConfigSistemaNavClass(ViewContext viewContext) => PageNavClassLi(viewContext, ConfigSistema);
-        public static string? ConfigContasNavClass(ViewContext viewContext) => PageNavClassLi(viewContext, ConfigContas);
-        public static string? LoginNavClass(ViewContext viewContext) => PageNavClass(viewContext, Login);
-        public static string? LoginPerfilNavClass(ViewContext viewContext) => PageNavClassLi(viewContext, LoginPerfil);
+        public static string? ConfiguracoesNavClass(ViewContext viewContext) => TopNavClass(viewContext, Configuracoes);
+        public static string? ConfigSistemaNavClass(ViewContext viewContext) => TopNavClass(viewContext, ConfigSistema);
+        public static string? ConfigContasNavClass(ViewContext viewContext) => TopNavClass(viewContext, ConfigContas);
+        public static string? LoginNavClass(ViewContext viewContext) => TopNavClass(viewContext, Login);
+        public static string? LoginPerfilNavClass(ViewContext viewContext) => TopNavClass(viewContext, LoginPerfil);
         public static string? LoginOutNavClass(ViewContext viewContext) => PageNavClassLi(viewContext, LoginOut);
         private static string? PageNavClass(ViewContext viewContext, string page)
         {
             var activePage = viewContext.ViewData["ActivePage"] as string
                 ?? System.IO.Path.GetFileNameWithoutExtension(viewContext.ActionDescriptor.DisplayName);
             return string.Equals(activePage, page, StringComparison.OrdinalIgnoreCase) ? "active" : null;
+        }
+
+        private static string? TopNavClass(ViewContext viewContext, string page)
+        {
+            var activePage = viewContext.ViewData["ActivePage"] as string
+                ?? System.IO.Path.GetFileNameWithoutExtension(viewContext.ActionDescriptor.DisplayName);
+            return string.Equals(activePage, page, StringComparison.OrdinalIgnoreCase) ? "active-1" : null;
         }
 
         private static string? PageNavClassLi(ViewContext viewContext, string page)

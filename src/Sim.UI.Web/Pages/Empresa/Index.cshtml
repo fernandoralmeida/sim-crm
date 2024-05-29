@@ -118,11 +118,15 @@
 </div>
 
 <div id="modal1" class="modal">
-    <div class="modal-content">
-        <form id="add-new" asp-page-handler="AddNew" method="post">
-            <div class="col s12 input-field valign-wrapper">
+    <div class="modal-content no-padding">
+        <div class="card-header pdn-v-10">Sincronizar com Receita Federal<i
+                class="material-icons left">cloud_sync</i></div>
+        <form id="add-new" asp-page-handler="AddNew" method="post" class="row no-padding mgn-0">
+            <div class="input-field col s10">
                 <input id="inputcnpj" asp-for="GetDocument" placeholder="Informe o CNPJ" autofocus />
-                <button asp-page-handler="AddNew" class="waves-effect waves-light btn">
+            </div>
+            <div class="input-field col s2">
+                <button asp-page-handler="AddNew" class="waves-effect waves-light btn w-100p line-3r">
                     <i class="material-icons">sync</i>
                 </button>
             </div>
@@ -134,18 +138,18 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <script src="~/js/jquery.mask.min.js"></script>
-    <script>
-        $('#inputcnpj').mask('00.000.000/0000-00');
-        $(function () {
-            $(".modal-trigger").click(function () {
-                var _div = document.getElementById("divcaptcha");
-                _div.innerHTML = "";
-                var img = document.createElement("img");
-                img.className = "imgcaptcha";
-                img.src = "https://solucoes.receita.fazenda.gov.br/Servicos/cnpjreva/captcha/gerarCaptcha.asp";
-                _div.appendChild(img);
-            });
+<script src="~/js/jquery.mask.min.js"></script>
+<script>
+    $('#inputcnpj').mask('00.000.000/0000-00');
+    $(function () {
+        $(".modal-trigger").click(function () {
+            var _div = document.getElementById("divcaptcha");
+            _div.innerHTML = "";
+            var img = document.createElement("img");
+            img.className = "imgcaptcha";
+            img.src = "https://solucoes.receita.fazenda.gov.br/Servicos/cnpjreva/captcha/gerarCaptcha.asp";
+            _div.appendChild(img);
         });
-    </script>
+    });
+</script>
 }

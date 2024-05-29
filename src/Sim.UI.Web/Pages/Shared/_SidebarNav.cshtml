@@ -9,11 +9,11 @@
     var _headname = Context.Session.GetString("Dominio");
 }
 
-<ul id="sidenav-left" class="sidenav sidenav-fixed">
+<ul id="sidenav-left" class="sidenav sidenav-fixed bg-color-grey">
 
-    <li class="no-padding alpha-text-6">
+    <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
-            <div class="logo-left">@_headname</div>
+            <div class="logo-left bg-color-dark">@_headname</div>
 
             <li class="@LayoutNavPages.AtendimentoNavClass(ViewContext)">
                 <div class="collapsible-header">Atendimentos<i class="material-icons chevron">chevron_left</i></div>

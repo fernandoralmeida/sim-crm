@@ -8,7 +8,10 @@
 
 <form method="post">
     <div class="card">
-         <div class="card-header grey-text">Evento<i class="left material-icons">event</i></div>
+        <div class="card-header alpha-text-5">
+            <a asp-page="/Agenda/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i
+                    class="material-icons">undo</i></a><span class="pdn-10">Inscrição</span>
+        </div>
          <div class="card-content no-padding">
              <div class="row">
              @if (Model.Input!.Evento == null)
@@ -143,7 +146,7 @@
 
     <div class="row">
         <button type="submit" asp-page-handler="Save" class="btn waves-effect waves-light">Realizar Inscrição</button> 
-        <a asp-page="/Agenda/Index" class="btn grey waves-effect waves-light">Voltar</a>
+        @* <a asp-page="/Agenda/Index" class="btn grey waves-effect waves-light">Voltar</a> *@
     </div>
 
 </form>

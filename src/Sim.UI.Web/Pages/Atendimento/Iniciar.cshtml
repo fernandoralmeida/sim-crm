@@ -10,79 +10,76 @@
 <form method="post">
 
     <div class="row">
-        <div class="col s12 m12 l12">
-            <div class="card teal lighten-3 teal-text text-darken-2">
-                <div class="card-header">Novo Atendimento<i class="left material-icons">timer</i></div>
+        
+        <div class="card no-padding">
+            <div class="card-header alpha-text-5">
+                <a asp-page="/Atendimento/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i
+                        class="material-icons">undo</i></a><span class="pdn-10">Novo Atendimento</span>
             </div>
-        </div>
-        <div class="col s12">
-            <div class="card">
-                <div class="card-header grey-text">
-                    <span>Cliente!</span>
-                </div>
-                <div style="overflow-x:auto;">
-                    <table class="small">
-                        <tbody>
-                            <tr>
-                                <td><i class="material-icons blue-text">person</i></td>
-                                <td><input asp-for="Input!.Pessoa!.Id" class="browser-default borderless" hidden />
-                                    <input asp-for="Input!.Pessoa!.CPF" class="browser-default borderless" />
+            <div style="overflow-x:auto;" class="pdn-10">
+                <span>Cliente!</span>
+                <table class="small">
+                    <tbody>
+                        <tr>
+                            <td><i class="material-icons blue-text">person</i></td>
+                            <td><input asp-for="Input!.Pessoa!.Id" class="browser-default borderless" hidden />
+                                <input asp-for="Input!.Pessoa!.CPF" class="browser-default borderless" />
+                            </td>
+                            <td><input asp-for="Input!.Pessoa!.Nome" class="browser-default borderless" /></td>
+                            <td><input asp-for="Input!.Pessoa!.Tel_Movel" class="browser-default borderless" /></td>
+                            <td><input asp-for="Input!.Pessoa!.Email" class="browser-default borderless" /></td>
+                            <td></td>
+                        </tr>
+                        @if (Model.Input!.Empresa == null)
+                        {
+                            <tr class="tr_empresa">
+                                <td><i class="material-icons blue-text">description</i></td>
+                                <td><input asp-for="GetCNPJ" class="browser-default borderless" autofocus id="inputCNPJ"
+                                        placeholder="Incluir CNPJ?" />
                                 </td>
-                                <td><input asp-for="Input!.Pessoa!.Nome" class="browser-default borderless" /></td>
-                                <td><input asp-for="Input!.Pessoa!.Tel_Movel" class="browser-default borderless" /></td>
-                                <td><input asp-for="Input!.Pessoa!.Email" class="browser-default borderless" /></td>
-                                <td></td>
+                                <td><button asp-page-handler="IncluirEmpresa"
+                                        class="btn-floating waves-effect waves-light blue" title="Incluir CNPJ"><i
+                                            class="material-icons">add</i></button></td>
                             </tr>
-                            @if (Model.Input!.Empresa == null)
-                            {
-                                <tr class="tr_empresa">
-                                    <td><i class="material-icons blue-text">description</i></td>
-                                    <td><input asp-for="GetCNPJ" class="browser-default borderless" autofocus id="inputCNPJ"
-                                            placeholder="Incluir CNPJ?" />
-                                    </td>
-                                    <td><button asp-page-handler="IncluirEmpresa"
-                                            class="btn-floating waves-effect waves-light blue" title="Incluir CNPJ"><i
-                                                class="material-icons">add</i></button></td>
-                                </tr>
-                            }
-                            else
-                            {
-                                <tr>
-                                    <td><i class="material-icons blue-text">domain</i></td>
-                                    <td><input asp-for="Input!.Empresa!.Id" class="browser-default borderless" hidden />
-                                        <input asp-for="Input!.Empresa!.CNPJ" class="browser-default borderless" />
-                                    </td>
-                                    <td><input asp-for="Input!.Empresa!.Nome_Empresarial"
-                                            class="browser-default borderless" /></td>
-                                    <td><input asp-for="Input!.Empresa!.Telefone" class="browser-default borderless" /></td>
-                                    <td><input asp-for="Input!.Empresa!.Email" class="browser-default borderless" /></td>
-                                    <td><button asp-page-handler="RemoverEmpresa" title="Remover"
-                                            class="waves-effect waves-light btn-floating red"><i
-                                                class="material-icons">remove</i></button></td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-action">
-                    @if (Model.HasBind == true)
-                    {
-                        <button asp-page-handler="Bindings" asp-route-pid="@Model.Input!.Pessoa!.Id"
-                            asp-route-eid="@Model.Input!.Empresa!.Id" type="submit" class="btn waves-effect waves-light blue"
-                            title="Víncular">Víncular Cliente | Empresa</button>
-                        <button asp-page-handler="Save" type="submit" class="btn waves-effect">Iniciar
-                            Atendimento</button>
-                        <a asp-page="/Atendimento/Index" class="grey btn waves-effect">Cancelar</a>
-                    }
-                    else
-                    {
-                        <button asp-page-handler="Save" type="submit" class="btn waves-effect waves-light"
-                            title="Iniciar Atendimento">Iniciar Atendimento</button>
-                        <a asp-page="/Atendimento/Index" class="grey btn waves-effect">Cancelar</a>
-                    }
-                </div>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td><i class="material-icons blue-text">domain</i></td>
+                                <td><input asp-for="Input!.Empresa!.Id" class="browser-default borderless" hidden />
+                                    <input asp-for="Input!.Empresa!.CNPJ" class="browser-default borderless" />
+                                </td>
+                                <td><input asp-for="Input!.Empresa!.Nome_Empresarial"
+                                        class="browser-default borderless" /></td>
+                                <td><input asp-for="Input!.Empresa!.Telefone" class="browser-default borderless" /></td>
+                                <td><input asp-for="Input!.Empresa!.Email" class="browser-default borderless" /></td>
+                                <td><button asp-page-handler="RemoverEmpresa" title="Remover"
+                                        class="waves-effect waves-light btn-floating red"><i
+                                            class="material-icons">remove</i></button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-action">
+                @if (Model.HasBind == true)
+                {
+                    <button asp-page-handler="Bindings" asp-route-pid="@Model.Input!.Pessoa!.Id"
+                        asp-route-eid="@Model.Input!.Empresa!.Id" type="submit"
+                        class="btn waves-effect waves-light blue" title="Víncular">Víncular Cliente | Empresa</button>
+                    <button asp-page-handler="Save" type="submit" class="btn waves-effect">Iniciar
+                        Atendimento</button>
+                    @* <a asp-page="/Atendimento/Index" class="grey btn waves-effect">Cancelar</a> *@
+                }
+                else
+                {
+                    <button asp-page-handler="Save" type="submit" class="btn waves-effect waves-light"
+                        title="Iniciar Atendimento">Iniciar Atendimento</button>
+                    @* <a asp-page="/Atendimento/Index" class="grey btn waves-effect">Cancelar</a> *@
+                }
             </div>
         </div>
+        
     </div>
 </form>
 

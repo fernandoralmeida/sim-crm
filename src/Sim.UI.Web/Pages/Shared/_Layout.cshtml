@@ -13,13 +13,17 @@
     @{
         var _theme = Context.Session.GetString("Theme") ?? "light";
     }
-    <link rel="stylesheet" href="~/css/@{@_theme;}.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/@{
+
+        @_theme
+;
+}.css" asp-append-version="true">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIM - @ViewData["Title"]</title>
 </head>
 
-<body class="has-fixed-sidenav">
+<body class="has-fixed-sidenav bg-color-withe">
     <header>
         <partial name="_LoginPartial" />
         <partial name="_SidebarNav" />
@@ -46,7 +50,7 @@
         <!-- 
         <div class="teal lighten-2 navbar-extended"></div>  
         -->
-        <div class="container-m20">
+        <div>
             @RenderBody()
         </div>
     </main>
@@ -118,7 +122,7 @@
                 $("#loader").show();
             }
         };
-        
+
         function voltar() {
             window.history.back();
         };

@@ -24,15 +24,17 @@
 
             <div class="input-field col s12 m12 l12">
                 <select id="Input_Servicos" asp-for="Input!.Servicos" multiple size="2">
-
-                    @foreach (var item in Model.ListaServicos!)
+                    @if (Model.ListaServicos != null)
                     {
-                        <optgroup label="@item.Key">
-                            @foreach (var subitem in item.Value)
-                            {
-                                <option value="@subitem">@subitem</option>
-                            }
-                        </optgroup>
+                        foreach (var item in Model.ListaServicos!)
+                        {
+                            <optgroup label="@item.Key">
+                                @foreach (var subitem in item.Value)
+                                {
+                                    <option value="@subitem">@subitem</option>
+                                }
+                            </optgroup>
+                        }
                     }
                 </select>
                 <label asp-for="Input!.Servicos!"></label>

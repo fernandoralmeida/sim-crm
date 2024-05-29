@@ -21,9 +21,13 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetAsync()
         {
+            // Invalidate the session
+            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync();
             await _signInManager.SignOutAsync();
-            //await HttpContext.SignOutAsync();
+            
             _logger.LogInformation("Usuário desconectado.");
+
             return RedirectToPage("/Index");
         }
 

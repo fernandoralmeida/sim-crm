@@ -8,20 +8,25 @@
 
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 
-<nav class="transparent">
-    <div class="nav-wrapper rounded-t-2">
-        <ul class="right">
-            <li><a asp-page="/Empresa/Novo/Index" title="Incluir Empresa!"><i class="material-icons blue-text">add</i></a></li>
-            <li class="active"><a asp-page="/Empresa/Consulta/Index" title="Consulta Avançada!"><i class="material-icons">manage_search</i></a></li>
-        </ul>
-    </div>
-</nav>
+@* <nav class="transparent">
+<div class="nav-wrapper rounded-t-2">
+<ul class="right">
+<li><a asp-page="/Empresa/Novo/Index" title="Incluir Empresa!"><i class="material-icons blue-text">add</i></a></li>
+<li class="active"><a asp-page="/Empresa/Consulta/Index" title="Consulta Avançada!"><i
+class="material-icons">manage_search</i></a></li>
+</ul>
+</div>
+</nav> *@
 <div class="card">
+    <div class="card-header">
+        <a asp-page="/Empresa/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i
+                class="material-icons">undo</i></a><span class="pdn-10">Consulta detalhada</span>
+    </div>
     <form method="post">
         <div class="row rounded-b-2">
             <div class="col s12">
                 <div class="input-field col s6 m3 xl3">
-                    <input asp-for="Input!.CNPJ!" id="inputCNPJ" autofocus/>
+                    <input asp-for="Input!.CNPJ!" id="inputCNPJ" autofocus />
                     <label asp-for="Input!.CNPJ"></label>
                 </div>
                 <div class="input-field col s6 m3 xl3">
@@ -36,10 +41,12 @@
                     <input asp-for="Input!.Bairro" />
                     <label asp-for="Input!.Bairro"></label>
                 </div>
-                <div class="input-field col s12 m12 x12 valign-wrapper">
+                <div class="input-field col s12 m12 l10">
                     <input asp-for="Input!.RazaoSocial" />
                     <label asp-for="Input!.RazaoSocial"></label>
-                    <button class="btn waves-effect waves-light submit">Pesquisar</button>
+                </div>
+                <div class="input-field col s12 m6 l2">
+                    <button class="waves-effect waves-light btn w-100p line-3r submit">Pesquisar</button>
                 </div>
             </div>
         </div>
@@ -52,7 +59,7 @@
             <tr>
                 <th>#</th>
                 <th>Ano</th>
-                <th>CNPJ</th>                
+                <th>CNPJ</th>
                 <th>Nome Empresarial</th>
                 <th>Tel</th>
                 <th>E-mail</th>
@@ -67,73 +74,88 @@
                 int cont = 1;
                 int t = (Model.PaginationEmpresas!.PageIndex - 1) * Model.PaginationEmpresas.ItemsViews;
             }
-            @if(Model.PaginationEmpresas != null)
+            @if (Model.PaginationEmpresas != null)
             {
 
                 @foreach (var item in Model.PaginationEmpresas)
-                {                            
+                {
                     <tr>
                         <td>@Functions.Extensions.Contador(cont++, t)
+                            <!---->
+                        <td>
+                                @{
+                                    var ano = item.Data_Abertura!.Value.Year;
+                                }
+                                @Html.DisplayFor(modelItem => ano)
+                        </td>
+                        <td>
+                                @{
+                                    var _cnpj = item.CNPJ?.MaskRemove();
+                                }
+                            <a class="blue-text" asp-page="/Empresa/Preview/Index" asp-route-id="@_cnpj"
+                                target="_blank">@Html.DisplayFor(modelItem => item.CNPJ)</a>
+                        </td>
+                        <td>
+                                @Html.DisplayFor(modelItem => item.Nome_Empresarial)
+                        </td>
+                        <td>
+                                @Html.DisplayFor(modelItem => item.Telefone)
+                        </td>
+                        <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                        </td>
                         <!---->
                         <td>
-                            @{ var ano = item.Data_Abertura!.Value.Year; }
-                            @Html.DisplayFor(modelItem => ano)
+                                @Html.DisplayFor(modelItem => item.Situacao_Cadastral)
                         </td>
                         <td>
-                            @{
-                                var _cnpj = item.CNPJ?.MaskRemove();
-                            }
-                            <a class="blue-text" asp-page="/Empresa/Preview/Index" asp-route-id="@_cnpj" target="_blank">@Html.DisplayFor(modelItem => item.CNPJ)</a>
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Nome_Empresarial)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Telefone)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <!---->
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Situacao_Cadastral)
-                        </td>
-                        <td>
-                            @{var end = string.Format("{0}, {1}",item.Logradouro, item.Numero);}
-                            @Html.DisplayFor(modelItem => end) 
+                                @{
+                                    var end = string.Format("{0}, {1}", item.Logradouro, item.Numero);
+                                }
+                                @Html.DisplayFor(modelItem => end)
                         </td>
                         <td>@Html.DisplayFor(modelItem => item.Municipio)</td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Atividade_Principal)
+                                @Html.DisplayFor(modelItem => item.Atividade_Principal)
                         </td>
                     </tr>
                 }
             }
-            
+
         </tbody>
     </table>
 
     @{
         var prevDisabled = !Model.PaginationEmpresas!.HasPreviusPage ? "disabled" : "";
         var nextDisabled = !Model.PaginationEmpresas!.HasNextPage ? "disabled" : "";
-        var _isdisabled = Model.PaginationEmpresas.Any()? null : "disabled";
+        var _isdisabled = Model.PaginationEmpresas.Any() ? null : "disabled";
     }
 
-    <div class="card-action center">   
-        
-        <span class="left">Página @Model.PaginationEmpresas.PageIndex de @Model.PaginationEmpresas.TotalPages - @Model.RegCount Reg.</span>
-        <a asp-page="/Empresa/Export/Index" asp-route-ss="-" asp-route-c="@Model.Input!.CNPJ" asp-route-e="@Model.Input.CNAE" asp-route-l="@Model.Input.Logradouro" asp-route-b="@Model.Input.Bairro" asp-route-r="@Model.Input.RazaoSocial" class="btn-small waves-effect waves-light green @_isdisabled right" title="Exportar"><i class="material-icons">description file_download</i></a>
-         
-        <a asp-page="./Index" asp-route-cnpj="@Model.Input.CNPJ" asp-route-rs="@Model.Input.RazaoSocial" asp-route-cnae="@Model.Input.CNAE" asp-route-lgd="@Model.Input.Logradouro" asp-route-bro="@Model.Input.Bairro" asp-route-pag="@(Model.PaginationEmpresas.PageIndex - 1)" class="btn-small waves-effect waves-light @prevDisabled">
+    <div class="card-action center">
+
+        <span class="left">Página @Model.PaginationEmpresas.PageIndex de @Model.PaginationEmpresas.TotalPages -
+            @Model.RegCount Reg.</span>
+        <a asp-page="/Empresa/Export/Index" asp-route-ss="-" asp-route-c="@Model.Input!.CNPJ"
+            asp-route-e="@Model.Input.CNAE" asp-route-l="@Model.Input.Logradouro" asp-route-b="@Model.Input.Bairro"
+            asp-route-r="@Model.Input.RazaoSocial" class="btn-small waves-effect waves-light green @_isdisabled right"
+            title="Exportar"><i class="material-icons">description file_download</i></a>
+
+        <a asp-page="./Index" asp-route-cnpj="@Model.Input.CNPJ" asp-route-rs="@Model.Input.RazaoSocial"
+            asp-route-cnae="@Model.Input.CNAE" asp-route-lgd="@Model.Input.Logradouro"
+            asp-route-bro="@Model.Input.Bairro" asp-route-pag="@(Model.PaginationEmpresas.PageIndex - 1)"
+            class="btn-small waves-effect waves-light @prevDisabled">
             <i class="material-icons">navigate_before</i>
         </a>
-        <a asp-page="./Index" asp-route-cnpj="@Model.Input.CNPJ" asp-route-rs="@Model.Input.RazaoSocial" asp-route-cnae="@Model.Input.CNAE" asp-route-lgd="@Model.Input.Logradouro" asp-route-bro="@Model.Input.Bairro" asp-route-pag="@(Model.PaginationEmpresas.PageIndex + 1)" class="btn-small waves-effect waves-light @nextDisabled">
-            <i class="material-icons">navigate_next</i> 
-        </a>        
+        <a asp-page="./Index" asp-route-cnpj="@Model.Input.CNPJ" asp-route-rs="@Model.Input.RazaoSocial"
+            asp-route-cnae="@Model.Input.CNAE" asp-route-lgd="@Model.Input.Logradouro"
+            asp-route-bro="@Model.Input.Bairro" asp-route-pag="@(Model.PaginationEmpresas.PageIndex + 1)"
+            class="btn-small waves-effect waves-light @nextDisabled">
+            <i class="material-icons">navigate_next</i>
+        </a>
     </div>
 </div>
 
-@section scripts{
+@section scripts {
     <script src="~/js/jquery.mask.min.js"></script>
     <script>
         $('#inputDataI').mask('00/00/0000', { placeholder: "data inicial" });

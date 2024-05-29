@@ -10,26 +10,26 @@ $(document).ready(function () {
 
     $('.dropdown-trigger').dropdown(
         {
-            hover:true,
-            constrainWidth:false,
-            coverTrigger:false,
-            closeOnClick:false
+            hover: true,
+            constrainWidth: false,
+            coverTrigger: false,
+            closeOnClick: false
         });
 
     $('select').formSelect();
 
-    $('.collapsible').collapsible({ accordion:true });
+    $('.collapsible').collapsible({ accordion: true });
 
     $('.sidenav').sidenav();
 
     $('.tabs').tabs();
 
-    $('.datepicker').datepicker();    
+    $('.datepicker').datepicker();
 
     $('.tooltipped').tooltip();
 
     $('.scrollspy').scrollSpy();
-       
+
     M.updateTextFields();
 
     var toggler = document.getElementsByClassName("caret");
@@ -46,9 +46,9 @@ $(document).ready(function () {
 function CloseDropdown() {
     $('.dropdown-trigger').dropdown(
         {
-            hover:false,
-            constrainWidth:false,
-            coverTrigger:false,
-            closeOnClick:true
+            hover: false,
+            constrainWidth: false,
+            coverTrigger: false,
+            closeOnClick: true
         });
 };

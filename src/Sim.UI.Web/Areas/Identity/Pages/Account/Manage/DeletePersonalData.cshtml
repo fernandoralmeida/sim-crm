@@ -8,13 +8,13 @@
 <form id="delete-user" method="post" class="col s12">
     <div class="card">    
         <div class="card-header grey-text">@ViewData["Title"]<i class="materia-icons"></i></div>
-        <div class="card-content">    
+        <div class="card-content no-padding">    
             <div class="card-panel z-depth-0 materialize-red lighten-5 materialize-red-text text-accent-4" role="alert">
                 <p>
                     <strong>A exclusão desses dados removerá permanentemente sua conta, e isso não pode ser recuperado.</strong>
                 </p>
             </div>
-            <div class="row">
+            <div class="row mgn-0">
                 @if (Model.RequirePassword)
                 {                
                     <div class="input-field col s6 m6 l6">
@@ -24,7 +24,7 @@
                 }
             </div>
         </div>   
-        <div class="card-action">
+        <div class="card-action pdn-10">
             <button class="btn materialize-red waves-effect waves-light" type="submit">Excluir dados e fechar minha conta</button>        
         </div>     
     </div>
