@@ -1,0 +1,96 @@
+@page "/sebrae/simples/{id?}"
+@model Sim.UI.Web.Areas.Sebrae.Pages.Simples.IndexModel
+
+@{
+    //Layout = "~/Areas/Sebrae/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Simples Nacional";
+    //ViewData["ActivePage"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.InicioSA;
+    ViewData["ActivePageLi"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.SASimples;
+    ViewData["ActivePageNSA"] = Sim.UI.Web.Areas.Sebrae.Pages.SebraeAquiNavPages.Simples;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<div class="row no-padding">
+    <div class="col s6 m6 l6 no-padding">
+        <nav class="transparent">
+            <form method="post">
+                <div class="nav-wrapper">
+                    <div class="input-field col s6 m6 l6 no-padding">
+                        <input id="search" placeholder="Digite CNPJ aqui para pesquisar!" onkeypress="handle(event)"
+                            asp-for="Search" type="search" autofocus required>
+                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                    </div>
+                    <ul class="right">
+                        <li><a asp-page="./Add"><i class="material-icons blue-text">add</i></a></li>
+                    </ul>
+                </div>
+            </form>
+        </nav>
+    </div>
+    <div class="col s6 m6 l6 no-padding">
+        <partial name="_SebraeAquiNav" model="@DateTime.Now.Year" />
+    </div>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Empresa</th>
+                <th>Documento</th>
+                <th>Exercicio</th>
+                <th>Chave</th>
+                <th>Manager</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Listar != null)
+            {
+                var _c = 0;
+                @foreach (var item in Model.Listar)
+                {
+                    _c++;
+                    <tr>
+                        <td>@_c</td>
+                        <td>@Html.DisplayFor(model => item.Empresa!.CNPJ)<br>@Html.DisplayFor(model =>
+                    item.Empresa!.Nome_Empresarial)
+                        </td>
+                        <td class="t-uppercase">@Html.DisplayFor(model => item.Documento)</td>
+                        <td>@Html.DisplayFor(model => item.Exercicio)</td>
+                        <td>@Html.DisplayFor(model => item.Chave)</td>
+                        <td>
+                            <a class="waves-effect waves-light orange btn-floating" asp-area="Sebrae" asp-page="./Edit" asp-route-id="@item.Id"><i
+                                    class="material-icons">edit</i></a>
+                            |
+                            <a href="#" class="waves-effect waves-light red btn-floating bindremove"
+                                data-id="@item.Id"><i class="material-icons">remove</i></a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/jquery.mask.min.js"></script>
+    <script>
+        $('#search').mask('00.000.000/0000-00');
+
+        $(function () {
+            $(".bindremove").click(function () {
+                var _id = $(this).data('id');
+                $(".loadingpage").append(`<div class="progress"><div class="indeterminate"></div></div>`);
+                $.getJSON(`/sebrae/simples/?id=${_id}&handler=Delete`, function (data) {
+                    $(".loadingpage").empty();
+                    $.each(data, function (i, item) {
+                        alert(`Simples ID:${_id} | ${item.chave} Removido!`);
+                        location.reload();
+                    });
+                });
+            });
+        });
+    </script>
+}

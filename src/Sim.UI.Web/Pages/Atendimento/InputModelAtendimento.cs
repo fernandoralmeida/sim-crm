@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using Sim.Domain.Entity;
 using Sim.Domain.Organizacao.Model;
+using Sim.Domain.Sebrae.Model;
 
 namespace Sim.UI.Web.Pages.Atendimento
 {
@@ -54,6 +55,9 @@ namespace Sim.UI.Web.Pages.Atendimento
 
         [DisplayName("Dominio")]
         public virtual EOrganizacao? Dominio { get; set; }
+        
+        [DisplayName("Rae Sebrea")]
+        public virtual RaeSebrae? Sebrae { get; set; }
 
     }
 }

@@ -9,7 +9,7 @@
     @foreach (var item in Model)
     {
         <div class="row mgn-b-0 border-b font-size-12 mgn-h-2">
-            <strong>@item.Mes @item.Qtde eventos</strong>
+            <strong class="mgn-l-10">@item.Mes @item.Qtde eventos</strong>
         </div>
 
         <div class="row">
@@ -44,26 +44,26 @@
                 <!---->
                 <div class="col s12 m6 l4">
                     @{
-                        var disabledbutton = l.Data!.Value.AddDays(1) < DateTime.Now ? "disabled" : "";
+                        var disabledbutton = l.Situacao > EEvento.ESituacao.Ativo ? "disabled" : "";
                     }
 
                     <div class="card hoverable">
                         <div class="card-image @cor lighten-3 waves">
                             <div class="card-title-panel @cor-text text-darken-4 truncate t-uppercase pdn-h-10 pdn-v-30">
                                 <a class="btn-floating btn-small halfway-fab waves-effect waves-light @cor lighten-2 left"
-                                    asp-page="/Agenda/Eventos/Edit/Index"                       asp-route-id="@l.Id" title="Editar"><i class="material-icons white-text">edit</i></a>
+                                    asp-page="/Agenda/Eventos/Edit/Index" asp-route-id="@l.Id" title="Editar"><i class="material-icons white-text">edit</i></a>
                                 <span class="mgn-l-4">@l.Nome</span> 
                             </div>
                         </div>
                         <div class="card-content truncate border-l border-r pdn-b-0">
                             @l.Tipo [<span class="@cor-text">@l.Situacao.ToString()</span>], @l.Owner
-                            <br />@l.Data.Value
+                            <br />@l.Data!.Value
                             <br />@l.Formato, @l.Vagas() vagas.
                         </div>
                         <div class="card-action border-l border-r border-b">
                             <a class="btn-floating waves-effect waves-light blue @disabledbutton right mgn-n-t-10"
                                 asp-page="/Agenda/Inscricoes/Novo/Index" asp-route-id="@l.Codigo" title="Inscrever"><i
-                                    class="material-icons">add</i></a>
+                                    class="material-icons">person_add</i></a>
 
                             <a class="@cor-text mgn-t-0 pdn-t-10" asp-page="/Agenda/Inscricoes/Index"
                                 asp-route-id="@l.Codigo"><i>Inscritos

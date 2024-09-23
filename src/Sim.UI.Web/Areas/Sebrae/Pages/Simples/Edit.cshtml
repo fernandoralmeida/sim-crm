@@ -1,0 +1,124 @@
+@page "/sebrae/simples/edit/{id}"
+@model Sim.UI.Web.Areas.Sebrae.Pages.Simples.EditModel
+
+@{
+    //Layout = "~/Areas/Sebrae/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Alterar Simples Nacional";
+    ViewData["ActivePage"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.InicioSA;
+    ViewData["ActivePageLi"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.SASimples;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+@if (Model._result == false)
+{
+    <form method="post">
+        <section>
+            <div class="card mgn-t-0">
+                @* <div class="card-header grey-text">Alterar Chave | Simples Nacional</div> *@
+                <div class="card-header">
+                    <a asp-area="Sebrae" asp-page="/Simples/Index" class="waves-effect waves-light btn-small blue-grey"
+                        title="Voltar"><i class="material-icons">undo</i>
+                    </a>
+                    <span class="pdn-10">Adicionar Chave | Simples Nacional</span>
+                </div>
+                <div class="row no-padding mgn-b-0">
+                    <input asp-for="Id" id="inputId" hidden />
+                    <div class="col s12 m6 l4 input-field valign-wrapper">
+                        <input asp-for="InputEmpresa!.CNPJ" id="inputCNPJ" />
+                        <label>CNPJ</label>
+                    </div>
+                    <div class="col s12 m6 l8 input-field">
+                        <input asp-for="InputEmpresa!.Nome_Empresarial" id="inputNE" />
+                    </div>
+                    <div class="col s12 m4 l4 input-field">
+                        <input asp-for="InputDocumento" placeholder="Nº IRPF e/ou Título de Eleitor" />
+                        <label>Documento</label>
+                    </div>
+                    <div class="col s12 m4 l4 input-field">
+                        <input asp-for="InputExercicio" />
+                        <label>Exercicio</label>
+                    </div>
+                    <div class="col s12 m4 l4 input-field">
+                        <input asp-for="InputChave" />
+                        <label>Chave</label>
+                    </div>
+                </div>
+                <div class="card-action">
+                    @* <a asp-page="/SebraeAqui/SimplesNacional/Index" class="waves-effect waves-light btn blue-grey"><i
+                            class="material-icons">arrow_back</i></a> *@
+                    <button class="waves-effect waves-light btn">
+                        <i class="material-icons left">save</i>Gravar</button>
+                </div>
+            </div>
+        </section>
+    </form>
+}
+else
+{
+    <div class="row mgn-0 pdn-10">
+        <a class="waves-effect waves-light btn blue-grey" asp-area="Sebrae" asp-page="./Index"><i class="material-icons">arrow_back</i></a>
+    </div>
+
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Empresa</th>
+                    <th>Documento</th>
+                    <th>Exercicio</th>
+                    <th>Chave</th>
+                    <th>Manager</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Listar != null)
+                {
+                    var _c = 0;
+                    @foreach (var item in Model.Listar)
+                    {
+                        _c++;
+                        <tr>
+                            <td>@_c</td>
+                            <td>@Html.DisplayFor(model => item.Empresa!.CNPJ)<br>@Html.DisplayFor(model =>
+                    item.Empresa!.Nome_Empresarial)
+                            </td>
+                            <td class="t-uppercase">@Html.DisplayFor(model => item.Documento)</td>
+                            <td>@Html.DisplayFor(model => item.Exercicio)</td>
+                            <td>@Html.DisplayFor(model => item.Chave)</td>
+                            <td>
+                                <a class="waves-effect waves-light orange btn-floating" asp-page="./Edit"
+                                    asp-route-id="@item.Id"><i class="material-icons">edit</i></a>
+                                |
+                                <a href="#" class="waves-effect waves-light red btn-floating bindremove"
+                                    data-id="@item.Id"><i class="material-icons">remove</i></a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@section Scripts {
+    <script src="~/js/jquery.mask.min.js"></script>
+    <script>
+        $('#inputCNPJ').mask('00.000.000/0000-00');
+        $('#inputCPF').mask('000.000.000-00');
+
+        $(function () {
+            $(".bindremove").click(function () {
+                var _id = $(this).data('id');
+                $(".loadingpage").append(`<div class="progress"><div class="indeterminate"></div></div>`);
+                $.getJSON(`/sebrae/simples/?id=${_id}&handler=Delete`, function (data) {
+                    $(".loadingpage").empty();
+                    $.each(data, function (i, item) {
+                        alert(`Simples ID:${_id} | ${item.chave} Removido!`);
+                        window.location.href = "/sebrae/simples/";
+                    });
+                });
+            });
+        });
+    </script>
+}

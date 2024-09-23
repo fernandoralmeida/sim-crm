@@ -23,7 +23,7 @@
             <div class="input-field col s12 m6 l6 valign-wrapper">
                 <input asp-for="Input!.Nome" />
                 <label asp-for="Input!.Nome"></label>
-                <button type="submit" asp-route-id="@Model.Unidade!.Id" asp-page-handler="Add" class="btn waves-effect waves-light"><i class="material-icons">add</i></button>
+                <button type="submit" asp-route-id="@Model.Unidade!.Id" asp-page-handler="Add" class="btn-small waves-effect waves-light"><i class="material-icons">add</i></button>
             </div>
         </div>
         <div class="card">
@@ -54,7 +54,7 @@
                                 </td>
 
                                 <td>
-                                    <button asp-page-handler="Remove" asp-route-id="@item.Id" asp-route-domain="@Model.Unidade.Id" class="btn-small waves-effect materialize-red"><i class="material-icons">remove</i></button>
+                                    <button asp-page-handler="Remove" asp-route-id="@item.Id" asp-route-domain="@Model.Unidade.Id" class="btn-floating waves-effect materialize-red"><i class="material-icons">remove</i></button>
                                 </td>
                             </tr>
                         }

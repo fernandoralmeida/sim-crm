@@ -7,19 +7,19 @@
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 
 <form method="post">
-    <div class="card">
+    <div class="card mgn-0">
         <div class="card-header alpha-text-5">
             <a asp-page="/Agenda/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i
                     class="material-icons">undo</i></a><span class="pdn-10">Inscrição</span>
         </div>
          <div class="card-content no-padding">
-             <div class="row">
+             <div class="row mgn-0">
              @if (Model.Input!.Evento == null)
              {            
                 <div class="input-field col valign-wrapper">
                     <input asp-for="GetNumeroEvento">
                     <label asp-for="GetNumeroEvento"></label>
-                    <button asp-page-handler="IncluirEvento" class="btn btn-primary" type="submit"><i class="material-icons">person add</i></button>
+                    <button asp-page-handler="IncluirEvento" class="btn-small" type="submit"><i class="material-icons">add</i></button>
                 </div>
              }
              else
@@ -53,16 +53,16 @@
          </div>
     </div>
    
-    <div class="card">
+    <div class="card mgn-0">
         <div class="card-header grey-text">Cliente<i class="left material-icons">person</i></div>
         <div class="card-content no-padding">
-            <div class="row">
+            <div class="row mgn-0">
                 @if (Model.Input!.Participante == null)
                 {
-                    <div class="input-field col s12 m6 l6 valign-wrapper">
+                    <div class="input-field col s12 m8 l4 valign-wrapper">
                         <input asp-for="GetCPF" id="inputCPF" autofocus>
-                        <label asp-for="GetCPF"></label>
-                        <button asp-page-handler="IncluirPessoa" class="btn waves-effect waves-light" type="submit"><i class="material-icons">person add</i></button>
+                        <label asp-for="GetCPF"></label>                        
+                        <button asp-page-handler="IncluirPessoa" class="btn-small waves-effect waves-light blue" type="submit"><i class="material-icons">person_add</i></button>
                     </div>
                 }
                 else
@@ -83,27 +83,29 @@
                         <input asp-for="Input!.Participante!.Email" />
                         <label asp-for="Input!.Participante!.Email"></label>
                     </div>
-                    <div class="input-field col s12 m6 l3 valign-wrapper">                    
+                    <div class="input-field col s10 m5 l2">                    
                         <input asp-for="Input!.Participante!.Tel_Movel" id="txtmobile" />
-                        <label>Telefone</label>
-                        <button class="btn red lighten-1 waves-effect waves-light" type="submit" asp-page-handler="RemoverPessoa"><i class="material-icons">person remove</i></button>
+                        <label>Telefone</label>                        
+                    </div>
+                    <div class="input-field col s1 m1 l1">
+<button class="btn-floating red lighten-1 waves-effect waves-light" type="submit" asp-page-handler="RemoverPessoa"><i class="material-icons">remove</i></button>
                     </div>
                 }
             </div>
         </div>
     </div>
 
-    <div class="card">
+    <div class="card mgn-0">
         <div class="card-header grey-text">Empresa<i class="left material-icons">domain</i></div>
         <div class="card-content no-padding">
-            <div class="row">
+            <div class="row mgn-0">
                 @if (Model.Input!.Empresa == null)
                 {           
-                        <div class="input-field col s12 m6 l6 valign-wrapper">
+                        <div class="input-field col s12 m8 l4 valign-wrapper">
                             <input asp-for="GetCNPJ" id="inputCNPJ">
-                            <label asp-for="GetCNPJ" ></label>
-                            <button asp-page-handler="IncluirEmpresa" class="btn waves-effect waves-light" type="submit"><i class="material-icons">domain add</i></button>
-                        </div>            
+                            <label asp-for="GetCNPJ" ></label>                            
+                            <button asp-page-handler="IncluirEmpresa" class="btn-small waves-effect waves-light blue" type="submit"><i class="material-icons">add</i></button>
+                        </div>             
                 }
                 else
                 {
@@ -123,10 +125,12 @@
                         <input asp-for="Input!.Empresa!.Email" />
                         <label asp-for="Input!.Empresa!.Email"></label>                    
                     </div>
-                    <div class="input-field col s12 m6 l3 valign-wrapper">
+                    <div class="input-field col s10 m5 l2">
                         <input asp-for="Input!.Empresa!.Telefone" id="txtphone"/>
-                        <label asp-for="Input!.Empresa!.Telefone"></label>                    
-                        <button class="btn red lighten-1 waves-effect waves-light" type="submit" asp-page-handler="RemoverEmpresa"><i class="material-icons">domain remove</i></button>
+                        <label asp-for="Input!.Empresa!.Telefone"></label>
+                    </div>
+                    <div class="input-field col s1 m1 l1">
+<button class="btn-floating red lighten-1 waves-effect waves-light" type="submit" asp-page-handler="RemoverEmpresa"><i class="material-icons">remove</i></button>
                     </div>
                 }
             </div>
@@ -144,7 +148,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mgn-0 pdn-10">
         <button type="submit" asp-page-handler="Save" class="btn waves-effect waves-light">Realizar Inscrição</button> 
         @* <a asp-page="/Agenda/Index" class="btn grey waves-effect waves-light">Voltar</a> *@
     </div>

@@ -1,0 +1,112 @@
+﻿@page "/sebrae/rae/lancar/{y?}/{id?}/{edit?}"
+@model Sim.UI.Web.Areas.Sebrae.Pages.RAE.LancarModel
+@{
+    //Layout = "/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Lançar RAE";
+    ViewData["ActivePageLi"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.SA;
+}
+
+<!--<partial name="_StatusMessage" model="Model.StatusMessage" />-->
+
+<form class="card mgn-t-0" method="post">
+    <div class="card-header">
+        <a asp-area="Sebrae" asp-page="/Index" class="waves-effect waves-light btn-small blue-grey" title="Voltar"><i
+                class="material-icons">undo</i>
+        </a>
+        <span class="pdn-10">Vincluar SIM | Sebrae RAE</span>
+    </div>
+
+    <div class="row col s12" hidden>
+        <div class="input-field col s4 m6 l3">
+            <input type="text" asp-for="Input!.Protocolo" readonly>
+        </div>
+        <div class="input-field col s4 m6 l3">
+            <input type="text" asp-for="Input!.Data" readonly>
+        </div>
+        <div class="input-field col s4 m6 l3">
+            <input type="text" asp-for="Input!.Status" readonly>
+        </div>
+        <div class="input-field col s4 m6 l3">
+            <input type="text" asp-for="Input!.Id" readonly>
+        </div>
+    </div>
+
+    <table class="responsive-table">
+        <thead>
+            <tr>
+                <th>
+                    CPF/CNPJ
+                </th>
+                <th>
+                    Pessoa/Empresa
+                </th>
+                <th>
+                    Contato
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model!.Input!.Pessoa != null)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.Input.Pessoa.CPF)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.Input.Pessoa.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.Input.Pessoa.Email)
+
+                        @Html.DisplayFor(modelItem => Model.Input.Pessoa.Tel_Movel)
+                    </td>
+                </tr>
+            }
+            @if (Model.Input.Empresa != null)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.Input.Empresa.CNPJ)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.Input.Empresa.Nome_Empresarial)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.Input.Empresa.Email)
+
+                        @Html.DisplayFor(modelItem => Model.Input.Empresa.Telefone)
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+
+    <div class="row">
+        <div class="input-field col s12 l6">
+            <input asp-for="Input!.Setor" readonly />
+            <label asp-for="Input!.Setor" for="floatingsetor"></label>
+        </div>
+        <div class="input-field col s12 l6">
+            <input asp-for="Input!.Canal" readonly />
+            <label asp-for="Input!.Canal"></label>
+        </div>
+        <div class="input-field col s12 l6">
+            <input asp-for="Input!.Servicos" readonly />
+            <label asp-for="Input!.Servicos"></label>
+        </div>
+        <div class="input-field col s12 l6">
+            <input asp-for="Input!.Descricao" readonly />
+            <label asp-for="Input!.Descricao"></label>
+        </div>
+    </div>
+
+    <div class="card-action">
+        <input asp-for="Input!.Sebrae!.Id" hidden>
+        <input asp-for="Input!.Sebrae!.RAE" placeholder="Numero lançado no RAE" id="input_rae" autofocus required>
+        <button type="submit" role="button" class="btn waves-effect">Lançar Atendimento do RAE</button>
+        @* <a asp-area="Sebrae" asp-page="/Index" asp-route-Src="@Model.Ano" class="btn waves-effect grey
+        right">Voltar</a> *@
+    </div>
+</form>

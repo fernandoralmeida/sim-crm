@@ -61,7 +61,7 @@
                 {
                     <tr>
                         <td>
-                            <a asp-area="" asp-page="/Atendimento/Iniciar" asp-route-id="@item.Id" class="btn-floating btn-small waves-effect waves-light" title="Iniciar atendimento"><i class="material-icons">access_time</i></a>
+                            <a asp-area="" asp-page="/Atendimento/Iniciar" asp-route-id="@item.Id" class="btn-floating waves-effect waves-light" title="Iniciar atendimento"><i class="material-icons">play_arrow</i></a>
 
                         </td>
                         <td>
@@ -84,7 +84,7 @@
                             @Html.DisplayFor(modelItem => email)
                         </td>
                         <td>
-                            <a asp-page="/Cliente/Manager/Index" asp-route-id="@item.Id" class="btn-small btn-floating orange lighten-1 waves-effect waves-light" title="Modificar"><i class="material-icons">edit</i></a>
+                            <a asp-page="/Cliente/Manager/Index" asp-route-id="@item.Id" class="btn-floating orange lighten-1 waves-effect waves-light" title="Modificar"><i class="material-icons">edit</i></a>
                         </td>
                     </tr>
                 }

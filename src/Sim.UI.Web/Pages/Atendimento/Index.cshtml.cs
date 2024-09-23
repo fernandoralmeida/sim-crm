@@ -50,8 +50,8 @@ namespace Sim.UI.Web.Pages.Atendimento
                                                     a.Owner_AppUser_Id == User.Identity!.Name
                                                     && a.Data!.Value.Date == date!.Value.Date
                                                     && a.Status == "Finalizado"
-                                                    && a.Ativo == true
-                                                    && a.Dominio == _dominioativo.FirstOrDefault());
+                                                    && a.Ativo == true);
+            //&& a.Dominio == _dominioativo.FirstOrDefault());
         }
 
         public async Task<IActionResult> OnGetAsync()

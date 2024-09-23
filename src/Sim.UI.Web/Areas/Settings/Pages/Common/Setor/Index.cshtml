@@ -45,9 +45,9 @@
                 <tr>
                     <th>Unidade</th>
                     <th>Servicos</th>
-                    <th>Situação</th>
-                    <th>Ações</th>
+                    <th>Situação</th>                    
                     <th>Gerênciar</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -73,21 +73,22 @@
                                 </div>
                             </td>
                             <td>
-                                <a asp-area="Settings" asp-page="Manage/Index" asp-route-id="@item.Id"
-                                    asp-route-dm="@Model.Unidade!.Id" class="btn-small waves-effect waves-light orange"><i
-                                        class="material-icons">edit</i></a>
-                                @if (User.IsInRole(Sim.Identity.Config.AccountType.Adm_Global))
-                                {
-                                    <a asp-area="Settings" asp-page-handler="Remove" asp-route-id="@item.Id"
-                                        asp-route-dm="@Model.Unidade!.Id" class="btn-small waves-effect waves-light red"><i
-                                            class="material-icons">remove</i></a>
-
-                                }
-                            </td>
-                            <td>
                                 <a asp-area="Settings" asp-page="/Common/Servicos/Index" asp-route-id="@item.Id"
                                     asp-route-dm="@Model.Unidade!.Id" class="btn-small waves-effect waves-light blue"
                                     title="Gerênciar Serviços"><i class="material-icons right">navigate_next</i>Serviços</a>
+                            </td>
+                            <td>
+                                <a asp-area="Settings" asp-page="Manage/Index" asp-route-id="@item.Id"
+                                    asp-route-dm="@Model.Unidade!.Id" class="btn-floating waves-effect waves-light orange"><i
+                                        class="material-icons">edit</i></a>
+                                |
+                                @if (User.IsInRole(Sim.Identity.Config.AccountType.Adm_Global))
+                                {
+                                    <a asp-area="Settings" asp-page-handler="Remove" asp-route-id="@item.Id"
+                                        asp-route-dm="@Model.Unidade!.Id" class="btn-floating waves-effect waves-light red"><i
+                                            class="material-icons">remove</i></a>
+
+                                }
                             </td>
                         </tr>
                     }

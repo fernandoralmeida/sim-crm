@@ -1,13 +1,22 @@
-﻿@page "/agenda/eventos/inscricoes/"
+﻿@page "/agenda/eventos/inscricoes/{id?}"
+@using Sim.Domain.Evento.Model
 @model Sim.UI.Web.Pages.Agenda.Inscricoes.IndexModel
 @{
     ViewData["Title"] = "Lista de Participantes";
 }
 
-<div class="row card">
+@{
+    var disabledbutton = Model.Input!.Situacao > EEvento.ESituacao.Ativo ? "disabled" : "";
+}
+
+<div class="row card mgn-0">
+    <div class="card-header alpha-text-5">
+        <a asp-page="/Agenda/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i
+                class="material-icons">undo</i></a><span class="pdn-10">@ViewData["Title"]</span>
+    </div>
     <div class="col s12">
         Código: @Model.Input!.Codigo
-        <br /><span>@Model.Input.Tipo @Model.Input.Nome - @Model.Input.Formato</span>
+        <br /><span>@Model.Input.Tipo @Model.Input.Nome - @Model.Input.Formato [@Model.Input.Situacao.ToString()]</span>
         <br />Data: @Model.Input.Data
         <br />@Model.Input.Descricao
     </div>
@@ -15,8 +24,17 @@
 
 <div class="card">
     <form method="post">
-        <a class="btn waves-effect waves-light blue mgn-8" asp-page="/Agenda/Inscricoes/Novo/Index" asp-route-id="@Model.Input.Codigo" title="Inscrever"><i class="material-icons">person add</i></a>
-        <button class="btn waves-effect waves-light blue mgn-8 right" asp-page-handler="Reorder" asp-route-id="@Model.Input.Codigo" title="Ordenar por data de inscrição"><i class="material-icons">reorder arrow_drop_down</i></button>
+        <div class="right">
+            <div class="valign-wrapper">
+                <a class="btn-floating waves-effect waves-light blue mgn-8 right @disabledbutton"
+                    asp-page="/Agenda/Inscricoes/Novo/Index" asp-route-id="@Model.Input.Codigo" title="Inscrever"><i
+                        class="material-icons">person_add</i></a>
+                <button class="btn-small waves-effect waves-light orange mgn-8 right" asp-page-handler="Reorder"
+                    asp-route-id="@Model.Input.Codigo" title="Ordenar por data de inscrição"><i
+                        class="material-icons">reorder
+                        arrow_drop_down</i></button>
+            </div>
+        </div>
         <table class="responsive-table">
             <thead>
                 <tr>
@@ -50,40 +68,48 @@
                 }
                 @foreach (var item in Model.Input!.Inscritos!)
                 {
-                <tr>
-                    <td>
-                        @{cont++;}
-                        @cont.ToString()
-                    </td>
-                    <td>
-                        <div class="switch">
-                            <label><input class="icheckbox" data-id="@item.Id" data-cd="@Model.Input.Codigo" checked="@item.Presente" type="checkbox" /><span class="lever"></span></label>
-                        </div>                        
-                    </td>
-                    <td>
-                        <a class="modal-trigger" href="#viewmodal" data-id="@item.Id">@Html.DisplayFor(modelItem => item.Participante!.CPF)</a>
-                    </td>
-                    <td class="t-uppercase">
-                        @Html.DisplayFor(modelItem => item.Participante!.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Empresa!.Nome_Empresarial)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Participante!.Tel_Movel)
-                    </td>
+                    <tr>
+                        <td>
+                            @{
+                                cont++;
+                            }
+                            @cont.ToString()
+                        </td>
+                        <td>
+                            <div class="switch">
+                                <label><input class="icheckbox" data-id="@item.Id" data-cd="@Model.Input.Codigo"
+                                        checked="@item.Presente" type="checkbox" @disabledbutton /><span
+                                        class="lever"></span></label>
+                            </div>
+                        </td>
+                        <td>
+                            <a class="modal-trigger" href="#viewmodal" data-id="@item.Id">@Html.DisplayFor(modelItem =>
+                            item.Participante!.CPF)</a>
+                        </td>
+                        <td class="t-uppercase">
+                            @Html.DisplayFor(modelItem => item.Participante!.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empresa!.Nome_Empresarial)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Participante!.Tel_Movel)
+                        </td>
 
-                    <td>
-                        <button asp-page-handler="Remove" asp-route-id="@item.Id" asp-route-ide="@Model.Input.Codigo" type="submit" class="btn-floating materialize-red waves-effect waves-light btn-small"><i class="material-icons">remove</i></button>
-                    </td>
-                </tr>
+                        <td>
+                            <button asp-page-handler="Remove" asp-route-id="@item.Id" asp-route-ide="@Model.Input.Codigo"
+                                type="submit"
+                                class="btn-floating materialize-red waves-effect waves-light @disabledbutton"><i
+                                    class="material-icons">remove</i></button>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
     </form>
-    <div class="card-action">
-        <a asp-page="/Agenda/Index" asp-route-m="ativos" class="btn grey waves-effect waves-light">Voltar</a>
-        <a asp-page="/Agenda/Inscricoes/Lista/Index" asp-route-id="@Model.Input.Codigo" class="btn waves-effect waves-light right" target="_blank">Visualizar Lista</a>
+    <div class="card-action pdn-10">
+        <a asp-page="/Agenda/Inscricoes/Lista/Index" asp-route-id="@Model.Input.Codigo"
+            class="btn waves-effect waves-light" target="_blank">Visualizar Lista</a>
     </div>
 </div>
 
@@ -95,18 +121,18 @@
     </div>
 </div>
 
-@section scripts{
+@section scripts {
     <script>
         $(function () {
-            $(".icheckbox").click(function(){
+            $(".icheckbox").click(function () {
                 var g_id = $(this).data('id');
                 var e_id = $(this).data('cd');
-                var chk = $(this).prop("checked");                
-                $.get(`/agenda/eventos/inscricoes/status/?id=${g_id}&ide=${e_id}&st=${chk}`, 
-                    function(returnedData){                        
-                }).fail(function(erroData){
-                    alert("Erro");
-                });
+                var chk = $(this).prop("checked");
+                $.get(`/agenda/eventos/inscricoes/status/?id=${g_id}&ide=${e_id}&st=${chk}`,
+                    function (returnedData) {
+                    }).fail(function (erroData) {
+                        alert("Erro");
+                    });
             });
             $(".modal-trigger").click(function () {
                 var customerId = $(this).data('id');

@@ -28,7 +28,12 @@ public class SessionModel : PageModel
             var _unidade = await _appSecretaria.GetAsync(Guid.Parse(id));
             HttpContext.Session.SetString("SetorAtivo", _unidade.Acronimo!);
             StatusMessage = $"Setor {_unidade.Acronimo} selecionado com sucesso!";
-            Response.Redirect($"/{returnURL}");
+            if (_unidade.Acronimo!.Contains("Sebrae"))
+                Response.Redirect($"/sebrae");
+            else if (_unidade.Acronimo!.Contains("Banco"))
+                Response.Redirect($"/bpp");
+            else
+                Response.Redirect($"/{returnURL}");
         }
         catch (Exception ex)
         {

@@ -21,8 +21,11 @@
             <input asp-for="Input!.Owner_AppUser_Id" readonly>
         </div>
     </div>
-    <div class="card">
-        <div class="card-header grey-text">Cliente</div>
+    <div class="card mgn-0">
+        <div class="card-header alpha-text-5">
+            <a asp-page="/Atendimento/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i
+                    class="material-icons">undo</i></a><span class="pdn-10">Cliente</span>
+        </div>
         <table class="responsive-table">
             <!--<caption>Informações do Cliente</caption>-->
             <thead>
@@ -51,8 +54,8 @@
                     <tr>
                         <td>
                             <!--
-                                <a href="#" id="clickbutton" class="btn" data-secao="Pessoa" data-acao="Details" data-id="@Model.Input.Pessoa.Id" data-bs-toggle="modal" data-bs-target="#viewmodal"><i class="fas fa-eye"></i></a>-->
-                            <a class="btn-floating btn-small waves-effect" asp-page="/Cliente/Manager/Index"
+                                    <a href="#" id="clickbutton" class="btn" data-secao="Pessoa" data-acao="Details" data-id="@Model.Input.Pessoa.Id" data-bs-toggle="modal" data-bs-target="#viewmodal"><i class="fas fa-eye"></i></a>-->
+                            <a class="btn-floating waves-effect orange" asp-page="/Cliente/Manager/Index"
                                 asp-route-id="@Model.Input.Pessoa.Id"><i class="material-icons">edit</i></a>
                         </td>
                         <td>
@@ -75,7 +78,7 @@
                     <tr>
                         <td>
                             <!--<a href="#" class="btn viewbutton" data-secao="Empresa" data-acao="Perfil" data-id="@Model.Input.Empresa.Id" data-bs-toggle="modal" data-bs-target="#viewmodal"><i class="fas fa-eye"></i></a>-->
-                            <a class="btn-floating btn-small waves-effect" asp-page="/Empresa/Update"
+                            <a class="btn-floating waves-effect orange" asp-page="/Empresa/Update"
                                 asp-route-id="@Model.Input.Empresa.Id"><i class="material-icons">edit</i></a>
                         </td>
                         <td>
@@ -161,42 +164,42 @@
     </div>
 </div>
 
-@section scripts{
+@section scripts {
     <script>
         $(function () {
-            @* document.querySelector('#Input_Setor').addEventListener("change", function () {
-                var getSetor = $("#Input_Setor").val();
+        @* document.querySelector('#Input_Setor').addEventListener("change", function () {
+            var getSetor = $("#Input_Setor").val();
 
-                $("#Input_Servicos").empty();
-                $.getJSON(`/api/v1/servicos/${getSetor}`, (data) => {
-                    data.forEach(function (item) {
-                        $("#Input_Servicos").append(`<option>${item.item1}</option>`);
-                    });
-                    $("#Input_Servicos").trigger('contentChanged');
-                });
+            $("#Input_Servicos").empty();
+            $.getJSON(`/api/v1/servicos/${getSetor}`, (data) => {
+            data.forEach(function (item) {
+            $("#Input_Servicos").append(`<option>${item.item1}</option>`);
+            });
+            $("#Input_Servicos").trigger('contentChanged');
+            });
             });
 
             $('#Input_Servicos').on('contentChanged', function () {
-                $(this).formSelect();
+            $(this).formSelect();
             }); *@
 
-            $("#onbtn").click(function () {
-                var selectedValues = [];
-                $("#Input_Servicos :selected").each(function () {
-                    selectedValues.push($(this).val());
+                $("#onbtn").click(function () {
+                    var selectedValues = [];
+                    $("#Input_Servicos :selected").each(function () {
+                        selectedValues.push($(this).val());
+                    });
+
+                    if (selectedValues.length > 0) {
+                        document.getElementById("ServicosSelecionados").value = selectedValues;
+                    }
+
+                    return true;
                 });
-
-                if (selectedValues.length > 0) {
-                    document.getElementById("ServicosSelecionados").value = selectedValues;
-                }
-
-                return true;
-            });
         });
     </script>
 
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <script src="~/js/jquery.validation.js"></script>
+<script src="~/js/jquery.validation.js"></script>
 }

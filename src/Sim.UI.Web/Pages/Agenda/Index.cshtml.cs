@@ -32,36 +32,24 @@ namespace Sim.UI.Web.Pages.Agenda
             _appSecretaria = appSecretaria;
         }
 
-        public async Task Load(EEvento.ESituacao situacao, string m)
+        public async Task Load(EEvento.ESituacao? m)
         {
             var _eventos_vencidos = false;
-            EEvento.ESituacao sto = EEvento.ESituacao.Ativo;
-            switch (m)
+            ViewData["ActivePageEvento"] = m switch
             {
-                case "ativos":
-                    ViewData["ActivePageEvento"] = AgendaNavPages.EventoAtivo;
-                    sto = EEvento.ESituacao.Ativo;
-                    break;
-                case "finalizados":
-                    ViewData["ActivePageEvento"] = AgendaNavPages.EventoFinalizado;
-                    sto = EEvento.ESituacao.Finalizado;
-                    break;
-                case "cancelados":
-                    ViewData["ActivePageEvento"] = AgendaNavPages.EventoCancelado;
-                    sto = EEvento.ESituacao.Cancelado;
-                    break;
-                default:
-                    ViewData["ActivePageEvento"] = AgendaNavPages.EventoAtivo;
-                    break;
-            }
+                EEvento.ESituacao.Ativo => AgendaNavPages.EventoAtivo,
+                EEvento.ESituacao.Finalizado => AgendaNavPages.EventoFinalizado,
+                EEvento.ESituacao.Cancelado => AgendaNavPages.EventoCancelado,
+                _ => AgendaNavPages.EventoAtivo,
+            };
 
             var _dominioativo = await _appSecretaria.DoListAsync(s => s.Acronimo == HttpContext.Session.GetString("Dominio"));
 
             Input!.ListaEventosMes = await _appServiceEvento
                                                     .ListEventosPorMesAsync(await
                                                                         _appServiceEvento.DoListAsync(
-                                                                                s => s.Situacao == sto
-                                                                                && s.Dominio == _dominioativo.FirstOrDefault()));
+                                                                                s => s.Situacao == m));
+            //&& s.Dominio == _dominioativo.FirstOrDefault()));
 
             foreach (var item in Input.ListaEventosMes)
             {
@@ -76,11 +64,11 @@ namespace Sim.UI.Web.Pages.Agenda
                 StatusMessage = "Alerta: Há eventos vencidos não finalizados!";
         }
 
-        public async Task OnGetAsync(string m)
+        public async Task OnGetAsync(EEvento.ESituacao? m)
         {
-            var _p = m! == null ? "ativos" : m;
+            var _p = m == null ? EEvento.ESituacao.Ativo : m;
 
-            await Load(EEvento.ESituacao.Ativo, _p);
+            await Load(_p);
         }
 
         public async Task OnPostAsync()
@@ -93,8 +81,8 @@ namespace Sim.UI.Web.Pages.Agenda
                                 || s.Parceiro!.Contains(Input.Search!)
                                 || s.Descricao!.Contains(Input.Search!)
                                 || s.Inscritos!.FirstOrDefault()!.Participante!.Nome!.Contains(Input.Search!)
-                                || s.Inscritos!.FirstOrDefault()!.Participante!.CPF == Input.Search!
-                                && s.Dominio == _dominioativo.FirstOrDefault()));
+                                || s.Inscritos!.FirstOrDefault()!.Participante!.CPF == Input.Search!));
+            //&& s.Dominio == _dominioativo.FirstOrDefault()));
         }
 
         private int QuantosDiasFaltam(DateTime dataalvo)

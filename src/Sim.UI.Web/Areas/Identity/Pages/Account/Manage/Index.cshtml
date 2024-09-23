@@ -7,7 +7,7 @@
 
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 <form id="profile-form" method="post">
-    <div class="card">
+    <div class="card mgn-0">
         <div class="card-header grey-text">@ViewData["Title"]<i class="left material-icons">assignment_ind</i></div>
         <div class="card-content no-padding">
             <div class="row mgn-0">
@@ -43,72 +43,77 @@
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-header grey-text">Funções<i class="left material-icons">account_box</i></div>
-        <table class="responsive-table">
-            <tbody>
-                @foreach (var item in Model.Funcoes!)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item)
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-
-    <div class="card">
-        <div class="card-header grey-text">Vínculos<i class="left material-icons">account_box</i></div>
-        @if (User.IsInRole(Sim.Identity.Config.AccountType.Adm_Global) ||
-        User.IsInRole(Sim.Identity.Config.AccountType.Adm_Account))
-        {
-            <div class="row no-padding mgn-0">
-                <div class="col s12 m6 l6 mgn-b-10 valign-wrapper">
-                    <select asp-for="OwnerSelect" class="browser-default">
-                        <option>-- Associar Vinculo --</option>
-                        @foreach (var item in Model.OwnerList!)
+    <div class="row pdn-10 mgn-0">
+        <div class="col s12 l6">
+            <div class="card">
+                <div class="card-header grey-text">Funções<i class="left material-icons">account_box</i></div>
+                <table class="responsive-table">
+                    <tbody>
+                        @foreach (var item in Model.Funcoes!)
                         {
-                            <optgroup label="@item.Key">
-                                @foreach (var subitem in item.Value)
-                                {
-                                    <option value="@subitem.Value">@subitem.Key</option>
-                                }
-                            </optgroup>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item)
+                                </td>
+                            </tr>
                         }
-                    </select>
-                    <button type="submit" asp-page-handler="BindAccount" asp-route-id="@Model.Input!.Id"
-                        class="btn waves-effect mgn-l-10"><i class="material-icons">link</i></button>
-                </div>
+                    </tbody>
+                </table>
             </div>
-        }
-        <div class="divider"></div>
-        <table class="responsive-table">
-            <tbody>
-                @foreach (var item in Model.Vinculos!)
+        </div>
+        <div class="col s12 l6">
+            <div class="card">
+                <div class="card-header grey-text">Vínculos<i class="left material-icons">account_box</i></div>
+                @if (User.IsInRole(Sim.Identity.Config.AccountType.Adm_Global) ||
+                User.IsInRole(Sim.Identity.Config.AccountType.Adm_Account))
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Type)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Value)
-                        </td>
-                        @if (User.IsInRole(Sim.Identity.Config.AccountType.Adm_Global) ||
-                            User.IsInRole(Sim.Identity.Config.AccountType.Adm_Account))
-                        {
-                            <td>
-                                <button type="submit" asp-page-handler="UnbindAccount" asp-route-id="@Model.Input!.Id"
-                                    asp-route-ct="@item.Type" asp-route-cv="@item.Value"
-                                    class="btn-small waves-effect waves-light materialize-red" title="Excluir Vínculo"><i
-                                        class="material-icons">remove</i></button>
-                            </td>
-                        }
-                    </tr>
+                    <div class="row no-padding mgn-0">
+                        <div class="col s12 m6 l6 mgn-b-10 valign-wrapper">
+                            <select asp-for="OwnerSelect" class="browser-default">
+                                <option>-- Associar Vinculo --</option>
+                                @foreach (var item in Model.OwnerList!)
+                                {
+                                    <optgroup label="@item.Key">
+                                        @foreach (var subitem in item.Value)
+                                        {
+                                            <option value="@subitem.Value">@subitem.Key</option>
+                                        }
+                                    </optgroup>
+                                }
+                            </select>
+                            <button type="submit" asp-page-handler="BindAccount" asp-route-id="@Model.Input!.Id"
+                                class="btn waves-effect mgn-l-10"><i class="material-icons">link</i></button>
+                        </div>
+                    </div>
                 }
-            </tbody>
-        </table>
+                <div class="divider"></div>
+                <table class="responsive-table">
+                    <tbody>
+                        @foreach (var item in Model.Vinculos!)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Type)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Value)
+                                </td>
+                                @if (User.IsInRole(Sim.Identity.Config.AccountType.Adm_Global) ||
+                               User.IsInRole(Sim.Identity.Config.AccountType.Adm_Account))
+                                {
+                                    <td>
+                                        <button type="submit" asp-page-handler="UnbindAccount" asp-route-id="@Model.Input!.Id"
+                                            asp-route-ct="@item.Type" asp-route-cv="@item.Value"
+                                            class="btn-small waves-effect waves-light materialize-red"
+                                            title="Excluir Vínculo"><i class="material-icons">remove</i></button>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </form>
 

@@ -19,6 +19,7 @@ namespace Sim.UI.Web.Pages.Agenda.Inscricoes.Novo
         private readonly IAppServiceAtendimento _appatendimento;
         private readonly IAppServiceContador _appcontador;
         private readonly IAppServiceBindings _bindings;
+        private readonly IAppServiceSecretaria _appsecretaria;
 
         public IndexModel(IAppServiceInscricao appServiceInscricao,
             IAppServiceEvento appServiceEvento,
@@ -26,7 +27,8 @@ namespace Sim.UI.Web.Pages.Agenda.Inscricoes.Novo
             IAppServicePessoa appServicePessoa,
             IAppServiceAtendimento appServiceAtendimento,
             IAppServiceContador appServiceContador,
-            IAppServiceBindings appServiceBindings)
+            IAppServiceBindings appServiceBindings,
+            IAppServiceSecretaria appsecretaria)
         {
             _appServiceEvento = appServiceEvento;
             _appServiceInscricao = appServiceInscricao;
@@ -35,6 +37,7 @@ namespace Sim.UI.Web.Pages.Agenda.Inscricoes.Novo
             _appatendimento = appServiceAtendimento;
             _appcontador = appServiceContador;
             _bindings = appServiceBindings;
+            _appsecretaria = appsecretaria;
         }
 
         [BindProperty]
@@ -53,16 +56,16 @@ namespace Sim.UI.Web.Pages.Agenda.Inscricoes.Novo
         [TempData]
         public string? StatusMessage { get; set; }
         private async Task<string> GetProtoloco()
-        {        
+        {
             return await _appcontador.GetProtocoloAsync(User.Identity!.Name!, "Atendimento");
         }
         public async Task OnGetAsync(int? id)
         {
-            
+
             if (id != null)
             {
-                var _evento = await _appServiceEvento.DoListAsync(s => s.Codigo == (int)id);            
-                Input!.Evento = _evento.FirstOrDefault();            
+                var _evento = await _appServiceEvento.DoListAsync(s => s.Codigo == (int)id);
+                Input!.Evento = _evento.FirstOrDefault();
             }
         }
 
@@ -151,12 +154,16 @@ namespace Sim.UI.Web.Pages.Agenda.Inscricoes.Novo
                     Empresa = Input.Empresa != null ? await _appServiceEmpresa.GetAsync(Input.Empresa.Id) : null,
                     Evento = await _appServiceEvento.GetAsync(Input.Evento.Id)
                 };
-                
+
                 await _appServiceInscricao.AddAsync(inscricao);
 
                 //var _setor = string.Empty;
 
-                var _at = new EAtendimento(){
+                var _dominioativo = await _appsecretaria.DoListAsync(s => s.Acronimo == HttpContext.Session.GetString("Dominio"));
+                var _dominio_selecionado = await _appsecretaria.GetAsync((Guid)_dominioativo.FirstOrDefault()?.Id!);
+
+                var _at = new EAtendimento()
+                {
                     Protocolo = await GetProtoloco(),
                     Owner_AppUser_Id = User.Identity.Name,
                     Data = DateTime.Now,
@@ -165,10 +172,11 @@ namespace Sim.UI.Web.Pages.Agenda.Inscricoes.Novo
                     Empresa = Input.Empresa != null ? await _appServiceEmpresa.GetAsync(Input.Empresa.Id) : null,
                     Setor = HttpContext.Session.GetString("SetorAtivo"),
                     Servicos = "Inscrição em Evento",
-                    Descricao =  string.Format("Incrição Nº:{0}, Evento: {1} {2}", inscricao.Numero, inscricao.Evento.Tipo, inscricao.Evento.Nome),
+                    Descricao = string.Format("Incrição Nº:{0}, Evento: {1} {2}", inscricao.Numero, inscricao.Evento.Tipo, inscricao.Evento.Nome),
                     Canal = "Presencial",
                     Ativo = true,
                     Status = "Finalizado",
+                    Dominio = _dominio_selecionado,
                     Ultima_Alteracao = DateTime.Now
                 };
 
@@ -177,7 +185,7 @@ namespace Sim.UI.Web.Pages.Agenda.Inscricoes.Novo
                 return RedirectToPage("/Agenda/Inscricoes/Index", new { id = inscricao.Evento.Codigo });
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 StatusMessage = string.Format("Erro: {0}", ex.Message);
                 return Page();

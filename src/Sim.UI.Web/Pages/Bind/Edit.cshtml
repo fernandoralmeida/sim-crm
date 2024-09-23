@@ -14,7 +14,7 @@
     <form method="post">
     <section>
         <input asp-for="EditID" hidden />
-        <div class="card">
+        <div class="card mgn-0">
             <div class="card-header">
                 <a asp-page="/Bind/Index" class="btn-small waves-effect waves-light grey submit" title="Voltar"><i
                         class="material-icons">undo</i></a><span class="pdn-10">Editar Vinculo Pessoa | Empresa</span>
@@ -102,19 +102,5 @@ else
     <script>
         $('#inputCNPJ').mask('00.000.000/0000-00');
         $('#inputCPF').mask('000.000.000-00');
-
-        $(function () {
-            $(".bindremove").click(function () {
-                var _id = $(this).data('id');
-                $(".loadingpage").append(`<div class="progress"><div class="indeterminate"></div></div>`);
-                $.getJSON(`/bindings/?id=${_id}&handler=Delete`, function (data) {
-                    $(".loadingpage").empty();
-                    $.each(data, function (i, item) {
-                        alert(`Víncuilo ID:${_id} | ${item.empresa.nome_Empresarial} <> ${item.pessoa.nome} Removido!`);
-                        location.reload();
-                    });
-                });
-            });
-        });
     </script>
 }

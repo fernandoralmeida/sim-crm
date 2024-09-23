@@ -12,8 +12,10 @@
 
     <form method="post">
 
-        <div class="card">
-            <div class="card-header grey-text">@ViewData["Title"]<i class="left material-icons">account_box</i></div>
+        <div class="card mgn-0">
+            <div class="card-header grey-text">
+                <a asp-area="Admin" asp-page="/Manager/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i
+                        class="material-icons">undo</i></a><span class="pdn-10">@ViewData["Title"]</span></div>
             <div class="card-content pdn-10">
                 <dl class="row">
                     <dt class="col s12 m2 l2">
@@ -50,7 +52,7 @@
                             if (!Model.Input!.EmailConfirmed)
                             {
                                 <button type="submit" asp-page-handler="ConfirmEmail" asp-route-id="@Model.Input!.Id"
-                                    class="btn btn-small waves-effect">Confirmar Email</button>
+                                    class="btn-small waves-effect">Confirmar Email</button>
                             }
                         }
                     </dd>
@@ -59,12 +61,14 @@
                     </dt>
                     <dd class="col s12 m10 l10">
                         <a asp-area="Identity" asp-page="/Account/ResetPassword" asp-route-code="@Model.ResetCode"
-                            class="waves-effect waves-light btn">Resetar Senha</a>
+                            class="waves-effect waves-light btn-small">Resetar Senha</a>
                     </dd>
                 </dl>
             </div>
-        </div>
+        </div
 
+        <div class="row">
+            <div class="col s12 l6">
         <div class="card">
             <div class="card-header grey-text">Funções<i class="left material-icons">account_box</i></div>
             <div class="row no-padding mgn-0">
@@ -73,7 +77,7 @@
                         <option>-- Incluir Funcão --</option>
                     </select>
                     <button type="submit" asp-page-handler="AddRole" asp-route-id="@Model.Input!.Id"
-                        class="btn waves-effect mgn-l-10"><i class="material-icons">add</i></button>
+                        class="btn-small waves-effect mgn-l-10"><i class="material-icons">add</i></button>
                 </div>
             </div>
             <div class="divider"></div>
@@ -91,7 +95,7 @@
 
                                 <td>
                                     <button type="submit" asp-page-handler="RemoveRole" asp-route-id="@Model.Input!.Id"
-                                        asp-route-role="@item" class="btn-small waves-effect waves-light materialize-red"
+                                        asp-route-role="@item" class="btn-floating waves-effect waves-light materialize-red"
                                         title="Excluir Role"><i class="material-icons">remove</i></button>
                                 </td>
                             </tr>
@@ -100,7 +104,8 @@
                 </tbody>
             </table>
         </div>
-
+            </div>
+            <div class="col s12 l6">
         <div class="card">
             <div class="card-header grey-text">Vínculos<i class="left material-icons">account_box</i></div>
             <div class="row no-padding mgn-0">
@@ -118,7 +123,7 @@
                         }
                     </select>
                     <button type="submit" asp-page-handler="BindAccount" asp-route-id="@Model.Input!.Id"
-                        class="btn waves-effect mgn-l-10"><i class="material-icons">link</i></button>
+                        class="btn-small waves-effect mgn-l-10"><i class="material-icons">link</i></button>
                 </div>
             </div>
             <div class="divider"></div>
@@ -135,7 +140,7 @@
                                 </td>
                                 <td>
                                     <button type="submit" asp-page-handler="UnbindAccount" asp-route-id="@Model.Input!.Id" asp-route-ct="@item.Type"
-                                         asp-route-cv="@item.Value" class="btn-small waves-effect waves-light materialize-red"
+                                         asp-route-cv="@item.Value" class="btn-floating waves-effect waves-light materialize-red"
                                         title="Excluir Vínculo"><i class="material-icons">remove</i></button>
                                 </td>
                             </tr>
@@ -163,5 +168,11 @@
                 </tbody>
             </table>
         </div>
+            </div>
+        </div>
+
+
+
+
     </form>
 </div>

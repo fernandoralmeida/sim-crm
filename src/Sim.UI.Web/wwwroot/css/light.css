@@ -16,6 +16,7 @@ for details on configuring this project to bundle and minify static web assets. 
     --color-gb-20: rgba(0, 0, 0, .2);
     --color-gb-50: rgba(0, 0, 0, .5);
     --color-border: rgba(0, 0, 0, .2);
+    --color-active-1: rgba(0, 0, 0, .2);
 
 
 }
@@ -77,8 +78,8 @@ nav ul li.active {
 }
 
 nav ul li.active-1 {
-    background-color: var(--color-1) !important;
-    color: var(--color-5) !important;
+    background-color: var(--color-active-1) !important;
+    color: var(--color-3) !important;
     /* border-radius: 4px; */
 }
 
@@ -180,6 +181,10 @@ label {
 
 .border-b {
     border-bottom: 1px solid var(--color-border);
+}
+
+.radius-0 {
+    border-radius: 0px;
 }
 
 .rounded-default {
@@ -437,6 +442,21 @@ label {
     z-index: -20;
     height: 139px;
     width: calc(100% - 250px);
+}
+
+.progress {
+    position: relative;
+    height: 4px;
+    display: block;
+    width: 100%;
+    background-color: #acece6;
+    border-radius: 0px;
+    margin: 0;
+    overflow: hidden;
+}
+
+.progress .indeterminate {
+    background-color: var(--color-2);
 }
 
 .blackboxload {
@@ -953,6 +973,11 @@ nav,
     color: var(--color-5);
 }
 
+.btn-floating {
+    background-color: var(--color-2);
+    color: var(--color-5);
+}
+
 .btn:focus,
 .btn:active:focus,
 .btn-small:focus,
@@ -1021,6 +1046,10 @@ nav,
 
 .bg-silver {
     background-color: #f8f8f8 !important;
+}
+
+.bg-grey {
+    background-color: var(--color-4) !important;
 }
 
 /**/
@@ -1414,11 +1443,11 @@ nav,
 }
 
 .online {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--color-6);
 }
 
 .offline {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--color-4);
 }
 
 @media only screen and (max-width: 1210px) {

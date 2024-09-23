@@ -59,7 +59,7 @@
                 {
                     <tr>
                         <td>
-                            <a asp-area="" asp-page="/Atendimento/Iniciar" asp-route-id="@item.Id" class="btn-floating btn-small waves-effect" title="Iniciar atendimento"><i class="material-icons">access_time</i></a>
+                            <a asp-area="" asp-page="/Atendimento/Iniciar" asp-route-id="@item.Id" class="btn-floating waves-effect" title="Iniciar atendimento"><i class="material-icons">play_arrow</i></a>
 
                         </td>
                         <td>
@@ -82,7 +82,7 @@
                             @Html.DisplayFor(modelItem => email)
                         </td>
                         <td>
-                            <a asp-page="/Cliente/Manager/Index" asp-route-id="@item.Id" class="btn-floating btn-small orange lighten-1 waves-effect" title="Modificar"><i class="material-icons">edit</i></a>
+                            <a asp-page="/Cliente/Manager/Index" asp-route-id="@item.Id" class="btn-floating orange lighten-1 waves-effect" title="Modificar"><i class="material-icons">edit</i></a>
                         </td>
                     </tr>
                 }
@@ -154,7 +154,7 @@
 <div id="modal_cli" class="modal">
     <div class="modal-content">
         Cliente com CPF <stromg>@Model.Input.Valor</stromg> não encontrado!                
-        <a focu class="waves-effect waves-light btn-small blue" asp-page="/Cliente/Novo/Index" asp-route-id="@Model.Input.RouteCPF">Incluir<i class="material-icons left">done</i></a>        
+        <a class="waves-effect waves-light btn-small blue" asp-page="/Cliente/Novo/Index" asp-route-id="@Model.Input.RouteCPF">Incluir<i class="material-icons left">done</i></a>        
         <a href="#!" class="modal-close waves-effect waves-light btn-small red">Sair<i class="material-icons left">close</i></a>
     </div>
 </div>

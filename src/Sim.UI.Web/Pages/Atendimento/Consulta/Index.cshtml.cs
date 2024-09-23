@@ -31,20 +31,20 @@ namespace Sim.UI.Web.Pages.Atendimento.Consulta
 
         public async Task OnGetAsync()
         {
-             await LoadData();   
+            await LoadData();
         }
 
         public async Task LoadData()
         {
             var _dominioativo = await _appSecretaria.DoListAsync(s => s.Acronimo == HttpContext.Session.GetString("Dominio"));
-            var lista = await _appServiceAtendimento.DoListAsync(s => 
+            var lista = await _appServiceAtendimento.DoListAsync(s =>
                                             s.Pessoa!.CPF!.Contains(Src!) ||
                                             s.Pessoa.Nome!.Contains(Src!) ||
-                                            s.Pessoa.Nome_Social!.Contains(Src!) || 
+                                            s.Pessoa.Nome_Social!.Contains(Src!) ||
                                             s.Empresa!.Nome_Empresarial!.Contains(Src!) ||
-                                            s.Empresa.Nome_Fantasia!.Contains(Src!) || 
-                                            s.Empresa.CNPJ!.Contains(Src!) &&
-                                            s.Dominio == _dominioativo.FirstOrDefault());
+                                            s.Empresa.Nome_Fantasia!.Contains(Src!) ||
+                                            s.Empresa.CNPJ!.Contains(Src!)); //&&
+                                                                             //s.Dominio == _dominioativo.FirstOrDefault());
 
             ListaAtendimento = lista.ToList();
         }

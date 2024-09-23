@@ -1,5 +1,6 @@
 ﻿
 using Sim.Domain.Organizacao.Model;
+using Sim.Domain.Sebrae.Model;
 
 namespace Sim.Domain.Entity
 {
@@ -26,8 +27,9 @@ namespace Sim.Domain.Entity
         public virtual Pessoa? Pessoa { get; set; }
         public virtual Empresas? Empresa { get; set; }
         public virtual EOrganizacao? Dominio { get; set; }
+        public virtual RaeSebrae? Sebrae { get; set; }
 
-        public bool BySetor(EAtendimento obj, string setor_name)
+        public static bool BySetor(EAtendimento obj, string setor_name)
         {
             return obj.Setor == setor_name;
         }

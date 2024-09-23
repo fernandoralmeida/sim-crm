@@ -18,8 +18,8 @@
                     <option selected>-- Funções --</option>
                 </select>
                 <label asp-for="Funcao"></label>
-                <button asp-page-handler="AddFunc" class="btn waves-effect" type="submit"><i
-                        class="material-icons">description add</i></button>
+                <button asp-page-handler="AddFunc" class="btn-small waves-effect" type="submit"><i
+                        class="material-icons">add</i></button>
             </div>
         </div>
     </div>
@@ -52,7 +52,7 @@
                             </td>
                             <td>
                                 <button type="submit" asp-page-handler="Remove" asp-route-id="@item.Id"
-                                    class="btn btn-small materialize-red waves-effect waves-light" title="Excluir Role"><i
+                                    class="btn-floating materialize-red waves-effect waves-light" title="Excluir Role"><i
                                         class="material-icons">remove</i></button>
                             </td>
                         </tr>

@@ -6,17 +6,19 @@
     @* ViewData["ActivePageLi"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.ConfigContas; *@
 }
 
-<div class="card">
-        
-    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">        
-        <div class="card-header">
-            Novo Usuário<i class="left material-icons">person_add</i>
+<div class="card mgn-0">
+
+    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+
+        <div class="card-header grey-text">
+            <a asp-area="Admin" asp-page="/Manager/Index" class="btn-small waves-effect waves-light grey"
+                title="Voltar"><i class="material-icons">undo</i></a><span class="pdn-10">@ViewData["Title"] Novo Usuário</span>
         </div>
         <div class="card-content no-padding">
             <div class="row mgn-0">
                 <div class="input-field col s12 m6 l4">
                     <input asp-for="Input!.UserName" />
-                    <label asp-for="Input!.UserName" ></label>
+                    <label asp-for="Input!.UserName"></label>
                 </div>
                 <div class="input-field col s12 m6 l4">
                     <input asp-for="Input!.Name" />
@@ -34,23 +36,23 @@
                     </select>
                     <label asp-for="Input!.Genero"></label>
                 </div>
-                <div class="input-field col s12 m6 l4">                    
+                <div class="input-field col s12 m6 l4">
                     <input asp-for="Input!.Email" />
                     <label asp-for="Input!.Email"></label>
                 </div>
                 <div class="input-field col s12 m6 l4">
-                    <input asp-for="Input!.Password"/>
-                    <label asp-for="Input!.Password"></label>                    
+                    <input asp-for="Input!.Password" />
+                    <label asp-for="Input!.Password"></label>
                 </div>
                 <div class="input-field col s12 m6 l4">
                     <label asp-for="Input!.ConfirmPassword"></label>
-                    <input asp-for="Input!.ConfirmPassword"/>
+                    <input asp-for="Input!.ConfirmPassword" />
                 </div>
             </div>
         </div>
         <div class="card-action pdn-10">
             <button type="submit" class="btn waves-effect waves-light">Registrar</button>
-        </div>        
+        </div>
     </form>
 </div>
 

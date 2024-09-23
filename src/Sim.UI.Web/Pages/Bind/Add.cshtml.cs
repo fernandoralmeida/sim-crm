@@ -60,32 +60,6 @@ public class AddModel : PageModel
             Vinculos = new SelectList(Enum.GetValues(typeof(TBindings)));
         });
 
-    public async Task<JsonResult> OnGetAddPessoa(string doc)
-    {
-        var _result = new List<(Guid id, string document, string nome)>();
-
-        var _con = doc.MaskRemove().Mask("###.###.###-##");
-        foreach (var p in await _pessoas.DoListAsync(s=> s.CPF == _con))
-        {
-            _result.Add((p.Id!, p.CPF!, p.Nome!));
-        }
-
-        return new JsonResult(_result);
-    }
-
-    public async Task<JsonResult> OnGetAddEmpresa(string doc)
-    {
-        var _result = new List<(Guid id, string document, string nome)>();
-
-        var _con = doc.MaskRemove().Mask("##.###.###/####-##");
-        foreach (var p in await _empresas.DoListAsync(c => c.CNPJ == _con))
-        {
-            _result.Add((p.Id!, p.CNPJ!, p.Nome_Empresarial!));
-        }
-
-        return new JsonResult(_result);
-    }
-
     public async Task OnPostAsync()
         => await Task.Run(async () =>
         {

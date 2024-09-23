@@ -10,14 +10,7 @@
     <link rel="shortcut icon" href="~/favicon.ico" />
     <link rel="stylesheet" href="~/lib/google/material-symbols-rounded.css" />
     <link rel="stylesheet" href="~/lib/materialize/css/materialize.min.css" />
-    @{
-        var _theme = Context.Session.GetString("Theme") ?? "light";
-    }
-    <link rel="stylesheet" href="~/css/@{
-
-        @_theme
-;
-}.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/light.css" asp-append-version="true">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIM - @ViewData["Title"]</title>
@@ -96,10 +89,11 @@
     <script type="text/javascript" src="~/js/site.js"></script>
     <script type="text/javascript" src="~/lib/materialize/js/materialize.min.js"></script>
     <script>
-        var div = document.getElementById("divmessagebox");
+        var div_m = document.getElementById("divmessagebox");
         setTimeout(function () {
-            div.style.display = "none";
-        }, 5000);
+            div_m.style.display = "none";
+        }, 2500);
+
         $(window).on('load', function () {
             //$(".progress").fadeOut("slow"); 
             $("#loader").hide();

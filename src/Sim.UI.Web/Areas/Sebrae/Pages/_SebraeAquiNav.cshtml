@@ -1,0 +1,17 @@
+﻿@using Sim.UI.Web.Areas.Sebrae.Pages
+@model int;
+
+<nav class="navbar transparent">
+  <div class="nav-wrapper">
+    <ul class="right">
+      <li class="@SebraeAquiNavPages.InicioNavClass(ViewContext) submit"><a asp-page="/Index"
+          asp-route-Src="@Model">Não Lançados</a></li>
+      <li class="@SebraeAquiNavPages.LancadosNavClass(ViewContext) submit"><a asp-page="/Rae/Lancados"
+          asp-route-Src="@Model">Lançados</a></li>
+      <li class="@SebraeAquiNavPages.SimlesNavClass(ViewContext) submit"><a asp-page="/Simples/Index"
+          asp-route-Src="@Model">Simples</a></li>
+      <li class="@SebraeAquiNavPages.ExportNavClass(ViewContext) submit"><a
+          asp-page="/Rae/Export">Extrair</a></li>
+    </ul>
+  </div>
+</nav>

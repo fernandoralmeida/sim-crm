@@ -56,6 +56,8 @@ namespace Sim.IoC
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
+
+            services.AddScoped<ApplicationContext>();
             //
             services.AddScoped<IAppServiceBase<Pessoa>, AppServiceBase<Pessoa>>();
             services.AddScoped<IAppServicePessoa, AppServicePessoa>();
@@ -198,7 +200,7 @@ namespace Sim.IoC
             //
             services.AddScoped<IAppIndicadores, AppIndicadores>();
 
-            services.AddScoped<ApplicationContext>();
+            
 
         }
     }

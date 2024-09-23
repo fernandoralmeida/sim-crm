@@ -115,6 +115,8 @@ namespace Sim.UI.Web.Pages.Atendimento.Novo
             Input = _mapper.Map<InputModelAtendimento>(atendimemnto_ativio.FirstOrDefault());
 
             Input!.Setor = HttpContext.Session.GetString("SetorAtivo");
+            var _canal = Canais!.FirstOrDefault(s => s.Value == "Presencial");
+            Input.Canal = _canal!.Value;
             return Page();
         }
 

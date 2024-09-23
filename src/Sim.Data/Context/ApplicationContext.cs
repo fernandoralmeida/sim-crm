@@ -3,6 +3,7 @@ using Sim.Domain.Entity;
 using Sim.Domain.Organizacao.Model;
 using Sim.Domain.Evento.Model;
 using Sim.Domain.Customer.Models;
+using Sim.Domain.Sebrae.Model;
 
 namespace Sim.Data.Context
 {
@@ -30,6 +31,10 @@ namespace Sim.Data.Context
         public DbSet<Contador>? Contador { get; set; }
         public DbSet<StatusAtendimento>? StatusAtendimento { get; set; }
 
+        //Sebrae Aqui
+        public DbSet<RaeSebrae>? Sebrae { get; set; }
+        public DbSet<ESimples>? Simples { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EBindings>().ToTable("Vinculos");
@@ -46,6 +51,9 @@ namespace Sim.Data.Context
             modelBuilder.Entity<ETipo>().ToTable("Tipos");
             modelBuilder.Entity<Contador>().ToTable("Protocolos");
             modelBuilder.Entity<StatusAtendimento>().ToTable("StatusAtendimento");
+
+            modelBuilder.Entity<RaeSebrae>().ToTable("RaeSebrae");
+            modelBuilder.Entity<ESimples>().ToTable("Simples");
 
             modelBuilder.ApplyConfiguration(new Config.Entity.AtendimentoMap());
             modelBuilder.ApplyConfiguration(new Config.Entity.CanalMap());

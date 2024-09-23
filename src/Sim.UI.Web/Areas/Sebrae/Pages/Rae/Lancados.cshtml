@@ -1,0 +1,163 @@
+﻿@page "/sebrae/rae/lancados/{Src?}/{pag?}"
+@model Sim.UI.Web.Areas.Sebrae.Pages.RAE.LancadosModel
+@{
+    //Layout = "/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Lançados";
+    ViewData["ActivePageNSA"] = Sim.UI.Web.Areas.Sebrae.Pages.SebraeAquiNavPages.RaeLancados;
+    ViewData["ActivePageLi"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.SA;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<div class="row no-padding">
+    <div class="col s6 m6 l6 no-padding">
+        <nav class="transparent">
+            <form method="post">
+                <div class="nav-wrapper">             
+                    <div class="input-field no-padding">
+                        <input id="search" placeholder="Digite aqui para pesquisar!" onkeypress="handle(event)" asp-for="Src" type="search" required>
+                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                    </div>            
+                </div>
+            </form>
+        </nav>
+    </div>
+    <div class="col s6 m6 l6 no-padding">
+        <partial name="_SebraeAquiNav" model="@Model.Src" />
+    </div>
+</div>
+
+<div class="card">
+    <table class="responsive-table">
+        <thead>
+            <tr>
+                <th>
+                    N
+                </th>
+                <th>
+                    Protocolo
+                </th>
+                <th>
+                    Data
+                </th>
+                <th>
+                    Cliente
+                </th>
+                <th>
+                    Servicos
+                </th>
+                <th>
+                    Canal
+                </th>
+                <th>
+                    Lançado
+                </th>
+                <th>
+                    Rae
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int cont = 1;
+                int t = (Model.PaginationAtendimentos!.PageIndex - 1) * Model.PaginationAtendimentos.ItemsViews;
+            }
+            @foreach (var item in Model.PaginationAtendimentos)
+            {
+                <tr>
+                    <td>@Sim.UI.Web.Functions.Extensions.Contador(cont++, t)</td>
+                    <td>
+                        <a class="modal-trigger" href="#viewmodal" data-id="@item.Id">@Html.DisplayFor(modelItem =>
+                        item.Protocolo)</a>
+                    </td>
+                    <td>
+                        @{
+                            var d1 = Convert.ToDateTime(item.Data);
+                            var datainicial = d1.ToShortDateString();
+                        }
+
+                        @Html.DisplayFor(modelItem => datainicial)
+                    </td>
+                    <td class="t-uppercase">
+                        @Html.DisplayFor(modelItem => item.Pessoa!.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Servicos)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Canal)
+                    </td>
+                    <td>
+                        @{
+                            var dua = Convert.ToDateTime(item.Ultima_Alteracao);
+                            var ultima_alteracao = dua.ToShortDateString();
+                        }
+
+                        @Html.DisplayFor(modelItem => ultima_alteracao)
+                    </td>
+                    <td class="blue-text">
+                        <a asp-area="Sebrae" asp-page="./Lancar" asp-route-y="@item.Sebrae!.RAE" asp-route-id="@item.Id" asp-route-edit="@true">@Html.DisplayFor(modelItem => item.Sebrae!.RAE)</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @{
+        var prevDisabled = !Model.PaginationAtendimentos.HasPreviusPage ? "disabled" : "";
+        var nextDisabled = !Model.PaginationAtendimentos.HasNextPage ? "disabled" : "";
+    }
+    <div class="card-action center">
+        <span class="left">Página @Model.PaginationAtendimentos.PageIndex de @Model.PaginationAtendimentos.TotalPages - @Model.RegCount Reg.</span>
+        <a asp-area="Sebrae" asp-page="./Lancados" asp-route-Src="@Model.Src" asp-route-pag="@(Model.PaginationAtendimentos.PageIndex - 1)" class="btn-small waves-effect waves-light @prevDisabled">
+            <i class="material-icons">navigate_before</i>
+        </a>
+        <a asp-area="Sebrae" asp-page="./Lancados" asp-route-Src="@Model.Src" asp-route-pag="@(Model.PaginationAtendimentos.PageIndex + 1)" class="btn-small waves-effect waves-light @nextDisabled">
+            <i class="material-icons">navigate_next</i> 
+        </a>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="viewmodal" class="modal modal-fixed-footer">
+    <div class="modal-content"></div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close btn waves-effect">Fechar</a>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $(".modal-trigger").click(function () {
+                var customerId = $(this).data('id');
+                $(".modal-content").empty();
+                $.getJSON(`/api/v1/atendimento/${customerId}`, (data) => {
+                    $(".modal-content").append(`<div>Protocolo: ${data.protocolo}</div>`);
+                    $(".modal-content").append(`<div>Data: ${data.data}</div>`);
+                    $(".modal-content").append(`<div>Setor: ${data.setor}</div>`);
+                    $(".modal-content").append(`<div>Canal: ${data.canal}</div>`);
+                    $(".modal-content").append(`<div>Serviços: ${data.servicos}</div>`);
+                    $(".modal-content").append(`<div>Descricao: ${data.descricao}</div>`);
+                    $(".modal-content").append(`<div class="divider"></div>`);
+                    $(".modal-content").append(`<div>Nome: ${data.pessoa.nome}</div>`);
+                    $(".modal-content").append(`<div>CPF: ${data.pessoa.cpf}</div>`);
+                    $(".modal-content").append(`<div>Data Nascimento: ${data.pessoa.data_Nascimento}</div>`);
+                    $(".modal-content").append(`<div>CEP: ${data.pessoa.cep}</div>`);
+                    $(".modal-content").append(`<div>${data.pessoa.logradouro} ${data.pessoa.numero}</div>`);
+                    $(".modal-content").append(`<div>${data.pessoa.bairro}, ${data.pessoa.cidade} - ${data.pessoa.uf}</div>`);
+                    $(".modal-content").append(`<div>Telefone: ${data.pessoa.tel_Movel}, E-mail: ${data.pessoa.email}</div>`);
+                    $(".modal-content").append(`<div class="divider"></div>`);
+                    $(".modal-content").append(`<div>${data.empresa.cnpj} ${data.empresa.situacao_Cadastral}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.nome_Empresarial}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.nome_Fantasia}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.data_Abertura}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.cnaE_Principal} ${data.empresa.atividade_Principal}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.atividade_Secundarias}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.cep} ${data.empresa.logradouro} ${data.empresa.numero}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.bairro} ${data.empresa.municipio} ${data.empresa.uf}</div>`);
+                    $(".modal-content").append(`<div>${data.empresa.telefone} ${data.empresa.email}</div>`);
+                });
+
+            });
+        });
+    </script>
+}

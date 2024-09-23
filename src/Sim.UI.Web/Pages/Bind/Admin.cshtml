@@ -118,18 +118,5 @@
         $('#inputCNPJ').mask('00.000.000/0000-00');
         $('#inputCPF').mask('000.000.000-00');
 
-        $(function () {
-            $(".bindremove").click(function () {
-                var _id = $(this).data('id');
-                $(".loadingpage").append(`<div class="progress"><div class="indeterminate"></div></div>`);
-                $.getJSON(`/bindings/?id=${_id}&handler=Delete`, function (data) {
-                    $(".loadingpage").empty();
-                    $.each(data, function (i, item) {
-                        alert(`Víncuilo ID:${_id} | ${item.empresa.nome_Empresarial} <> ${item.pessoa.nome} Removido!`);
-                        location.reload();
-                    });
-                });
-            });
-        });
     </script>
 }

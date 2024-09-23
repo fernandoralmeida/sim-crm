@@ -1,4 +1,5 @@
-﻿@page "/agenda/{m?}/"
+﻿@page "/agenda/{m?}"
+@using Sim.Domain.Evento.Model
 @model Sim.UI.Web.Pages.Agenda.IndexModel
 @{
     ViewData["Title"] = "Eventos";    
@@ -7,14 +8,13 @@
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 <ul id="mobile-demo" class="dropdown-content">
     <li><a asp-page="/Agenda/Eventos/Index" title="Incluir Novo Evento"><i class="material-icons blue-text">add</i>Novo</a></li>
-    <li class="@AgendaNavPages.EventoAtivoClass(ViewContext)"><a asp-route-m="ativos" class="green-text"><i class="material-icons">event_available</i>Disponível</a></li>
-    <li class="@AgendaNavPages.EventoFinalizadoClass(ViewContext)"><a asp-route-m="finaliz
-a               dos"><i class="material-icons">event</i>Encerrado</a></li>
-    <li class="@AgendaNavPages.EventoCanceladoClass(ViewContext)"><a asp-route-m="cancelados" class="red-t
+    <li class="@AgendaNavPages.EventoAtivoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Ativo" class="green-text"><i class="material-icons">event_available</i>Disponível</a></li>
+    <li class="@AgendaNavPages.EventoFinalizadoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Finalizado"><i class="material-icons">event</i>Encerrado</a></li>
+    <li class="@AgendaNavPages.EventoCanceladoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Cancelado" class="red-t
              e  xt"><i class="material-icons">event_busy</i>Cancelado</a></li>
-    <li class="@AgendaNavPages.SearchClass(ViewContext)"><a asp-route-m="cancelados" class="red-text"><i class="material-icons">event_busy</i>Participantes</a></li>
+    <li class="@AgendaNavPages.SearchClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Ativo" class="red-text"><i class="material-icons">event_busy</i>Participantes</a></li>
 </ul>
-<form method="post">
+<form method="post">    
     <nav class="row navbar transparent">
         <div class="nav-wrapper">
             <form method="post">
@@ -26,9 +26,9 @@ a               dos"><i class="material-icons">event</i>Encerrado</a></li>
             <a class="right dropdown-trigger hide-on-large-only" href="#!" data-target="mobile-demo"><i class="material-icons alpha-text-5">menu arrow_drop_down</i></a>
             <ul class="right hide-on-med-and-down">
                 <li><a asp-page="/Agenda/Eventos/Index" title="Incluir Novo Evento"><i class="material-icons blue-text">add</i></a></li>
-                <li class="@AgendaNavPages.EventoAtivoClass(ViewContext)"><a asp-route-m="ativos" class="green-text"><i class="material-icons">event_available</i></a> </li>
-                <li class="@AgendaNavPages.EventoFinalizadoClass(ViewContext)"><a asp-route-m="finalizados"><i class="material-icons">event</i></a></li>
-                <li class="@AgendaNavPages.EventoCanceladoClass(ViewContext)"><a asp-route-m="cancelados" class="red-text"><i class="material-icons">event_busy</i></a></li>
+                <li class="@AgendaNavPages.EventoAtivoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Ativo" class="green-text"><i class="material-icons">event_available</i></a> </li>
+                <li class="@AgendaNavPages.EventoFinalizadoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Finalizado"><i class="material-icons">event</i></a></li>
+                <li class="@AgendaNavPages.EventoCanceladoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Cancelado" class="red-text"><i class="material-icons">event_busy</i></a></li>
                 <li><a asp-page="/Agenda/Inscricoes/Consulta/Index" class="amber-text"><i class="material-icons">search</i></a></li>
             </ul>            
         </div>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Sim.Identity.Entity;
 using Sim.Application.Interfaces;
 using Newtonsoft.Json;
+using Sim.Identity.Config;
 
 namespace Sim.UI.Web.Areas.Identity.Pages.Account
 {
