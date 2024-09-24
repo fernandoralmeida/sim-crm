@@ -1,0 +1,154 @@
+﻿@page "/bpp/contratos/novo/"
+@using System.Globalization
+@model Sim.UI.Web.Areas.Bpp.Pages.Add.IndexModel
+@{
+    ViewData["Title"] = "Banco do Povo: Novo Contrato";
+    ViewData["ActivePageBPP"] = NavPage.Novo;
+    //ViewData["ActivePageLi"] = Web.Pages.Shared.LayoutNavPages.BPPContratos;
+}
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<div class="card-header">
+    <a asp-area="Bpp" asp-page="/Index" class="waves-effect waves-light btn-small blue-grey" title="Voltar"><i
+            class="material-icons">undo</i>
+    </a>
+    <span class="pdn-10">Contrato | Banco do Povo</span>
+</div>
+<form method="post">
+
+    <div class="card">
+        <div class="card-header grey-text">Cliente<i class="left material-icons">person</i></div>
+        <div class="card-content no-padding">
+            <div class="row mgn-0">
+                @if (Model.InputContrato!.Cliente == null)
+                {
+                    <div class="input-field col s12 m6 l6 valign-wrapper">
+                        <input asp-for="GetCPF" id="inputCPF" autofocus>
+                        <label asp-for="GetCPF"></label>
+                        <button asp-page-handler="PF" class="btn-small waves-effect waves-light blue" type="submit"><i
+                                class="material-icons">person add</i></button>
+                    </div>
+                }
+                else
+                {
+                    <div class="input-field col s12 m5 l2" hidden>
+                        <input asp-for="InputContrato!.Cliente!.Id" />
+                        <label asp-for="InputContrato!.Cliente!.Id"></label>
+                    </div>
+                    <div class="input-field col s12 m6 l3">
+                        <input asp-for="InputContrato!.Cliente!.CPF" id="inputCPF" />
+                        <label asp-for="InputContrato!.Cliente!.CPF"></label>
+                    </div>
+                    <div class="input-field col s12 m6 l3">
+                        <input asp-for="InputContrato!.Cliente!.Nome" />
+                        <label asp-for="InputContrato!.Cliente!.Nome"></label>
+                    </div>
+                    <div class="input-field col s12 m6 l3">
+                        <input asp-for="InputContrato!.Cliente!.Email" />
+                        <label asp-for="InputContrato!.Cliente!.Email"></label>
+                    </div>
+                    <div class="input-field col s10 m5 l2 valign-wrapper">
+                        <input asp-for="InputContrato!.Cliente!.Tel_Movel" id="txtmobile" />
+                        <label>Telefone</label>
+                    </div>
+                    <div class="input-field col s1 m1 l1 valign-wrapper">
+                        <button class="btn-floating red waves-effect waves-light" type="submit"
+                            asp-page-handler="RemovePF"><i class="material-icons">remove</i></button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header grey-text">Empresa<i class="left material-icons">domain</i></div>
+        <div class="card-content no-padding">
+            <div class="row mgn-0">
+                @if (Model.InputContrato.Cliente != null)
+                {
+                    @if (Model.InputContrato.Empresa == null)
+                    {
+                        <div class="input-field col s12 m6 l6 valign-wrapper">
+                            <input asp-for="GetCNPJ" id="inputCNPJ">
+                            <label asp-for="GetCNPJ"></label>
+                            <button asp-page-handler="PJ" class="btn-small waves-effect waves-light blue" type="submit"><i
+                                    class="material-icons">domain add</i></button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-2" hidden>
+                            <label asp-for="InputContrato!.Empresa!.Id"></label>
+                            <input asp-for="InputContrato!.Empresa!.Id" />
+                        </div>
+                        <div class="input-field col s12 m6 l3">
+                            <input asp-for="InputContrato!.Empresa!.CNPJ" id="inputCNPJ" />
+                            <label asp-for="InputContrato!.Empresa!.CNPJ"></label>
+                        </div>
+                        <div class="input-field col s12 m6 l3">
+                            <input asp-for="InputContrato!.Empresa!.Nome_Empresarial" />
+                            <label>Razão Social</label>
+                        </div>
+                        <div class="input-field col s12 m6 l3">
+                            <input asp-for="InputContrato!.Empresa!.Email" />
+                            <label asp-for="InputContrato!.Empresa!.Email"></label>
+                        </div>
+                        <div class="input-field col s10 m5 l2 valign-wrapper">
+                            <input asp-for="InputContrato!.Empresa!.Telefone" id="txtphone" />
+                            <label asp-for="InputContrato!.Empresa!.Telefone"></label>
+                        </div>
+                        <div class="input-field col s1 m1 l1 valign-wrapper">
+                            <button class="btn-floating red lighten-1 waves-effect waves-light" type="submit"
+                                asp-page-handler="RemovePJ"><i class="material-icons">remove</i></button>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header grey-text">Contrato<i class="material-icons left">text_snippet</i></div>
+        <div class="row mgn-0">
+            <div class="input-field col s6 m6 l3">
+                <input asp-for="InputContrato!.Numero" />
+                <label asp-for="InputContrato!.Numero"></label>
+            </div>
+            <div class="input-field col s6 m6 l3">
+                <input asp-for="InputContrato!.Data" />
+                <label asp-for="InputContrato!.Data"></label>
+            </div>
+            <div class="input-field col s12 m12 l6">
+                <span class="prefix small">@NumberFormatInfo.CurrentInfo.CurrencySymbol</span>
+                <input asp-for="InputContrato!.Valor" asp-format="{0:#,###.00}"
+                    onkeypress="return(moeda(this,'.',',',event))" />
+                <label asp-for="InputContrato!.Valor">Valor</label>
+            </div>
+            <div class="input-field col s12 m12 l12">
+                <textarea asp-for="InputContrato!.Descricao" class="materialize-textarea" rows="4"
+                    id="input_descricao"></textarea>
+                <label asp-for="InputContrato!.Descricao"></label>
+            </div>
+        </div>
+        <div class="card-action">
+            <button id="onbtn" asp-page-handler="Save" class="btn waves-effect waves-light">Gravar</button>            
+        </div>
+    </div>
+
+</form>
+
+
+@section scripts {
+    @{
+        /*await Html.RenderPartialAsync("_ValidationScriptsPartial");*/
+    }
+<script src="~/js/jquery.validation.js"></script>
+<script src="~/js/jquery.mask.min.js"></script>
+<script src="~/js/fcurrency.js"></script>
+<script>
+    $('#inputCPF').mask('000.000.000-00');
+    $('#txtphone').mask('(00) 0000-0000');
+    $('#txtmobile').mask('(00) 00000-0000');
+    $('#inputCNPJ').mask('00.000.000/0000-00');
+</script>
+}

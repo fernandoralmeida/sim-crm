@@ -30,7 +30,7 @@ public class SessionModel : PageModel
             StatusMessage = $"Setor {_unidade.Acronimo} selecionado com sucesso!";
             if (_unidade.Acronimo!.Contains("Sebrae"))
                 Response.Redirect($"/sebrae");
-            else if (_unidade.Acronimo!.Contains("Banco"))
+            else if (_unidade.Acronimo!.Contains("Banco do Povo"))
                 Response.Redirect($"/bpp");
             else
                 Response.Redirect($"/{returnURL}");

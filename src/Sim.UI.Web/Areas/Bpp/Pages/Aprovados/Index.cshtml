@@ -1,0 +1,99 @@
+﻿@page "/bpp/contratos/aprovados/"
+@using System.Globalization
+@model Sim.UI.Web.Areas.Bpp.Pages.Aprovados.IndexModel
+@{
+    ViewData["Title"] = "Banco do Povo";
+    ViewData["ActivePageBPP"] = NavPage.Aprovados;
+    //ViewData["ActivePageLi"] = Web.Pages.Shared.LayoutNavPages.BPPContratos;   
+}
+<partial name="_NavPage" />
+<div class="card">
+    <div class="card-header grey-text">Meus Contratos Aprovados<i class="material-icons left">text_snippet</i></div>
+        @if(Model.MeusContratos != null) {
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Processo</th>
+                        <th>Cliente</th>
+                        <th>Data</th>
+                        <th>Situação</th>
+                        <th>Pagamento</th>
+                        <th>Valor</th>
+                        <th>CMD</th>
+                    </tr>
+                </thead>
+                <tbody>     
+                    @{ var _cont = 0; }
+                    @foreach (var c in Model.MeusContratos) {
+                        _cont++;
+                        <tr>
+                            <td>@_cont</td>
+                            <td>@Html.DisplayFor(model => c.Numero)</td>
+                            <td>
+                            @Html.DisplayFor(Model => c.Cliente!.Nome)
+                            <br>@Html.DisplayFor(Model => c.Empresa!.CNPJ) @Html.DisplayFor(Model => c.Empresa!.Nome_Empresarial)
+                            </td>
+                            <td>@Html.DisplayFor(model => c.Data) ~ @Html.DisplayFor(model => c.DataSituacao)</td>
+                            <td>
+                                @{ var _situacao = c.Situacao.ToString();}                                
+                                <a class="btn-small waves-effect waves-light blue modal-trigger showmodal" data-id="@c.Id" data-stc="@c.Situacao" data-pgt="@c.Pagamento" href="#modal1">@Html.DisplayFor(model => _situacao)</a>
+                            </td>
+                            <td>
+                                @{ var _pag = c.Pagamento.ToString();}                                
+                                <a class="btn-small waves-effect waves-light green modal-trigger showmodal" data-id="@c.Id" data-stc="@c.Situacao" data-pgt="@c.Pagamento" href="#modal1">@Html.DisplayFor(model => _pag)</a>
+                            </td>
+                            <td>@Html.DisplayFor(model => c.Valor)</td>
+                            <td><a class="btn-small waves-effect waves-light orange" asp-page="/Edit/Index" asp-route-id="@c.Id"><i class="material-icons">edit_document</i></a></td>
+                        </tr>                        
+                    }       
+                </tbody>
+            </table>
+        }
+    <div class="card-action">
+        Contratos aprovados regulares
+        <span class="amber-text right">@NumberFormatInfo.CurrentInfo.CurrencySymbol @Model.TotalCredito</span>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <form method="post">
+            <div class="card-header">Atualizar Informações</div>
+            <div class="col s12" hidden>
+                <input id="idservico" asp-for="GetID"/>
+            </div>
+            <div class="row">
+                <div class="col s4 m4 l4">
+                    <select id="idsituacao" class="browser-default" asp-for="GetSituacao" asp-items="Model.ESituacoes"></select>
+                </div>
+                <div class="col s8 m8 l8 valign-wrapper">
+                    <select id="idpagamento" class="browser-default" asp-for="GetPagamento" asp-items="Model.EPagamentos"></select>        
+                    <button class="btn lighten-1 waves-effect waves-light mgn-l-10" type="submit" asp-page-handler="GoSituacao"><i class="material-icons">check_circle</i></button>              
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $('.showmodal').click(function () {
+                var _id = $(this).data('id'); 
+                var _stc = $(this).data('stc');    
+                var _pgt = $(this).data('pgt');   
+                document.getElementById('idservico').value = _id;      
+                document.getElementById('idsituacao').value = _stc;            
+                document.getElementById('idpagamento').value = _pgt;        
+            });
+            $("#updateservico").click(function () {
+                var _id = document.getElementById('idservico').value;
+                var _dom = document.getElementById('dominioid').value;  
+                var _nom = document.getElementById('inputmodalnome').value;                 
+                $.get(`/configuracoes/servicos/?id=${_id}&dominio=${_dom}&nome=${_nom}&handler=Manager`);
+            });
+        });
+    </script>
+}

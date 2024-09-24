@@ -1,0 +1,210 @@
+﻿@page "/bpp/contratos/"
+@using System.Globalization
+@model Sim.UI.Web.Areas.Bpp.Pages.Contracts.IndexModel
+@{
+    ViewData["Title"] = "Banco do Povo: Rel. Contratos";
+    //ViewData["ActivePageLi"] = Web.Pages.Shared.LayoutNavPages.BPPRepContracts;
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<div class="card-header">
+    <a asp-area="Bpp" asp-page="/Index" class="waves-effect waves-light btn-small blue-grey"
+        title="Voltar"><i class="material-icons">undo</i>
+    </a>
+    <span class="pdn-10">Relatório | Banco do Povo</span>
+</div>
+<form method="post">
+    <div class="row mgn-0 no-padding">
+        <div class="col s6 offset-s3 no-padding">
+            <div class="row no-padding mgn-0">
+                <div class="input-field col s6 mgn-0 mgn-r-10">
+                    <input asp-for="InputView!.DataInicial!" />
+                </div>
+                <div class="input-field col s6 no-padding mgn-0 valign-wrapper">
+                    <input asp-for="InputView!.DataFinal!" />
+                    <button class="btn waves-effect waves-light mgn-l-10"><i class="material-icons">search</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.InputView!.Relatorios != null)
+    {
+        <div class="row">
+            <div class="box-column">
+                <div class="box-column-row">
+                    <div class="box-card">
+                        <div class="card-header grey-text">Panorama Contratos<i class="material-icons left">view_module</i>
+                        </div>
+                        <div class="box-around">
+                            <button asp-page-handler="Preview" asp-route-id="0"
+                                class="box-cell-item-flex font-size-12 btn-nobg waves-effect">
+                                <p class="grey-text">@Model.InputView.Relatorios.ContratosEmAnalise.Key</p>
+                                <p class="orange-text font-h5">@Model.InputView.Relatorios.ContratosEmAnalise.Value</p>
+                                <p class="orange-text">@Model.InputView.Relatorios.ValorContratosAnalise</p>
+                            </button>
+                            <button asp-page-handler="Preview" asp-route-id="1"
+                                class="box-cell-item-flex font-size-12 btn-nobg waves-effect">
+                                <p class="grey-text">@Model.InputView.Relatorios.ContratosAprovadosRegulares.Key</p>
+                                <p class="amber-text font-h5">@Model.InputView.Relatorios.ContratosAprovadosRegulares.Value
+                                </p>
+                                <p class="amber-text">@Model.InputView.Relatorios.ValorContratosRegulares</p>
+                            </button>
+                            <button asp-page-handler="Preview" asp-route-id="2"
+                                class="box-cell-item-flex font-size-12 btn-nobg waves-effect">
+                                <p class="grey-text">@Model.InputView.Relatorios.ContratosAprovadosInadimplente.Key</p>
+                                <p class="red-text font-h5">@Model.InputView.Relatorios.ContratosAprovadosInadimplente.Value
+                                </p>
+                                <p class="red-text">@Model.InputView.Relatorios.ValorContratosInadimplentes</p>
+                            </button>
+                            <button asp-page-handler="Preview" asp-route-id="3"
+                                class="box-cell-item-flex font-size-12 btn-nobg waves-effect">
+                                <p class="grey-text">@Model.InputView.Relatorios.ContratosLiquidados.Key</p>
+                                <p class="green-text font-h5">@Model.InputView.Relatorios.ContratosLiquidados.Value</p>
+                                <p class="green-text">...</p>
+                            </button>
+                            <button asp-page-handler="Preview" asp-route-id="4"
+                                class="box-cell-item-flex font-size-12 btn-nobg waves-effect">
+                                <p class="grey-text">@Model.InputView.Relatorios.ContratosReprovados.Key</p>
+                                <p class="deep-orange-text font-h5">@Model.InputView.Relatorios.ContratosReprovados.Value
+                                </p>
+                                <p class="deep-orange-text">...</p>
+                            </button>
+                            <button asp-page-handler="Preview" asp-route-id="5"
+                                class="box-cell-item-flex font-size-12 btn-nobg waves-effect">
+                                <p class="grey-text">@Model.InputView.Relatorios.ContratosCancelados.Key</p>
+                                <p class="grey-text font-h5">@Model.InputView.Relatorios.ContratosCancelados.Value</p>
+                                <p class="grey-text">...</p>
+                            </button>
+                            <button asp-page-handler="Preview" asp-route-id="6"
+                                class="box-cell-item-flex font-size-12 btn-nobg waves-effect">
+                                <p class="grey-text">@Model.InputView.Relatorios.ContratosRenegociados.Key</p>
+                                <p class="cyan-text font-h5">@Model.InputView.Relatorios.ContratosRenegociados.Value</p>
+                                <p class="cyan-text">@Model.InputView.Relatorios.ValorContratosRenegociados</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</form>
+
+<div class="row">
+    <div class="box-column-row">
+        <div class="box-card">
+            <div class="card-header grey-text">Valor Médio<i class="material-icons left">attach_money</i></div>
+            <div class="box-around">
+
+                <a class="box-cell-item-flex font-size-12">
+                    <p class="blue-text font-h6">@Model.InputView!.Relatorios!.ValorMedio</p>
+                </a>
+
+            </div>
+        </div>
+        <div class="box-card">
+            <div class="card-header grey-text">Taxa Inadimplência<i class="material-icons left">attach_money</i></div>
+            <div class="box-around">
+
+                <a class="box-cell-item-flex font-size-12">
+                    <p class="blue-text font-h6">@Model.InputView.Relatorios.TaxaInadimplencia</p>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="box-column-row">
+        <div class="box-card">
+            <div class="card-header grey-text">Setores Economicos<i class="material-icons left">location_on</i></div>
+            <div class="box-around">
+                @foreach (var item in Model.InputView!.Relatorios!.Setores!)
+                {
+                    <a class="box-cell-item-flex font-size-12">
+                        <p class="grey-text">@item.faixa</p>
+                        <p class="blue-text font-h6">@item.value</p>
+                        <p class="grey-text">(@item.percent.ToString("N2")%)</p>
+                    </a>
+                }
+            </div>
+        </div>
+
+        <div class="box-card">
+            <div class="card-header grey-text">Faixas<i class="material-icons left">layers</i></div>
+            <div class="box-around">
+                @foreach (var item in Model.InputView!.Relatorios!.Faixas!)
+                {
+                    <a class="box-cell-item-flex font-size-12">
+                        <p class="grey-text">@item.faixa</p>
+                        <p class="blue-text font-h6">@item.value</p>
+                        <p class="grey-text">(@item.percent.ToString("N2")%)</p>
+                    </a>
+                }
+            </div>
+        </div>
+
+        <div class="box-card">
+            <div class="card-header grey-text">Mapa<i class="material-icons left">map</i></div>
+            <div class="box-around">
+                @foreach (var item in Model.InputView!.Relatorios!.Locais!)
+                {
+                    <a class="box-cell-item-flex font-size-12">
+                        <p class="grey-text">@item.faixa</p>
+                        <p class="blue-text font-h6">@item.value</p>
+                        <p class="grey-text">(@item.percent.ToString("N2")%)</p>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.InputView.Relatorios != null)
+{
+    <div class="card">
+        <div class="card-header grey-text">Contratos<i class="material-icons left">text_snippet</i></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Processo</th>
+                    <th>Cliente</th>
+                    <th>Data</th>
+                    <th>Situação</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var _cont = 0;
+                }
+                @foreach (var c in Model.InputView.Relatorios!.ListaContratos!)
+                {
+                    _cont++;
+                    <tr>
+                        <td>@_cont</td>
+                        <td>@Html.DisplayFor(model => c.Numero)</td>
+                        <td>
+                            @Html.DisplayFor(Model => c.Cliente!.Nome)
+                            <br>@Html.DisplayFor(Model => c.Empresa!.CNPJ) @Html.DisplayFor(Model => c.Empresa!.Nome_Empresarial)
+                        </td>
+                        <td>@{
+                                var _data = c.Data!.Value.ToShortDateString();
+                            }@Html.DisplayFor(model => _data)</td>
+                        <td>
+                            @{
+                                var _situacao = c.Situacao.ToString();
+                            }
+                            @Html.DisplayFor(model => _situacao)/@Html.DisplayFor(model => c.Pagamento);
+                        </td>
+                        <td>@NumberFormatInfo.CurrentInfo.CurrencySymbol @Html.DisplayFor(model => c.Valor)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+

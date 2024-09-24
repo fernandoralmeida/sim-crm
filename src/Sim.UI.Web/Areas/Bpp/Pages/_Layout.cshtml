@@ -1,0 +1,21 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+    {
+        Layout = (string)parentLayout!;
+    }
+    else
+    {
+        Layout = "/Pages/Shared/_Layout.cshtml";
+    }
+    ViewData["ActivePage"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.InicioBPP;
+     
+}
+
+
+<div>
+    @RenderBody()
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

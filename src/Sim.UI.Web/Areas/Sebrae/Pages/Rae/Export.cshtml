@@ -8,14 +8,11 @@
     ViewData["ActivePageLi"] = Sim.UI.Web.Pages.Shared.LayoutNavPages.SA;
 }
 <partial name="_StatusMessage" model="Model.StatusMessage" />
-
-<div class="row no-padding mgn-0">
-    <div class="col s12 no-padding">
-        <partial name="_SebraeAquiNav" model="@Model.Src" />
-    </div>
-    <div class="col s6 offset-s3 no-padding">        
+<partial name="_SebraeAquiNav" model="@Model.Src" />
+<div class="row no-padding mgn-l-0 mgn-r-0 mgn-t-12">
+    <div class="col s6 offset-s3 no-padding">
         <form method="post" class="card-content row no-padding mgn-0">
-            <div class="input-field col s6 no-padding mgn-0">
+            <div class="input-field col s6 mgn-0">
                 <input asp-for="DataI" />
             </div>
             <div class="input-field col s6 no-padding mgn-0 valign-wrapper">
@@ -23,7 +20,8 @@
                 <button type="submit" class="btn mgn-l-8"><i class="material-icons">search</i></button>
                 @if (Model.Atendimentos!.Any())
                 {
-                        <button asp-page-handler="ExportToFile" type="submit" class="btn blue mgn-l-8"><i class="material-icons">download</i></button>
+                    <button asp-page-handler="ExportToFile" type="submit" class="btn blue mgn-l-8"><i
+                            class="material-icons">download</i></button>
                 }
             </div>
         </form>
@@ -57,36 +55,36 @@
         <tbody>
             @foreach (var item in Model.Atendimentos!)
             {
-                    <tr>
-                        <td>
+                <tr>
+                    <td>
                         @{
                             var d1 = Convert.ToDateTime(item.Data);
                             var datainicial = d1.ToShortDateString();
                         }
 
                         @Html.DisplayFor(modelItem => datainicial)
-                        </td>
-                        <td class="t-uppercase">
+                    </td>
+                    <td class="t-uppercase">
                         @Html.DisplayFor(modelItem => item.Pessoa!.Nome)
-                        </td>
-                        <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Servicos)
-                        </td>
-                        <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Canal)
-                        </td>
-                        <td>
+                    </td>
+                    <td>
                         @{
                             var dua = Convert.ToDateTime(item.Ultima_Alteracao);
                             var ultima_alteracao = dua.ToShortDateString();
                         }
 
                         @Html.DisplayFor(modelItem => ultima_alteracao)
-                        </td>
-                        <td class="blue-text">
+                    </td>
+                    <td class="blue-text">
                         @Html.DisplayFor(modelItem => item.Sebrae!.RAE)
-                        </td>
-                    </tr>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

@@ -1,4 +1,5 @@
 ﻿
+using Sim.Domain.BancoPovo.Models;
 using Sim.Domain.Customer.Models;
 
 namespace Sim.Domain.Entity;
@@ -39,5 +40,6 @@ public class Pessoa
     public virtual ICollection<EAtendimento>? Atendimentos { get; set; }
     public virtual ICollection<Inscricao>? Inscricoes { get; set; }
     public virtual ICollection<EBindings>? Vinculos { get; set; }
+    // public virtual ICollection<EContrato>? ContratosBpp { get; set; }
 }
 

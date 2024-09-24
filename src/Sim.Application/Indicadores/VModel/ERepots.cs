@@ -1,4 +1,4 @@
-namespace Sim.Domain.Sebrae.Model;
+namespace Sim.Application.Indicadores.VModel;
 public class EReports {
     public KeyValuePair<string, int> Atendimentos { get; set; }
     public KeyValuePair<string, int> Serviços { get; set; }

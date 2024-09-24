@@ -4,6 +4,7 @@ using Sim.Domain.Organizacao.Model;
 using Sim.Domain.Evento.Model;
 using Sim.Domain.Customer.Models;
 using Sim.Domain.Sebrae.Model;
+using Sim.Domain.BancoPovo.Models;
 
 namespace Sim.Data.Context
 {
@@ -35,6 +36,10 @@ namespace Sim.Data.Context
         public DbSet<RaeSebrae>? Sebrae { get; set; }
         public DbSet<ESimples>? Simples { get; set; }
 
+        //Bpp
+        public DbSet<EContrato>? ContratosBPP { get; set; }
+        public DbSet<ERenegociacoes>? RenegociacoesBPP { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EBindings>().ToTable("Vinculos");
@@ -55,6 +60,9 @@ namespace Sim.Data.Context
             modelBuilder.Entity<RaeSebrae>().ToTable("RaeSebrae");
             modelBuilder.Entity<ESimples>().ToTable("Simples");
 
+            modelBuilder.Entity<EContrato>().ToTable("BPPContratos");
+            modelBuilder.Entity<ERenegociacoes>().ToTable("BPPRenegociacoes");
+
             modelBuilder.ApplyConfiguration(new Config.Entity.AtendimentoMap());
             modelBuilder.ApplyConfiguration(new Config.Entity.CanalMap());
             modelBuilder.ApplyConfiguration(new Config.Entity.BindingsMap());
@@ -69,6 +77,11 @@ namespace Sim.Data.Context
             modelBuilder.ApplyConfiguration(new Config.Entity.TipoMap());
             modelBuilder.ApplyConfiguration(new Config.Entity.ContadorMap());
             modelBuilder.ApplyConfiguration(new Config.Entity.StatusAtendimentoMap());
+
+            modelBuilder.ApplyConfiguration(new Config.Entity.SimplesMap());
+
+            modelBuilder.ApplyConfiguration(new Config.Entity.ContratosMap());
+            modelBuilder.ApplyConfiguration(new Config.Entity.RenegociacoesMap());
             base.OnModelCreating(modelBuilder);
         }
 

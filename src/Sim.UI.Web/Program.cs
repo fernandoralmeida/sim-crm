@@ -7,6 +7,7 @@ using Sim.Identity.Context;
 using Sim.UI.Web.AutoMapper;
 using Sim.IoC;
 using Sim.UI.Web.Areas.Sebrae.Services;
+using Sim.UI.Web.Areas.Bpp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ builder.Services.IdentityConfig();
 builder.Services.DataBaseConfig(builder.Configuration, "APP_DB");
 builder.Services.RegisterServices();
 builder.Services.SebraeScoped();
+builder.Services.BppScoped();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddScoped<HttpContextAccessor>();
 
