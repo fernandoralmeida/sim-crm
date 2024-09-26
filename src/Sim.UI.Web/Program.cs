@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using Sim.Application.Agenda.Injector;
 using Sim.Identity.IoC;
 using Sim.Identity.Entity;
 using Sim.Identity.Context;
@@ -27,6 +28,8 @@ builder.Services.DataBaseConfig(builder.Configuration, "APP_DB");
 builder.Services.RegisterServices();
 builder.Services.SebraeScoped();
 builder.Services.BppScoped();
+builder.Services.AddAgendaScoped();
+builder.Services.AddAgendaAutoMap();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddScoped<HttpContextAccessor>();
 

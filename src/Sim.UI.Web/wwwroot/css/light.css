@@ -1144,6 +1144,128 @@ nav,
     image-rendering: optimizeQuality;
 }
 
+/* Calendario */
+.calendar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.calendar.cell.head {
+    text-transform: uppercase;
+    width: 14.28%;
+    height: auto;
+    padding: 8px 4px;
+    border-right: 0px;
+}
+
+.calendar.cell {
+    width: 14.28%;
+    height: 100px;
+    border-bottom: solid 1px var(--color-border);
+    border-right: solid 1px var(--color-border);
+    padding: 4px;
+
+}
+
+.calendar.cell.content {
+    display: block;
+    overflow: auto;
+}
+
+.content.items {
+    display: block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: solid 1px var(--color-6);
+    background-color: var(--color-1);
+    color: var(--color-6);
+    font-size: 12px;
+}
+
+.content.items.reminders {
+    display: block;
+    padding: 2px;
+    border-radius: 4px;
+    border: solid 1px var(--color-6);
+    background-color: var(--color-11);
+    color: var(--color-6);
+    font-size: 12px;
+}
+
+.content.items.old {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+.content.head {
+    margin-bottom: 4px;
+}
+
+.no-events {
+    font-style: italic;
+    color: var(--color-gb-50);
+}
+
+/* .calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.calendar-cell {
+    padding: 15px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    min-height: 100px;
+    position: relative;
+}
+
+.calendar-cell.head {
+    background-color: #ececec;
+    font-weight: bold;
+    text-align: center;
+}
+
+.calendar-cell.content {
+    background-color: #ffffff;
+}
+
+.day-header {
+    font-size: 1.2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.events-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.content-item {
+    display: block;
+    padding: 5px;
+    background-color: #e3f2fd;
+    border-radius: 4px;
+    color: #0d47a1;
+    text-decoration: none;
+}
+
+.content-item.old {
+    color: #9e9e9e;
+    text-decoration: line-through;
+}
+
+.content-item.reminders {
+    background-color: #ffecb3;
+    color: #ff6f00;
+} */
+
+
+
 /**** Links ****/
 
 /**** Modulos ****/

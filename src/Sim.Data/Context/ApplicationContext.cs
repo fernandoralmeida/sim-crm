@@ -40,6 +40,17 @@ namespace Sim.Data.Context
         public DbSet<EContrato>? ContratosBPP { get; set; }
         public DbSet<ERenegociacoes>? RenegociacoesBPP { get; set; }
 
+        //Lembretes
+        public DbSet<EReminder>? Reminders { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(@"Server=127.0.0.1,1433;Database=Sim-Application-db20210001;User Id=sa;Password=sql@1234;");
+            }
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EBindings>().ToTable("Vinculos");
@@ -63,6 +74,8 @@ namespace Sim.Data.Context
             modelBuilder.Entity<EContrato>().ToTable("BPPContratos");
             modelBuilder.Entity<ERenegociacoes>().ToTable("BPPRenegociacoes");
 
+            modelBuilder.Entity<EReminder>().ToTable("Reminders");
+
             modelBuilder.ApplyConfiguration(new Config.Entity.AtendimentoMap());
             modelBuilder.ApplyConfiguration(new Config.Entity.CanalMap());
             modelBuilder.ApplyConfiguration(new Config.Entity.BindingsMap());
@@ -82,6 +95,8 @@ namespace Sim.Data.Context
 
             modelBuilder.ApplyConfiguration(new Config.Entity.ContratosMap());
             modelBuilder.ApplyConfiguration(new Config.Entity.RenegociacoesMap());
+
+            modelBuilder.ApplyConfiguration(new Config.Entity.ReminderMap());
             base.OnModelCreating(modelBuilder);
         }
 

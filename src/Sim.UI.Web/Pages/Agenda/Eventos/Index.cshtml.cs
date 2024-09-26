@@ -6,6 +6,7 @@ using AutoMapper;
 using Sim.Domain.Evento.Model;
 using Sim.Domain.Organizacao.Model;
 using Sim.Application.Interfaces;
+using Sim.Application.Helpers;
 
 namespace Sim.UI.Web.Pages.Agenda.Eventos
 {
@@ -87,7 +88,8 @@ namespace Sim.UI.Web.Pages.Agenda.Eventos
                     return Page();
                 }
 
-                Input!.Codigo = DateTime.Now.GetHashCode();
+
+                Input!.Codigo = SecureRandom.GenerateSecureRandomNumber();
 
                 var _dominioativo = await _appSecretaria.DoListAsync(s => s.Acronimo == HttpContext.Session.GetString("Dominio"));
                 var _dominio_selecionado = await _appSecretaria.GetAsync((Guid)_dominioativo.FirstOrDefault()?.Id!);

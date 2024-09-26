@@ -10,9 +10,9 @@ $(document).ready(function () {
 
     $('.dropdown-trigger').dropdown(
         {
-            hover: true,
+            hover: false,
             constrainWidth: false,
-            coverTrigger: false,
+            coverTrigger: true,
             closeOnClick: false
         });
 

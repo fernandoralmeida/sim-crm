@@ -9,5 +9,6 @@ namespace Sim.Application.Interfaces
         Task<EEvento> GetAsync(Guid id);
         Task<IEnumerable<EEvento>> DoListAsync(Expression<Func<EEvento, bool>>? filter = null);
 
+        
     }
 }

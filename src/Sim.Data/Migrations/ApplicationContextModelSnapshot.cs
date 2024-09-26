@@ -22,6 +22,76 @@ namespace Sim.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Sim.Domain.BancoPovo.Models.EContrato", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AppUser")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<Guid?>("ClienteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataSituacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<Guid?>("EmpresaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Numero")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Pagamento")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Situacao")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UltimaAlteracao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("EmpresaId");
+
+                    b.ToTable("BPPContratos", (string)null);
+                });
+
+            modelBuilder.Entity("Sim.Domain.BancoPovo.Models.ERenegociacoes", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ContratoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Situacao")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContratoId");
+
+                    b.ToTable("BPPRenegociacoes", (string)null);
+                });
+
             modelBuilder.Entity("Sim.Domain.Customer.Models.EBindings", b =>
                 {
                     b.Property<Guid>("Id")
@@ -109,6 +179,9 @@ namespace Sim.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(256)");
 
+                    b.Property<Guid?>("SebraeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Servicos")
                         .HasColumnType("varchar(max)");
 
@@ -131,6 +204,8 @@ namespace Sim.Data.Migrations
 
                     b.HasIndex("Protocolo")
                         .IsUnique();
+
+                    b.HasIndex("SebraeId");
 
                     b.ToTable("Atendimento", (string)null);
                 });
@@ -460,6 +535,38 @@ namespace Sim.Data.Migrations
                     b.ToTable("Parceiros", (string)null);
                 });
 
+            modelBuilder.Entity("Sim.Domain.Evento.Model.EReminder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("varchar(max)");
+
+                    b.Property<string>("Local")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Owner")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Titulo")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("Visivel")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Reminders", (string)null);
+                });
+
             modelBuilder.Entity("Sim.Domain.Evento.Model.ETipo", b =>
                 {
                     b.Property<Guid>("Id")
@@ -555,6 +662,69 @@ namespace Sim.Data.Migrations
                     b.ToTable("Servico", (string)null);
                 });
 
+            modelBuilder.Entity("Sim.Domain.Sebrae.Model.ESimples", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Chave")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Documento")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<Guid?>("EmpresaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Exercicio")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmpresaId");
+
+                    b.ToTable("Simples", (string)null);
+                });
+
+            modelBuilder.Entity("Sim.Domain.Sebrae.Model.RaeSebrae", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("RAE")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RaeSebrae", (string)null);
+                });
+
+            modelBuilder.Entity("Sim.Domain.BancoPovo.Models.EContrato", b =>
+                {
+                    b.HasOne("Sim.Domain.Entity.Pessoa", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId");
+
+                    b.HasOne("Sim.Domain.Entity.Empresas", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("EmpresaId");
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Empresa");
+                });
+
+            modelBuilder.Entity("Sim.Domain.BancoPovo.Models.ERenegociacoes", b =>
+                {
+                    b.HasOne("Sim.Domain.BancoPovo.Models.EContrato", "Contrato")
+                        .WithMany("Renegociacaoes")
+                        .HasForeignKey("ContratoId");
+
+                    b.Navigation("Contrato");
+                });
+
             modelBuilder.Entity("Sim.Domain.Customer.Models.EBindings", b =>
                 {
                     b.HasOne("Sim.Domain.Entity.Empresas", "Empresa")
@@ -584,11 +754,17 @@ namespace Sim.Data.Migrations
                         .WithMany("Atendimentos")
                         .HasForeignKey("PessoaId");
 
+                    b.HasOne("Sim.Domain.Sebrae.Model.RaeSebrae", "Sebrae")
+                        .WithMany()
+                        .HasForeignKey("SebraeId");
+
                     b.Navigation("Dominio");
 
                     b.Navigation("Empresa");
 
                     b.Navigation("Pessoa");
+
+                    b.Navigation("Sebrae");
                 });
 
             modelBuilder.Entity("Sim.Domain.Entity.Inscricao", b =>
@@ -655,6 +831,20 @@ namespace Sim.Data.Migrations
                         .HasForeignKey("DominioId");
 
                     b.Navigation("Dominio");
+                });
+
+            modelBuilder.Entity("Sim.Domain.Sebrae.Model.ESimples", b =>
+                {
+                    b.HasOne("Sim.Domain.Entity.Empresas", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("EmpresaId");
+
+                    b.Navigation("Empresa");
+                });
+
+            modelBuilder.Entity("Sim.Domain.BancoPovo.Models.EContrato", b =>
+                {
+                    b.Navigation("Renegociacaoes");
                 });
 
             modelBuilder.Entity("Sim.Domain.Entity.Empresas", b =>

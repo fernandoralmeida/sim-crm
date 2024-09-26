@@ -92,10 +92,10 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
 
                     _logger.LogInformation($"Usuário {User?.Identity!.Name} conectado.");
 
-                    if (DateTime.Now.DayOfYear > 10)
-                        return LocalRedirect(returnUrl);
-                    else
-                        return RedirectToPage("/Index");
+                    // if (DateTime.Now.DayOfYear > 10)
+                    //     return LocalRedirect(returnUrl);
+                    // else
+                    return RedirectToPage("/Calendar/Index");
                 }
                 if (result.RequiresTwoFactor)
                 {
