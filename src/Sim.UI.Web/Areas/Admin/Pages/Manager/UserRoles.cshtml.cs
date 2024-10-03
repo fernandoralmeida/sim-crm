@@ -17,7 +17,7 @@ using System.Security.Claims;
 namespace Sim.UI.Web.Areas.Admin.Pages.Manager
 {
 
-    [Authorize(Roles = $"{AccountType.Adm_Global},{AccountType.Adm_Account}")]
+    [Authorize(Policy = "AdminOrAccounts")]
     public class UserRolesModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -53,20 +53,30 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
         public string? Selecionado { get; set; }
 
         public SelectList? RoleList { get; set; }
-        public IEnumerable<KeyValuePair<string, IEnumerable<KeyValuePair<string, Guid>>>>? OwnerList { get; set; }
+        public IEnumerable<KeyValuePair<string, IEnumerable<KeyValuePair<string, string>>>>? OwnerList { get; set; }
 
         [BindProperty]
         public string? OwnerSelect { get; set; }
 
         private async Task LoadAsync(string id)
         {
-            var _owners = await _secretaria.DoListHierarquia1Async(await _secretaria.DoListAsync());
-            var _subowners = await _secretaria.DoListHierarquia2Async(await _secretaria.DoListAsync());
+            // var _owners = await _secretaria.DoListHierarquia1Async(await _secretaria.DoListAsync());
+            // var _subowners = await _secretaria.DoListHierarquia2Async(await _secretaria.DoListAsync());
 
-            OwnerList = from _s in _owners.Where(s => s.Hierarquia == Domain.Organizacao.Model.EHierarquia.Secretaria)
-                        select (new KeyValuePair<string, IEnumerable<KeyValuePair<string, Guid>>>(_s.Acronimo!,
-                                from _sb in _subowners.Where(s => s.Dominio == _s.Id)
-                                select (new KeyValuePair<string, Guid>(_sb.Acronimo!, _sb.Id))));
+            // OwnerList = from _s in _owners.Where(s => s.Hierarquia == Domain.Organizacao.Model.EHierarquia.Secretaria)
+            //             select (new KeyValuePair<string, IEnumerable<KeyValuePair<string, Guid>>>(_s.Acronimo!,
+            //                     from _sb in _subowners.Where(s => s.Dominio == _s.Id)
+            //                     select (new KeyValuePair<string, Guid>(_sb.Acronimo!, _sb.Id))));
+
+            OwnerList = new List<KeyValuePair<string, IEnumerable<KeyValuePair<string, string>>>>
+            {
+                new(
+                    "Permissions", new List<KeyValuePair<string, string>>
+                    {
+                        new("Permission", "Adm_Settings"),
+                        new("Permission", "Adm_Accounts")
+                    })
+            };
 
             var roles = _roleManager.Roles.ToList();
             if (User.IsInRole(AccountType.Adm_Global))
@@ -162,27 +172,27 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
             {
                 var _user = await _userManager.FindByIdAsync(id);
 
-                var _setor = await _secretaria.GetAsync(Guid.Parse(OwnerSelect!));
+                // var _setor = await _secretaria.GetAsync(Guid.Parse(OwnerSelect!));
 
-                var _clains = await _userManager.GetClaimsAsync(_user);
+                // var _clains = await _userManager.GetClaimsAsync(_user);
 
-                foreach (var item in _clains)
-                {
-                    var _verificardominio = await _secretaria.GetAsync(Guid.Parse(item.Value));
-                    if (_verificardominio != null && _setor.Dominio != _verificardominio.Dominio)
-                    {
-                        var _userdominio = await _secretaria.GetAsync((Guid)_verificardominio.Dominio!);
-                        throw new Exception($"Usuário vinculado ao Dominio {_userdominio.Acronimo}!");
-                    }
-                }
+                // foreach (var item in _clains)
+                // {
+                //     var _verificardominio = await _secretaria.GetAsync(Guid.Parse(item.Value));
+                //     if (_verificardominio != null && _setor.Dominio != _verificardominio.Dominio)
+                //     {
+                //         var _userdominio = await _secretaria.GetAsync((Guid)_verificardominio.Dominio!);
+                //         throw new Exception($"Usuário vinculado ao Dominio {_userdominio.Acronimo}!");
+                //     }
+                // }
 
-                Claim _claim = new(_setor.Acronimo!, _setor.Id.ToString(), ClaimValueTypes.String);
+                Claim _claim = new("Permission", OwnerSelect! ,ClaimValueTypes.String);
 
                 IdentityResult result = await _userManager.AddClaimAsync(_user, _claim);
 
                 await LoadAsync(id);
                 if (result.Succeeded)
-                    StatusMessage = $"Vinculo {_user.Name} :: {_setor.Acronimo} criado com sucesso!";
+                    StatusMessage = $"Função {OwnerSelect} associada com sucesso!";
 
                 else
                     StatusMessage = $"Erro: {result}";

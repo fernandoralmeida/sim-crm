@@ -65,13 +65,16 @@ namespace Sim.UI.Web.Pages.Atendimento.Anonimo
             try
             {
                 var _claims = await
-                                _userManager.GetClaimsAsync(
+                                _userManager.GetRolesAsync(
                                     await _userManager.GetUserAsync(User));
 
                 var _setores = new List<EOrganizacao>();
 
                 foreach (var claim in _claims)
-                    _setores.Add(await _appSecretaria!.GetAsync(Guid.Parse(claim.Value)));
+                {
+                    var _result = await _appSecretaria!.DoListAsync(s => s.Acronimo == claim);
+                    _setores.Add(_result.FirstOrDefault()!);
+                }
 
                 var _sec = await _appSecretaria.DoListAsync(s => s.Dominio == _setores.FirstOrDefault()!.Dominio);
 
@@ -91,7 +94,7 @@ namespace Sim.UI.Web.Pages.Atendimento.Anonimo
 
                 foreach (var item in _claims)
                     _lista.Add(new KeyValuePair<string, IEnumerable<string>>(
-                        item.Type, from c in await _appServiceServico.DoListAsync(s => s.Dominio!.Id == Guid.Parse(item.Value))
+                        item, from c in await _appServiceServico.DoListAsync(s => s.Dominio!.Acronimo == item)
                                    select c.Nome
                     ));
 

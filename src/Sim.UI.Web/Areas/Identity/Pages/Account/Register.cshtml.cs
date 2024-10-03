@@ -13,7 +13,7 @@ using Sim.Identity.Config;
 
 namespace Sim.UI.Web.Areas.Identity.Pages.Account
 {
-    [Authorize(Roles = $"{AccountType.Adm_Global},{AccountType.Adm_Account}")]
+    [Authorize(Policy = $"{AccountType.IsAdminGlobal}")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;

@@ -8,10 +8,11 @@ using Sim.Domain.Entity;
 using Sim.Identity.Config;
 using Sim.UI.Web.Areas.Sebrae.Services;
 using Sim.Application.Sebrae.Interfaces;
+using System.Security.Claims;
 
 namespace Sim.UI.Web.Areas.Sebrae.Pages
 {
-    [Authorize(Roles = $"{AccountType.Adm_Global},{Access.Module}")]
+    [RoleOrClaimAuthorize(Access.Module, "Permission", AccountType.IsAdminGlobal)]
     public class IndexModel : PageModel
     {
         private readonly IAppServiceRae? _appServiceRae;

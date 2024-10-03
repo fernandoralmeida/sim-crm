@@ -53,98 +53,105 @@ namespace Sim.UI.Web.Pages.Atendimento.Manager
 
         private async Task OnLoad()
         {
-            try
+
+            var _claims = await
+                            _userManager.GetRolesAsync(
+                                await _userManager.GetUserAsync(User));
+
+            var _setores = new List<EOrganizacao>();
+
+            foreach (var claim in _claims)
             {
-                var _claims = await
-                                _userManager.GetClaimsAsync(
-                                    await _userManager.GetUserAsync(User));
+                var _result = await _appSecretaria!.DoListAsync(s => s.Acronimo == claim);
+                _setores.Add(_result.FirstOrDefault()!);
+            }
 
-                var _setores = new List<EOrganizacao>();
+            var _sec = await _appSecretaria.DoListAsync(s => s.Dominio == _setores.FirstOrDefault()!.Dominio);
 
-                foreach (var claim in _claims)
-                    _setores.Add(await _appSecretaria!.GetAsync(Guid.Parse(claim.Value)));
+            var _canais = await _appServiceCanal.DoListAsync(s => s.Dominio!.Id == _sec.FirstOrDefault()!.Dominio);
 
-                var _sec = await _appSecretaria.DoListAsync(s => s.Dominio == _setores.FirstOrDefault()!.Dominio);
+            Setores = new SelectList(_setores, nameof(EOrganizacao.Nome), nameof(EOrganizacao.Nome), null);
+            Canais = new SelectList(_canais, nameof(ECanal.Nome), nameof(ECanal.Nome), null);
 
-                var _canais = await _appServiceCanal.DoListAsync(s => s.Dominio!.Id == _sec.FirstOrDefault()!.Dominio);
+            var _dominio = HttpContext.Session.GetString("Dominio");
 
-                Setores = new SelectList(_setores, nameof(EOrganizacao.Nome), nameof(EOrganizacao.Nome), null);
-                Canais = new SelectList(_canais, nameof(ECanal.Nome), nameof(ECanal.Nome), null);
-
-                var _dominio = HttpContext.Session.GetString("Dominio");
-
-                var _lista = new List<KeyValuePair<string, IEnumerable<string>>>
+            var _lista = new List<KeyValuePair<string, IEnumerable<string>>>
                 {
                     new(_dominio!,
                         from d in await _appServiceServico.DoListAsync(s => s.Dominio!.Acronimo == _dominio)
                         select d.Nome)
                 };
 
-                foreach (var item in _claims)
-                    _lista.Add(new KeyValuePair<string, IEnumerable<string>>(
-                        item.Type, from c in await _appServiceServico.DoListAsync(s => s.Dominio!.Id == Guid.Parse(item.Value))
-                                   select c.Nome
-                    ));
+            foreach (var item in _claims)
+                _lista.Add(new KeyValuePair<string, IEnumerable<string>>(
+                    item, from c in await _appServiceServico.DoListAsync(s => s.Dominio!.Acronimo == item)
+                          select c.Nome
+                ));
 
-                ListaServicos = _lista;
-            }
-            catch (Exception ex)
-            {
-                StatusMessage = $"Erro: {ex.Message}";
-            }
+            ListaServicos = _lista;
         }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            await OnLoad();
-
-            var atendimemnto_ativio = await _appServiceAtendimento.GetAsync((Guid)id!);
-
-            if (atendimemnto_ativio.Owner_AppUser_Id != User.Identity!.Name)
+            try
             {
-                StatusMessage = $"Erro: Atendimento pertence a {atendimemnto_ativio.Owner_AppUser_Id}!";
-                return RedirectToPage("/Atendimento/Index");
+                await OnLoad();
+
+                var atendimemnto_ativio = await _appServiceAtendimento.GetAsync((Guid)id!);
+
+                if (atendimemnto_ativio.Owner_AppUser_Id != User.Identity!.Name)
+                {
+                    StatusMessage = $"Erro: Atendimento pertence a {atendimemnto_ativio.Owner_AppUser_Id}!";
+                    return RedirectToPage("/Atendimento/Index");
+                }
+
+                if (atendimemnto_ativio == null)
+                {
+                    StatusMessage = "Erro: Algo inesperado aconteceu, tente novamente!";
+                    return RedirectToPage("/Atendimento/Index");
+                }
+
+                Input = new()
+                {
+                    Id = atendimemnto_ativio.Id,
+                    Protocolo = atendimemnto_ativio.Protocolo,
+                    Data = atendimemnto_ativio.Data,
+                    DataF = atendimemnto_ativio.DataF,
+                    Setor = atendimemnto_ativio.Setor,
+                    Canal = atendimemnto_ativio.Canal,
+                    Servicos = atendimemnto_ativio.Servicos,
+                    Descricao = atendimemnto_ativio.Descricao,
+                    Status = atendimemnto_ativio.Status,
+                    Ultima_Alteracao = atendimemnto_ativio.Ultima_Alteracao,
+                    Ativo = atendimemnto_ativio.Ativo,
+                    Owner_AppUser_Id = atendimemnto_ativio.Owner_AppUser_Id,
+                    Pessoa = atendimemnto_ativio.Pessoa,
+                    Empresa = atendimemnto_ativio.Empresa,
+                    Dominio = atendimemnto_ativio.Dominio
+                };
+
+                var serv = await _appServiceServico.DoListAsync(
+                                        p => p.Dominio!.Nome!.Contains(Input.Setor!) ||
+                                        p.Dominio == null);
+
+                if (serv != null)
+                {
+                    Servicos = new SelectList(serv, nameof(EServico.Nome), nameof(EServico.Nome), null);
+                }
+
+                Input.Canal = atendimemnto_ativio.Canal;
+                Input.Servicos = atendimemnto_ativio.Servicos;
+                ServicosSelecionados = atendimemnto_ativio.Servicos;
+
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Erro: {ex.Message}";
+                return Page();
+
             }
 
-            if (atendimemnto_ativio == null)
-            {
-                StatusMessage = "Erro: Algo inesperado aconteceu, tente novamente!";
-                return RedirectToPage("/Atendimento/Index");
-            }
-
-            Input = new()
-            {
-                Id = atendimemnto_ativio.Id,
-                Protocolo = atendimemnto_ativio.Protocolo,
-                Data = atendimemnto_ativio.Data,
-                DataF = atendimemnto_ativio.DataF,
-                Setor = atendimemnto_ativio.Setor,
-                Canal = atendimemnto_ativio.Canal,
-                Servicos = atendimemnto_ativio.Servicos,
-                Descricao = atendimemnto_ativio.Descricao,
-                Status = atendimemnto_ativio.Status,
-                Ultima_Alteracao = atendimemnto_ativio.Ultima_Alteracao,
-                Ativo = atendimemnto_ativio.Ativo,
-                Owner_AppUser_Id = atendimemnto_ativio.Owner_AppUser_Id,
-                Pessoa = atendimemnto_ativio.Pessoa,
-                Empresa = atendimemnto_ativio.Empresa,
-                Dominio = atendimemnto_ativio.Dominio
-            };
-
-            var serv = await _appServiceServico.DoListAsync(
-                                    p => p.Dominio!.Nome!.Contains(Input.Setor!) ||
-                                    p.Dominio == null);
-
-            if (serv != null)
-            {
-                Servicos = new SelectList(serv, nameof(EServico.Nome), nameof(EServico.Nome), null);
-            }
-
-            Input.Canal = atendimemnto_ativio.Canal;
-            Input.Servicos = atendimemnto_ativio.Servicos;
-            ServicosSelecionados = atendimemnto_ativio.Servicos;
-
-            return Page();
         }
 
         public async Task<IActionResult> OnPostAlterarAsync(Guid id)

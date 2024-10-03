@@ -6,6 +6,7 @@ namespace Sim.Domain.Evento.Interfaces.Service
     public interface IServiceReminder : IServiceBase<EReminder>
     {        
         Task<EReminder?> GetAsync(Guid id);
+        Task<EReminder?> GetAsNoTrackingAsync(Guid id);
         Task<IEnumerable<EReminder>?> DoListAsync(Expression<Func<EReminder, bool>>? filter = null);
     }
 }

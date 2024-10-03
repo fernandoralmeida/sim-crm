@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 using Sim.Identity.Config;
 
 namespace Sim.UI.Web.Areas.Settings.Pages.Common.Setor.Manage;
-[Authorize(Roles = $"{AccountType.Adm_Global},{AccountType.Adm_Settings}")]
+
+[Authorize(Policy = "AdminOrSettings")]
 public class IndexModel : PageModel
 {
     private readonly IAppServiceSecretaria _appSecretaria;

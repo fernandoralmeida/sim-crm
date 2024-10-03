@@ -123,25 +123,26 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
             {
                 var _CRM = "SimCRM";
                 var _CRMID = new Guid().ToString();
-                var _claims = await _signInManager.UserManager.GetClaimsAsync(appuser);
+                var _roles = await _signInManager.UserManager.GetRolesAsync(appuser);
+                //var _claims = await _signInManager.UserManager.GetClaimsAsync(appuser);
                 var _list = await _appSecretaria.DoListAsync();
                 var collection = new List<KeyValuePair<string, Guid>>();
 
                 HttpContext.Session.SetString("FirstName", appuser.Name);
                 HttpContext.Session.SetString("Theme", appuser.Theme ?? "light");
 
-                foreach (var claim in _claims)
+                foreach (var role in _roles)
                 {
-                    collection.Add(new KeyValuePair<string, Guid>(claim.Type, Guid.Parse(claim.Value)));
-                    var _setor = _list.Where(s => s.Id == Guid.Parse(claim.Value)).FirstOrDefault()!;
+                    var _setor = _list.Where(s => s.Acronimo == role).FirstOrDefault()!;
                     var _dominio = _list.Where(s => s.Id == _setor.Dominio).FirstOrDefault()!;
                     _CRM = _dominio.Acronimo ?? "SimCRM";
                     _CRMID = _dominio.Id.ToString() ?? _CRMID;
+                    collection.Add(new KeyValuePair<string, Guid>(_setor.Acronimo!, _setor.Id));
                 }
 
                 HttpContext.Session.SetString("Dominio", _CRM);
                 HttpContext.Session.SetString("DominioID", _CRMID);
-                HttpContext.Session.SetString("SetorAtivo", _claims.First()?.Type!);
+                HttpContext.Session.SetString("SetorAtivo", _roles.First()!);
 
                 var json = JsonConvert.SerializeObject(collection);
                 HttpContext.Session.SetString("ClaimList", json);

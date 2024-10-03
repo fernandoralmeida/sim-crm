@@ -10,17 +10,20 @@ using Sim.Identity.Config;
 namespace Sim.UI.Web.Areas.Admin.Pages.Manager
 {
 
-    [Authorize(Roles = $"{AccountType.Adm_Global}")]
+    [Authorize(Policy = "AdminOrAccounts")]
     public class RolesModel : PageModel
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IAppServiceSecretaria _appOrg;
+        private readonly IAppServiceSecretaria _secretaria;
 
         public RolesModel(RoleManager<IdentityRole> roleManager,
-            IAppServiceSecretaria appOrg)
+            IAppServiceSecretaria appOrg,
+            IAppServiceSecretaria secretaria)
         {
             _roleManager = roleManager;
             _appOrg = appOrg;
+            _secretaria = secretaria;
         }
 
         [TempData]
@@ -28,30 +31,36 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
 
         [BindProperty]
         public VMRoles? Input { get; set; }
-        public SelectList? Funcoes { get; set; }
+        public List<KeyValuePair<string, IEnumerable<string>>>? OwnerList { get; set; } = new();
 
         [BindProperty]
-        public string? Funcao { get; set; }
+        public string? OwnerSelect { get; set; }
 
         private async Task LoadAsync()
         {
+            var _owners = await _secretaria.DoListHierarquia1Async(await _secretaria.DoListAsync());
+            var _subowners = await _secretaria.DoListHierarquia2Async(await _secretaria.DoListAsync());
+
+            var _olist = from _s in _owners.Where(s => s.Hierarquia == Domain.Organizacao.Model.EHierarquia.Secretaria)
+                         select (new KeyValuePair<string, IEnumerable<string>>(_s.Acronimo!,
+                                 from _sb in _subowners.Where(s => s.Dominio == _s.Id)
+                                 select new string(_sb.Acronimo)));
+
+
+
             var t = Task.Run(() => _roleManager.Roles.OrderBy(o => o.Name));
             await t;
             Input = new()
             {
-                Roles = t.Result.Where(s => s.Name != AccountType.Adm_Global)
+                Roles = t.Result
             };
 
-            var _list = await _appOrg.DoListAsync();
+            var _rlist = from r in Input.Roles select r.Name;
 
-            var _funcs = new List<string>();
-            _funcs = AccountType.ToList().ToList();
-            foreach (var l in AccountType.ToList())
-                foreach (var sl in Input.Roles.Where(s => s.Name == l))
-                    _funcs.Remove(sl.Name);          
-
-            Funcoes = new SelectList(_funcs);
-            _ = Input.Roles.OrderBy(o => o.Name);
+            foreach (var r in _olist)
+            {
+                OwnerList?.Add(new(r.Key, r.Value.Except(_rlist)));
+            }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -95,19 +104,19 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
                 await LoadAsync();
                 if (ModelState.IsValid)
                 {
-                    var role = new IdentityRole(Funcao);
+                    var role = new IdentityRole(OwnerSelect);
                     var roleresult = await _roleManager.CreateAsync(role);
 
                     if (roleresult.Succeeded)
                     {
                         Input!.Roles = _roleManager.Roles;
-                        Funcao = string.Empty;
+                        OwnerSelect = string.Empty;
 
                         return Page();
                     }
                     return Page();
                 }
-                
+
                 return Page();
             }
             catch (Exception ex)
@@ -140,7 +149,7 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
                     return RedirectToPage();
 
                 }
-                
+
                 return Page();
             }
             catch (Exception ex)

@@ -59,65 +59,72 @@ namespace Sim.UI.Web.Pages.Atendimento.Novo
 
         private async Task OnLoad()
         {
-            try
+
+            var _claims = await
+                            _userManager.GetRolesAsync(
+                                await _userManager.GetUserAsync(User));
+
+            var _setores = new List<EOrganizacao>();
+
+            foreach (var claim in _claims)
             {
-                var _claims = await
-                                _userManager.GetClaimsAsync(
-                                    await _userManager.GetUserAsync(User));
+                var _result = await _appSecretaria!.DoListAsync(s => s.Acronimo == claim);
+                _setores.Add(_result.FirstOrDefault()!);
+            }
 
-                var _setores = new List<EOrganizacao>();
 
-                foreach (var claim in _claims)
-                    _setores.Add(await _appSecretaria!.GetAsync(Guid.Parse(claim.Value)));
+            var _sec = await _appSecretaria.DoListAsync(s => s.Dominio == _setores.FirstOrDefault()!.Dominio);
 
-                var _sec = await _appSecretaria.DoListAsync(s => s.Dominio == _setores.FirstOrDefault()!.Dominio);
+            var _canais = await _appServiceCanal.DoListAsync(s => s.Dominio!.Id == _sec.FirstOrDefault()!.Dominio);
 
-                var _canais = await _appServiceCanal.DoListAsync(s => s.Dominio!.Id == _sec.FirstOrDefault()!.Dominio);
+            Setores = new SelectList(_setores, nameof(EOrganizacao.Nome), nameof(EOrganizacao.Nome), null);
+            Canais = new SelectList(_canais, nameof(ECanal.Nome), nameof(ECanal.Nome), null);
 
-                Setores = new SelectList(_setores, nameof(EOrganizacao.Nome), nameof(EOrganizacao.Nome), null);
-                Canais = new SelectList(_canais, nameof(ECanal.Nome), nameof(ECanal.Nome), null);
+            var _dominio = HttpContext.Session.GetString("Dominio");
 
-                var _dominio = HttpContext.Session.GetString("Dominio");
-
-                var _lista = new List<KeyValuePair<string, IEnumerable<string>>>
+            var _lista = new List<KeyValuePair<string, IEnumerable<string>>>
                 {
                     new(_dominio!,
                         from d in await _appServiceServico.DoListAsync(s => s.Dominio!.Acronimo == _dominio)
                         select d.Nome)
                 };
 
-                foreach (var item in _claims)
-                    _lista.Add(new KeyValuePair<string, IEnumerable<string>>(
-                        item.Type, from c in await _appServiceServico.DoListAsync(s => s.Dominio!.Id == Guid.Parse(item.Value))
-                                   select c.Nome
-                    ));
+            foreach (var item in _claims)
+                _lista.Add(new KeyValuePair<string, IEnumerable<string>>(
+                    item, from c in await _appServiceServico.DoListAsync(s => s.Dominio!.Acronimo == item)
+                          select c.Nome
+                ));
 
-                ListaServicos = _lista;
-            }
-            catch (Exception ex)
-            {
-                StatusMessage = $"Erro: {ex.Message}";
-            }
+            ListaServicos = _lista;
+
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            await OnLoad();
-
-            var atendimemnto_ativio = await _appServiceAtendimento.DoListAsync(s => s.Owner_AppUser_Id == User.Identity!.Name && s.Status == "Ativo");
-
-            if (!atendimemnto_ativio.Any())
+            try
             {
-                StatusMessage = "Alerta: Não existe atendimento ativo no momento!";
-                return RedirectToPage("/Atendimento/Index");
+                await OnLoad();
+
+                var atendimemnto_ativio = await _appServiceAtendimento.DoListAsync(s => s.Owner_AppUser_Id == User.Identity!.Name && s.Status == "Ativo");
+
+                if (!atendimemnto_ativio.Any())
+                {
+                    StatusMessage = "Alerta: Não existe atendimento ativo no momento!";
+                    return RedirectToPage("/Atendimento/Index");
+                }
+
+                Input = _mapper.Map<InputModelAtendimento>(atendimemnto_ativio.FirstOrDefault());
+
+                Input!.Setor = HttpContext.Session.GetString("SetorAtivo") ?? "";
+                var _canal = Canais?.FirstOrDefault(s => s.Value == "Presencial");
+                Input.Canal = _canal?.Value;
+                return Page();
             }
-
-            Input = _mapper.Map<InputModelAtendimento>(atendimemnto_ativio.FirstOrDefault());
-
-            Input!.Setor = HttpContext.Session.GetString("SetorAtivo");
-            var _canal = Canais!.FirstOrDefault(s => s.Value == "Presencial");
-            Input.Canal = _canal!.Value;
-            return Page();
+            catch (Exception ex)
+            {
+                StatusMessage = $"Erro: {ex.Message}";
+                return Page();
+            }
         }
 
         public async Task<IActionResult> OnPostExcluirAsync(Guid id)

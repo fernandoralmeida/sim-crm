@@ -75,6 +75,7 @@ namespace Sim.UI.Web.Pages.Agenda.Eventos
         public async Task OnGet()
         {
             await Onload();
+            Input!.Owner = HttpContext.Session.GetString("SetorAtivo");
         }
 
         public async Task<IActionResult> OnPostAsync()

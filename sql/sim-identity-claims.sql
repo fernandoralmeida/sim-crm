@@ -94,30 +94,20 @@ CREATE TABLE [AspNetUserTokens] (
 );
 GO
 
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'ConcurrencyStamp', N'Name', N'NormalizedName') AND [object_id] = OBJECT_ID(N'[AspNetRoles]'))
-    SET IDENTITY_INSERT [AspNetRoles] ON;
-INSERT INTO [AspNetRoles] ([Id], [ConcurrencyStamp], [Name], [NormalizedName])
-VALUES (N'2c5e174e-3b0e-446f-86af-483d56fd7210', N'158fc542-15b6-464e-a6ca-cabdf2063c2b', N'Adm_Global', N'ADM_GLOBAL'),
-(N'90ef8df5-ab72-457d-8cc7-8da2872ce404', N'62a4015c-5cea-4da6-bd14-ce061e979246', N'Adm_Account', N'ADM_ACCOUNT'),
-(N'deaf7dfe-db2c-4d9c-aa11-a0943983e247', N'79d9b2a4-234d-48fd-b97b-d864e1c8d407', N'Adm_Settings', N'ADM_SETTINGS');
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'ConcurrencyStamp', N'Name', N'NormalizedName') AND [object_id] = OBJECT_ID(N'[AspNetRoles]'))
-    SET IDENTITY_INSERT [AspNetRoles] OFF;
-GO
-
 IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'AccessFailedCount', N'ConcurrencyStamp', N'Discriminator', N'Email', N'EmailConfirmed', N'Gender', N'LastName', N'LockoutEnabled', N'LockoutEnd', N'Name', N'NormalizedEmail', N'NormalizedUserName', N'PasswordHash', N'PhoneNumber', N'PhoneNumberConfirmed', N'SecurityStamp', N'Theme', N'TwoFactorEnabled', N'UserName') AND [object_id] = OBJECT_ID(N'[AspNetUsers]'))
     SET IDENTITY_INSERT [AspNetUsers] ON;
 INSERT INTO [AspNetUsers] ([Id], [AccessFailedCount], [ConcurrencyStamp], [Discriminator], [Email], [EmailConfirmed], [Gender], [LastName], [LockoutEnabled], [LockoutEnd], [Name], [NormalizedEmail], [NormalizedUserName], [PasswordHash], [PhoneNumber], [PhoneNumberConfirmed], [SecurityStamp], [Theme], [TwoFactorEnabled], [UserName])
-VALUES (N'8e445865-a24d-4543-a6c6-9443d048cdb9', 0, N'95b565ae-69ca-47da-a6ae-9859a5602d39', N'ApplicationUser', N'sim@sim.com', CAST(1 AS bit), N'Masculino', N'Global', CAST(0 AS bit), NULL, N'Admin', N'SIM@SIM.COM', N'ADMIN', N'AQAAAAEAACcQAAAAEJuUFYVGcG0+GohOcXxt3BNUMVrZjvi/7gO8jZLOU6PtH8/DPvYOaeVdz9EFBXhVfg==', N'+111111111111', CAST(1 AS bit), N'5a32882a-1dae-4ef0-983a-5fd2d9afd680', N'dark', CAST(0 AS bit), N'Admin');
+VALUES (N'8e445865-a24d-4543-a6c6-9443d048cdb9', 0, N'bd82e974-4a57-44af-9b5d-34d3cc166c10', N'ApplicationUser', N'sim@sim.com', CAST(1 AS bit), N'Masculino', N'Global', CAST(0 AS bit), NULL, N'Admin', N'SIM@SIM.COM', N'ADMIN', N'AQAAAAEAACcQAAAAEB2jWBwgOCYlLeSnlVeWN3O/ATeJ5bfkM3z9GkOTewWd19WkLFxcvKLy3fskRnM0YQ==', N'+111111111111', CAST(1 AS bit), N'a06de63d-115a-41c3-bad9-0abbf2a4912d', N'dark', CAST(0 AS bit), N'Admin');
 IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'AccessFailedCount', N'ConcurrencyStamp', N'Discriminator', N'Email', N'EmailConfirmed', N'Gender', N'LastName', N'LockoutEnabled', N'LockoutEnd', N'Name', N'NormalizedEmail', N'NormalizedUserName', N'PasswordHash', N'PhoneNumber', N'PhoneNumberConfirmed', N'SecurityStamp', N'Theme', N'TwoFactorEnabled', N'UserName') AND [object_id] = OBJECT_ID(N'[AspNetUsers]'))
     SET IDENTITY_INSERT [AspNetUsers] OFF;
 GO
 
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'RoleId', N'UserId') AND [object_id] = OBJECT_ID(N'[AspNetUserRoles]'))
-    SET IDENTITY_INSERT [AspNetUserRoles] ON;
-INSERT INTO [AspNetUserRoles] ([RoleId], [UserId])
-VALUES (N'2c5e174e-3b0e-446f-86af-483d56fd7210', N'8e445865-a24d-4543-a6c6-9443d048cdb9');
-IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'RoleId', N'UserId') AND [object_id] = OBJECT_ID(N'[AspNetUserRoles]'))
-    SET IDENTITY_INSERT [AspNetUserRoles] OFF;
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'ClaimType', N'ClaimValue', N'UserId') AND [object_id] = OBJECT_ID(N'[AspNetUserClaims]'))
+    SET IDENTITY_INSERT [AspNetUserClaims] ON;
+INSERT INTO [AspNetUserClaims] ([Id], [ClaimType], [ClaimValue], [UserId])
+VALUES (1, N'Permission', N'Adm_Global', N'8e445865-a24d-4543-a6c6-9443d048cdb9');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'ClaimType', N'ClaimValue', N'UserId') AND [object_id] = OBJECT_ID(N'[AspNetUserClaims]'))
+    SET IDENTITY_INSERT [AspNetUserClaims] OFF;
 GO
 
 CREATE INDEX [IX_AspNetRoleClaims_RoleId] ON [AspNetRoleClaims] ([RoleId]);
@@ -142,7 +132,7 @@ CREATE UNIQUE INDEX [UserNameIndex] ON [AspNetUsers] ([NormalizedUserName]) WHER
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20240206200401_db-sim-accountcenter-identity', N'6.0.8');
+VALUES (N'20241002000114_sim-identity-claims', N'6.0.8');
 GO
 
 COMMIT;

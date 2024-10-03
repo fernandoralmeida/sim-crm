@@ -12,8 +12,8 @@ using Sim.Identity.Context;
 namespace Sim.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20240206200401_db-sim-accountcenter-identity")]
-    partial class dbsimaccountcenteridentity
+    [Migration("20241002000114_sim-identity-claims")]
+    partial class simidentityclaims
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,29 +49,6 @@ namespace Sim.Identity.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "158fc542-15b6-464e-a6ca-cabdf2063c2b",
-                            Name = "Adm_Global",
-                            NormalizedName = "ADM_GLOBAL"
-                        },
-                        new
-                        {
-                            Id = "90ef8df5-ab72-457d-8cc7-8da2872ce404",
-                            ConcurrencyStamp = "62a4015c-5cea-4da6-bd14-ce061e979246",
-                            Name = "Adm_Account",
-                            NormalizedName = "ADM_ACCOUNT"
-                        },
-                        new
-                        {
-                            Id = "deaf7dfe-db2c-4d9c-aa11-a0943983e247",
-                            ConcurrencyStamp = "79d9b2a4-234d-48fd-b97b-d864e1c8d407",
-                            Name = "Adm_Settings",
-                            NormalizedName = "ADM_SETTINGS"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -196,6 +173,15 @@ namespace Sim.Identity.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("AspNetUserClaims", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClaimType = "Permission",
+                            ClaimValue = "Adm_Global",
+                            UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -233,13 +219,6 @@ namespace Sim.Identity.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
-                            RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -290,16 +269,16 @@ namespace Sim.Identity.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "95b565ae-69ca-47da-a6ae-9859a5602d39",
+                            ConcurrencyStamp = "bd82e974-4a57-44af-9b5d-34d3cc166c10",
                             Email = "sim@sim.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "SIM@SIM.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJuUFYVGcG0+GohOcXxt3BNUMVrZjvi/7gO8jZLOU6PtH8/DPvYOaeVdz9EFBXhVfg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEB2jWBwgOCYlLeSnlVeWN3O/ATeJ5bfkM3z9GkOTewWd19WkLFxcvKLy3fskRnM0YQ==",
                             PhoneNumber = "+111111111111",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "5a32882a-1dae-4ef0-983a-5fd2d9afd680",
+                            SecurityStamp = "a06de63d-115a-41c3-bad9-0abbf2a4912d",
                             TwoFactorEnabled = false,
                             UserName = "Admin",
                             Gender = "Masculino",

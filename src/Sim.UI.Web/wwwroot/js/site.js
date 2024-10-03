@@ -12,7 +12,7 @@ $(document).ready(function () {
         {
             hover: false,
             constrainWidth: false,
-            coverTrigger: true,
+            coverTrigger: false,
             closeOnClick: false
         });
 

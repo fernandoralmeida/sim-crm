@@ -70,13 +70,13 @@
         <div class="row">
             <div class="col s12 l6">
         <div class="card">
-            <div class="card-header grey-text">Funções<i class="left material-icons">account_box</i></div>
+            <div class="card-header grey-text">Grupos<i class="left material-icons">account_box</i></div>
             <div class="row no-padding mgn-0">
                 <div class="col s12 m6 l6 mgn-b-10 valign-wrapper">
                     <select class="browser-default" asp-for="Selecionado" asp-items="Model.RoleList">
-                        <option>-- Incluir Funcão --</option>
+                        <option>-- Incluir Grupo --</option>
                     </select>
-                    <button type="submit" asp-page-handler="AddRole" asp-route-id="@Model.Input!.Id"
+                      <button type="submit" asp-page-handler="AddRole" asp-route-id="@Model.Input!.Id"
                         class="btn-small waves-effect mgn-l-10"><i class="material-icons">add</i></button>
                 </div>
             </div>
@@ -107,17 +107,17 @@
             </div>
             <div class="col s12 l6">
         <div class="card">
-            <div class="card-header grey-text">Vínculos<i class="left material-icons">account_box</i></div>
+            <div class="card-header grey-text">Funções<i class="left material-icons">account_box</i></div>
             <div class="row no-padding mgn-0">
                 <div class="col s12 m6 l6 mgn-b-10 valign-wrapper">
                     <select asp-for="OwnerSelect" class="browser-default">
-                        <option>-- Associar Vinculo --</option>
+                        <option>-- Incluir Função --</option>
                         @foreach (var item in Model.OwnerList!)
                         {
                             <optgroup label="@item.Key">
                                 @foreach (var subitem in item.Value)
                                 {
-                                    <option value="@subitem.Value">@subitem.Key</option>
+                                    <option value="@subitem.Value">@subitem.Value</option>
                                 }
                             </optgroup>
                         }

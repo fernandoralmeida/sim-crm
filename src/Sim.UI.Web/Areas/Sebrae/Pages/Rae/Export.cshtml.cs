@@ -12,7 +12,7 @@ using Sim.UI.Web.Functions;
 
 namespace Sim.UI.Web.Areas.Sebrae.Pages.RAE;
 
-[Authorize(Roles = $"{AccountType.Adm_Global},{Access.Module}")]
+[RoleOrClaimAuthorize(Access.Module, "Permission", AccountType.IsAdminGlobal)]
 public class ExportModel : PageModel
 {
     private readonly IAppServiceAtendimento _repository;

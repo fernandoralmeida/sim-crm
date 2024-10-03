@@ -1,11 +1,8 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Xml.Serialization;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using NuGet.Common;
 using Sim.Application.Agenda.Interfaces;
 using Sim.Application.Agenda.Views;
 using Sim.Application.Interfaces;
@@ -49,6 +46,7 @@ public partial class CalendarPage : PageModel
 
             public class Event
             {
+                public Guid Id { get; set; }
                 public string? Code { get; set; }
                 public string? Name { get; set; }
                 public DateTime? Data { get; set; }
@@ -108,12 +106,12 @@ public partial class CalendarPage : PageModel
                 var _eventos = new List<Calendar.CalendarDays.Event>();
                 foreach (var e in eventos.Where(s => s.Data!.Value.Day == i))
                 {
-                    _eventos.Add(new() { Name = e.Nome, Code = e.Codigo.ToString(), Data = e.Data, IsRemind = false });
+                    _eventos.Add(new() { Id = e.Id, Name = e.Nome, Code = e.Codigo.ToString(), Data = e.Data, IsRemind = false });
                 }
 
                 foreach (var r in reminds.Where(s => s.Data!.Day == i))
                 {
-                    _eventos.Add(new() { Name = r.Titulo, Code = r.Id.ToString(), Data = r.Data, IsRemind = true });
+                    _eventos.Add(new() { Id = r.Id, Name = r.Titulo, Code = r.Id.ToString(), Data = r.Data, IsRemind = true });
                 }
 
                 DoCalendar.Days!.Add(new() { Title = i.ToString(), Events = _eventos });
@@ -159,7 +157,7 @@ public partial class CalendarPage : PageModel
         var timeSpan = TimeSpan.Parse(InputTime.ToShortTimeString());
         InputModel.Data = InputDate.Date.Add(timeSpan);
         InputModel.Owner = User.Identity!.Name;
-        InputModel.Status = true;
+        InputModel.Status = true;        
         await _appServiceReminder.AddNewAsync(InputModel);
         return RedirectToPage("./Index");
     }

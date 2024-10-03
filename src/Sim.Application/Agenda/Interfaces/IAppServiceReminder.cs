@@ -10,5 +10,6 @@ public interface IAppServiceReminder
     Task RemoveAsync(VReminder obj);
     Task UpdateAsync(VReminder obj);
     Task<VReminder?> GetAsync(Guid id);
+    Task<VReminder?> GetAsNoTrackingAsync(Guid id);
     Task<IEnumerable<VReminder>?> DoListAsync(Expression<Func<EReminder, bool>>? filter = null);
 }

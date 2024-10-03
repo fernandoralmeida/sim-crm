@@ -24,6 +24,13 @@ public class RepositoryReminder : RepositoryBase<EReminder>, IRepositoryReminder
                 .ToListAsync();
     }
 
+    public async Task<EReminder?> GetAsNoTrackingAsync(Guid id)
+    {
+        return await _db.Reminders!
+                        .AsNoTrackingWithIdentityResolution()
+                        .FirstOrDefaultAsync(s => s.Id == id);
+    }
+
     public async Task<EReminder?> GetAsync(Guid id)
     {
         return await _db.Reminders!

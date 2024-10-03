@@ -32,14 +32,8 @@ namespace Sim.Identity.Context
             modelbuilder.ApplyConfiguration(new Config.UserMap());
             base.OnModelCreating(modelbuilder);
 
-            //Seeding a  'Administrators' role to AspNetRoles table
-            modelbuilder.Entity<IdentityRole>().HasData(new IdentityRole { Id = "2c5e174e-3b0e-446f-86af-483d56fd7210", Name = AccountType.Adm_Global, NormalizedName = AccountType.Adm_Global.ToUpper() });
-            modelbuilder.Entity<IdentityRole>().HasData(new IdentityRole { Id = "90ef8df5-ab72-457d-8cc7-8da2872ce404", Name = AccountType.Adm_Account, NormalizedName = AccountType.Adm_Account.ToUpper() });
-            modelbuilder.Entity<IdentityRole>().HasData(new IdentityRole { Id = "deaf7dfe-db2c-4d9c-aa11-a0943983e247", Name = AccountType.Adm_Settings, NormalizedName = AccountType.Adm_Settings.ToUpper() });
-
             //a hasher to hash the password before seeding the user to the db
             var hasher = new PasswordHasher<ApplicationUser>();
-
 
             //Seeding the User to AspNetUsers table
             modelbuilder.Entity<ApplicationUser>().HasData(
@@ -62,13 +56,14 @@ namespace Sim.Identity.Context
                 }
             );
 
-
-            //Seeding the relation between our user and role to AspNetUserRoles table
-            modelbuilder.Entity<IdentityUserRole<string>>().HasData(
-                new IdentityUserRole<string>
+            // Aqui você pode adicionar claims diretamente no OnModelCreating
+            modelbuilder.Entity<IdentityUserClaim<string>>().HasData(
+                new IdentityUserClaim<string>
                 {
-                    RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                    UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                    Id = 1,
+                    UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9", // Substitua pelo ID do usuário
+                    ClaimType = "Permission",
+                    ClaimValue = "Adm_Global"
                 }
             );
 

@@ -12,13 +12,26 @@
 <form method="post">
 
     <div class="card">
+        <div class="card-header grey-text">Grupos<i class="left material-icons">account_box</i></div>
         <div class="row">
             <div class="input-field col s3 m3 l3 valign-wrapper">
-                <select asp-for="Funcao" asp-items="Model.Funcoes">
-                    <option selected>-- Funções --</option>
+                @* <select asp-for="Funcao" asp-items="Model.Funcoes">
+                    <option selected>-- Grupos --</option>
+                </select> *@
+                <select asp-for="OwnerSelect" class="browser-default">
+                    <option>-- Vincular Grupos --</option>
+                    @foreach (var item in Model.OwnerList!)
+                    {
+                        <optgroup label="@item.Key">
+                            @foreach (var subitem in item.Value)
+                            {
+                                <option>@subitem</option>
+                            }
+                        </optgroup>
+                    }
                 </select>
-                <label asp-for="Funcao"></label>
-                <button asp-page-handler="AddFunc" class="btn-small waves-effect" type="submit"><i
+                @* <label asp-for="OwnerSelect"></label> *@
+                <button asp-page-handler="AddFunc" class="btn-small waves-effect  mgn-l-10" type="submit"><i
                         class="material-icons">add</i></button>
             </div>
         </div>

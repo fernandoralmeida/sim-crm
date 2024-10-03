@@ -19,6 +19,11 @@ public class ServiceReminder : ServiceBase<EReminder>, IServiceReminder
         return await _reminder.DoListAsync(filter);
     }
 
+    public async Task<EReminder?> GetAsNoTrackingAsync(Guid id)
+    {
+        return await _reminder.GetAsNoTrackingAsync(id);
+    }
+
     public async Task<EReminder?> GetAsync(Guid id)
     {
         return await _reminder.GetAsync(id);

@@ -1,17 +1,16 @@
-﻿@page
+﻿@page "/error"
 @model ErrorModel
 @{
     ViewData["Title"] = "Erro";
 }
+<div class="mgn-l-10">
+    <h5 class="alpha-text-6">Erro.</h5>
+    <h6 class="alpha-text-4">Um erro ocorreu durante o processamento do seu pedido.</h6>
 
-<h5 class="alpha-text-6">Erro.</h5>
-<h6 class="alpha-text-4">Um erro ocorreu durante o processamento do seu pedido.</h6>
-
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
-
-
+    @if (Model.ShowRequestId)
+    {
+        <p>
+            <strong>Request ID:</strong> <code>@Model.RequestId</code>
+        </p>
+    }
+</div>

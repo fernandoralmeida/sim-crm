@@ -2,6 +2,7 @@
 namespace Sim.Identity.Config;
 public static class AccountType
 {
+    public const string IsAdminGlobal = "IsAdminGlobal";
     public const string Adm_Global = "Adm_Global";
     public const string Adm_Account = "Adm_Account";
     public const string Adm_Settings = "Adm_Settings";

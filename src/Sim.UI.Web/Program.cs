@@ -49,6 +49,30 @@ builder.Services.AddSession(options =>
     options.Cookie.Name = $"simcrmSession";
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("IsAdminGlobal", policy =>
+        policy.RequireClaim("Permission", "Adm_Global"));
+    options.AddPolicy("CanEditSettings", policy =>
+        policy.RequireClaim("Permission", "Adm_Settings"));
+    options.AddPolicy("CanManageAccounts", policy =>
+        policy.RequireClaim("Permission", "Adm_Accounts"));
+
+    options.AddPolicy("AdminOrSettings", policy =>
+    {
+        policy.RequireAssertion(context =>
+            context.User.HasClaim("Permission", "Adm_Global") ||
+            context.User.HasClaim("Permission", "Adm_Settings"));
+    });
+
+    options.AddPolicy("AdminOrAccounts", policy =>
+    {
+        policy.RequireAssertion(context =>
+            context.User.HasClaim("Permission", "Adm_Global") ||
+            context.User.HasClaim("Permission", "Adm_Settings"));
+    });
+});
+
 // 6. Configuração de Cookies e Autenticação
 builder.Services.ConfigureApplicationCookie(options =>
 {

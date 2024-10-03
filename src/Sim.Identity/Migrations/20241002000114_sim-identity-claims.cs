@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Sim.Identity.Migrations
 {
-    public partial class dbsimaccountcenteridentity : Migration
+    public partial class simidentityclaims : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -160,24 +160,14 @@ namespace Sim.Identity.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[,]
-                {
-                    { "2c5e174e-3b0e-446f-86af-483d56fd7210", "158fc542-15b6-464e-a6ca-cabdf2063c2b", "Adm_Global", "ADM_GLOBAL" },
-                    { "90ef8df5-ab72-457d-8cc7-8da2872ce404", "62a4015c-5cea-4da6-bd14-ce061e979246", "Adm_Account", "ADM_ACCOUNT" },
-                    { "deaf7dfe-db2c-4d9c-aa11-a0943983e247", "79d9b2a4-234d-48fd-b97b-d864e1c8d407", "Adm_Settings", "ADM_SETTINGS" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "Gender", "LastName", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Theme", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "95b565ae-69ca-47da-a6ae-9859a5602d39", "ApplicationUser", "sim@sim.com", true, "Masculino", "Global", false, null, "Admin", "SIM@SIM.COM", "ADMIN", "AQAAAAEAACcQAAAAEJuUFYVGcG0+GohOcXxt3BNUMVrZjvi/7gO8jZLOU6PtH8/DPvYOaeVdz9EFBXhVfg==", "+111111111111", true, "5a32882a-1dae-4ef0-983a-5fd2d9afd680", "dark", false, "Admin" });
+                values: new object[] { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "bd82e974-4a57-44af-9b5d-34d3cc166c10", "ApplicationUser", "sim@sim.com", true, "Masculino", "Global", false, null, "Admin", "SIM@SIM.COM", "ADMIN", "AQAAAAEAACcQAAAAEB2jWBwgOCYlLeSnlVeWN3O/ATeJ5bfkM3z9GkOTewWd19WkLFxcvKLy3fskRnM0YQ==", "+111111111111", true, "a06de63d-115a-41c3-bad9-0abbf2a4912d", "dark", false, "Admin" });
 
             migrationBuilder.InsertData(
-                table: "AspNetUserRoles",
-                columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "2c5e174e-3b0e-446f-86af-483d56fd7210", "8e445865-a24d-4543-a6c6-9443d048cdb9" });
+                table: "AspNetUserClaims",
+                columns: new[] { "Id", "ClaimType", "ClaimValue", "UserId" },
+                values: new object[] { 1, "Permission", "Adm_Global", "8e445865-a24d-4543-a6c6-9443d048cdb9" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

@@ -65,8 +65,11 @@
 
                 @if (item.Title != "...")
                 {
+                    <a class="btn-link right text-color-blue modal-trigger open-days" data-d="@item.Title"
+                        data-m="@Model.CtrlCalendar.Month" data-a="@Model.CtrlCalendar.Ano" href="#modalEvents"><i
+                            class="material-icons" title="Adicionar Lembrete">calendar_month</i></a>
                     <a class="btn-link right text-color-purple modal-trigger save-btn" data-d="@item.Title"
-                        data-m="@Model.CtrlCalendar.Month" data-a="@Model.CtrlCalendar.Ano" href="#modalLembretes"><i
+                        data-m="@Model.CtrlCalendar.Month" data-a="@Model.CtrlCalendar.Ano" href="#modalNew"><i
                             class="material-icons" title="Adicionar Lembrete">bookmark_add</i></a>
                 }
             </div>
@@ -75,10 +78,18 @@
                 {
                     @foreach (var subitem in item.Events!)
                     {
-                        var _t = subitem.IsRemind == true ? "content items reminders" : "content items ";
                         var _d = subitem.Data < DateTime.Now ? " old" : "";
 
-                        <a class="@_t @_d" asp-page="/Agenda/Inscricoes/Index" asp-route-id="@subitem.Code">@subitem.Name</a>
+                        if (!subitem.IsRemind)
+                        {
+                            <a class="content items reminders @_d modal-trigger open-event-modal" href="#modalEvents"
+                                data-id="@subitem.Code">@subitem.Name</a>
+                        }
+                        else
+                        {
+                            <a class="content items @_d modal-trigger open-reminder-modal" href="#modalLembretes"
+                                data-id="@subitem.Id">@subitem.Name</a>
+                        }
                     }
                 }
                 else
@@ -90,55 +101,29 @@
     }
 </div>
 
-@* <div class="calendar" role="table" aria-label="Calendário"> *@
-<!-- Cabeçalho do Calendário -->
-@* <div class="calendar-header">
-@foreach (var item in Model.DoCalendar.Head!)
-{
-<div class="calendar-cell head" role="columnheader" aria-label="@item">@item</div>
-}
-</div> *@
-
-<!-- Dias do Calendário -->
-@* <div class="calendar-body">
-@foreach (var item in Model.DoCalendar.Days!)
-{
-<div class="calendar-cell content" role="cell" aria-label="Dia @item.Title">
-<div class="day-header">
-@item.Title
-@if (item.Title != "...")
-{
-<a class="btn-link right text-color-purple modal-trigger" href="#modalLembretes"
-aria-label="Adicionar Lembrete">
-<i class="material-icons" title="Adicionar Lembrete">bookmark_add</i>
-</a>
-}
+<div id="modalLembretes" class="modal">
+    <div class="modal-content">
+        <a id="removeButton" class="modal-close btn-link text-color-red right mgn-l-10"><i
+                class="material-icons" title="Alterar Lembrete">delete</i></a>
+        <a id="editButton" class="modal-close btn-link text-color-purple modal-trigger right mgn-r-10" href="#modalNew"><i
+                class="material-icons" title="Alterar Lembrete">edit</i></a>
+        <h5 id="reminder-title" class="mgn-t-0"></h5>
+        <p id="reminder-location"></p>
+        <p id="reminder-date"></p>
+        <p id="reminder-description"></p>
+        <p id="reminder-owner"></p>
+        <p id="reminder-status" class="mgn-b-0"></p>
+    </div>
 </div>
 
-<div class="events-container">
-@if (item.Events!.Any())
-{
-@foreach (var subitem in item.Events!)
-{
-var eventClass = subitem.IsRemind ? "content-item reminders" : "content-item";
-var dateClass = subitem.Data < DateTime.Now ? " old" : "";
-
-<a class="@eventClass @dateClass" asp-page="/Agenda/Inscricoes/Index" asp-route-id="@subitem.Code"
-aria-label="Evento @subitem.Name">@subitem.Name</a>
-}
-}
-else
-{
-<span class="no-events" aria-label="Nenhum evento">Nenhum evento</span>
-}
+<div id="modalEvents" class="modal">
+    <div class="modal-content">
+        <div id="event-container"></div>
+    </div>
 </div>
-</div>
-}
-</div>
-</div> *@
 
 <!-- Modal Structure Lembretes -->
-<div id="modalLembretes" class="modal">
+<div id="modalNew" class="modal">
     <div class="modal-content">
         <h6>Lembrete</h6>
         <div class="divider"></div>
@@ -148,7 +133,7 @@ else
                 <label asp-for="InputModel.Id"></label>
             </div>
             <div class="input-field col s6">
-                <input type="text" asp-for="InputModel.Titulo">
+                <input type="text" asp-for="InputModel.Titulo" required>
                 <label asp-for="InputModel.Titulo"></label>
             </div>
             <div class="input-field col s6">
@@ -196,12 +181,202 @@ else
                 const month = this.getAttribute('data-m');
                 const year = this.getAttribute('data-a');
 
-                // Concatena os valores em um formato de data, por exemplo: dd/mm/yyyy
-                const concatenatedDate = `${day}/${month}/${year}`;
-
-                // Coloca o valor concatenado no campo de input
-                document.getElementById('InputDate').value = concatenatedDate;
+                var _date = new Date(year, month - 1, day);
+                // Formate a data para o formato ISO (YYYY-MM-DD)
+                var formattedDate = _date.toISOString().slice(0, 10);
+                document.getElementById('InputDate').value = formattedDate;
             });
         });
+
+        // Seleciona todos os links com a classe 'open-reminder-modal'
+        document.querySelectorAll('.open-reminder-modal').forEach(function (element) {
+            element.addEventListener('click', function (e) {
+                e.preventDefault(); // Previne o comportamento padrão do link
+
+                // Obtém o valor do atributo data-id
+                let reminderId = this.getAttribute('data-id');
+
+                // Faz a requisição para a API usando Fetch
+                fetch(`/api/v1/reminder/${reminderId}`)
+                    .then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('Erro ao buscar dados da API');
+                        }
+                        return response.json();
+                    })
+                    .then(function (data) {
+
+                        var editButton = document.getElementById('editButton');                        
+                        editButton.setAttribute('data-id', data.id);
+
+                        var removeButton = document.getElementById('removeButton');
+                        removeButton.setAttribute('href', `/calendar/delete/${data.id}`);
+
+                        // Preenche os elementos do modal com os dados retornados
+                        document.getElementById('reminder-title').innerHTML = data.titulo;
+                        document.getElementById('reminder-location').textContent = `Local: ${data.local}`;
+                        document.getElementById('reminder-date').textContent = `Data: ${new Date(data.data).toLocaleString()}`;
+                        document.getElementById('reminder-description').textContent = `Descrição: ${data.descricao}`;
+                        document.getElementById('reminder-owner').textContent = `Responsável: ${data.owner}`;
+                        document.getElementById('reminder-status').textContent = `Status: ${data.status ? 'Ativo' : 'Inativo'}`;
+                    })
+                    .catch(function (error) {
+                        alert('Erro lembrete: ' + error.message);
+                    });
+            });
+        });
+
+        // Seleciona todos os links com a classe 'open-reminder-modal'
+        document.querySelectorAll('.open-days').forEach(function (element) {
+            element.addEventListener('click', function (e) {
+                e.preventDefault(); // Previne o comportamento padrão do link
+
+                // Obtém o valor do atributo data-id
+                const container = document.getElementById('event-container');
+                container.innerHTML = ''
+                // Obtém os valores dos atributos data
+                const d = this.getAttribute('data-d');
+                const m = this.getAttribute('data-m');
+                const y = this.getAttribute('data-a');
+
+                // Faz a requisição para a API usando Fetch
+                fetch(`/api/v1/calendar/${y}/${m}/${d}`)
+                    .then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('Erro ao buscar dados da API');
+                        }
+                        return response.json();
+                    })
+                    .then(function (data) {
+                        // Preenche os elementos do modal com os dados retornados
+                        data.forEach(item => {
+                            const eventElement = document.createElement('div');
+                            eventElement.classList.add('event');
+
+                            // Adiciona os dados principais do evento
+                            eventElement.innerHTML = `<i class="material-icons left">calendar_month</i><h6>${item.title}</h6>`;
+
+                            const inscritosList = document.createElement('ul');
+
+                            item.events.forEach(event => {
+                                const inscritoItem = document.createElement('li');
+                                inscritoItem.innerText = `- ${event.name} (Data: ${event.data})`;
+                                inscritosList.appendChild(inscritoItem);
+                            });
+                            eventElement.appendChild(inscritosList);
+
+                            // Adiciona o elemento de evento ao contêiner
+                            container.appendChild(eventElement);
+                        })
+                    })
+                    .catch(function (error) {
+                        alert('Erro ao carregar lembrete: ' + error.message);
+                    });
+            });
+        });
+
+        document.querySelectorAll('.open-event-modal').forEach(function (element) {
+            element.addEventListener('click', function (e) {
+                e.preventDefault(); // Previne o comportamento padrão do link
+
+                // Obtém o valor do atributo data-id
+                let reminderId = this.getAttribute('data-id');
+
+                // Faz a requisição para a API usando Fetch
+                fetchEvents(`/api/v1/eventos/${reminderId}`);
+            });
+        });
+
+        document.getElementById('editButton').addEventListener('click', function () {
+            // ID do lembrete que você quer editar (você pode pegar isso dinamicamente)
+            const _id = this.getAttribute('data-id');
+            // Fetch para pegar os dados da API
+            fetch(`/api/v1/reminder/${_id}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Preenche os campos do formulário com os dados retornados da API
+                    document.getElementById('InputModel_Id').value = data.id;
+                    document.getElementById('InputModel_Titulo').value = data.titulo;
+                    document.getElementById('InputModel_Local').value = data.local;
+                    document.getElementById('InputModel_Visivel').value = data.visivel;
+
+                    // Converte a data para o formato YYYY-MM-DD para o input de data
+                    const date = new Date(data.date);
+                    document.getElementById('InputDate').value = date.toISOString().split('T')[0];
+
+                    // Converte a hora para o formato HH:MM para o input de hora
+                    document.getElementById('InputTime').value = date.toTimeString().split(' ')[0].slice(0, 5);
+
+                    document.getElementById('InputModel_Descricao').value = data.descricao;
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar os dados da API:', error);
+                });
+        });
     });
+</script>
+
+<script>
+    // Função para consumir a API e exibir os dados
+    function fetchEvents(apiUrl) {
+
+        // Fazendo a requisição para a API
+        fetch(apiUrl)
+            .then(response => {
+                // Verifica se a resposta foi bem-sucedida
+                if (!response.ok) {
+                    throw new Error('Erro na requisição');
+                }
+                return response.json(); // Converte a resposta para JSON
+            })
+            .then(data => {
+                // Chama a função para processar e exibir os dados
+                displayEvents(data);
+            })
+            .catch(error => {
+                console.error('Erro ao buscar os eventos:', error);
+            });
+    }
+
+    // Função para exibir os eventos na página
+    function displayEvents(events) {
+        const container = document.getElementById('event-container');
+        container.innerHTML = ''; // Limpa o contêiner antes de preencher
+
+        // Itera sobre os eventos recebidos da API
+        events.forEach(event => {
+            // Cria um elemento para exibir as informações do evento
+            const eventElement = document.createElement('div');
+            eventElement.classList.add('event');
+
+            // Adiciona os dados principais do evento
+            eventElement.innerHTML = `
+                    <h5>${event.nome}</h5>
+                    <p><strong>Tipo:</strong> ${event.tipo}</p>
+                    <p><strong>Formato:</strong> ${event.formato}</p>
+                    <p><strong>Data:</strong> ${new Date(event.data).toLocaleString('pt-BR')}</p>
+                    <p><strong>Setor:</strong> ${event.owner})</p>
+                    <p><strong>Lotação:</strong> ${event.lotacao}</p>
+                `;
+
+            // Adiciona o elemento de evento ao contêiner
+            container.appendChild(eventElement);
+            const adiv = document.createElement('div');
+
+            // Itera sobre os inscritos no evento (se houver)
+            if (event.inscritos && event.inscritos.length > 0) {
+                adiv.innerHTML =
+                    `
+                <p><strong>Inscritos:</strong> ${event.inscritos.length}</p>
+                `;
+            }
+
+            adiv.innerHTML +=
+                `<p class="mgn-b-0"><a class="waves-effect waves-light btn" href="/agenda/eventos/inscricoes/${event.codigo}">VER EVENTO<i class="material-icons left">list_alt</i></a></p>
+                `;
+
+            // Adiciona a lista de inscritos ao evento
+            eventElement.appendChild(adiv);
+        });
+    }
 </script>

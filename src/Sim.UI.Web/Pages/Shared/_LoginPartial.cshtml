@@ -1,9 +1,11 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
 @using Sim.Identity.Entity
 @using Sim.Identity.Config;
 @using Sim.Application.Interfaces
 
 @inject UserManager<ApplicationUser> _userManager
+@inject IAuthorizationService AuthorizationService
 @inject IAppServiceStatusAtendimento MeuStatus
 @{
     var _mstatus = await MeuStatus.DoListAsync(s => s.UnserName == User.Identity!.Name);
@@ -24,6 +26,10 @@
 
     var _setorativo = Context.Session.GetString("SetorAtivo");
     var _url = Url.ActionContext.HttpContext.Request.Path.Value;
+
+    var IsAdmin = (await AuthorizationService.AuthorizeAsync(User, AccountType.IsAdminGlobal)).Succeeded;
+    var IsSetting = (await AuthorizationService.AuthorizeAsync(User, "CanEditSettings")).Succeeded;
+    var IsAccount = (await AuthorizationService.AuthorizeAsync(User, "CanManageAccounts")).Succeeded;
 }
 <input id="meustatusonline" type="text" value="@_idstatus" hidden />
 
@@ -42,28 +48,26 @@
                         </li>
                         <li>
                             <a class="dropdown-trigger" data-target="dropsection">
-                                @_setorativo
+                                Setor
                             </a>
                         </li>
 
                         <li>
                             <i class="material-icons left">chevron_right</i>
-                            @ViewData["Title"]
+                            @_setorativo : @ViewData["Title"]
                         </li>
                     </ul>
                 </div>
                 <div class="col s6 m6 l6 no-padding">
                     <ul class="right">
-                        @if (User.IsInRole(AccountType.Adm_Global) ||
-                        User.IsInRole(AccountType.Adm_Account))
+                        @if (IsAdmin || IsAccount)
                         {
                             <li class="@LayoutNavPages.ConfigContasNavClass(ViewContext)">
                                 <a asp-area="Admin" asp-page="/Manager/Index"><i
                                         class="material-icons online">manage_accounts</i></a>
                             </li>
                         }
-                        @if (User.IsInRole(AccountType.Adm_Settings) ||
-                        User.IsInRole(AccountType.Adm_Global))
+                        @if (IsAdmin || IsSetting)
                         {
                             <li class="@LayoutNavPages.ConfigSistemaNavClass(ViewContext)">
                                 <a asp-area="Settings" asp-page="/Common/Index"><i
@@ -71,8 +75,8 @@
                             </li>
                         }
                         @* <li>
-                            <a asp-area="Identity" asp-page="/Theme" asp-route-url="@_url"
-                                asp-route-theme="@_changetheme"><i class="material-icons online">@_icon</i></a>
+                        <a asp-area="Identity" asp-page="/Theme" asp-route-url="@_url"
+                        asp-route-theme="@_changetheme"><i class="material-icons online">@_icon</i></a>
                         </li> *@
                         @if (User.Identity!.IsAuthenticated)
                         {
@@ -101,8 +105,7 @@
         @foreach (var setor in _claims!)
         {
             <div>
-                <a asp-area="Identity" asp-page="/Session" asp-route-id="@setor.Value"
-                    asp-route-url="@_url">@setor.Key</a>
+                <a asp-area="Identity" asp-page="/Session" asp-route-id="@setor.Value" asp-route-url="@_url">@setor.Key</a>
             </div>
         }
     }
@@ -117,8 +120,7 @@
                     type="checkbox" onclick="myStatus()" /><span class="lever"></span>ON</label></div>
     </div>
     <div class="divider"></div>
-    <div><a asp-area="Identity" asp-page="/Account/Logout">Sair<i
-                class="left material-icons">logout</i></a></div>
+    <div><a asp-area="Identity" asp-page="/Account/Logout">Sair<i class="left material-icons">logout</i></a></div>
 </div>
 
 <script>

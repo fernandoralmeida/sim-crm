@@ -9,7 +9,7 @@ using Sim.Identity.Config;
 
 namespace Sim.UI.Web.Areas.Settings.Pages.Common.Canal;
 
-[Authorize(Roles = $"{AccountType.Adm_Global},{AccountType.Adm_Settings}")]
+[Authorize(Policy = "AdminOrSettings")]
 public class IndexModel : PageModel
 {
     private readonly IAppServiceSecretaria _appSecretaria;

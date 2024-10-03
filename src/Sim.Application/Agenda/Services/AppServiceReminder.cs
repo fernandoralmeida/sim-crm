@@ -33,6 +33,11 @@ namespace Sim.Application.Agenda.Services
             return _mapper.Map<IEnumerable<VReminder>>(await _reminder.DoListAsync(filter));
         }
 
+        public async Task<VReminder?> GetAsNoTrackingAsync(Guid id)
+        {
+            return _mapper.Map<VReminder>(await _reminder.GetAsNoTrackingAsync(id));
+        }
+
         public async Task<VReminder?> GetAsync(Guid id)
         {
             return _mapper.Map<VReminder>(await _reminder.GetAsync(id));

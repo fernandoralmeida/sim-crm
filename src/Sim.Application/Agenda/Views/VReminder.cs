@@ -4,11 +4,15 @@ namespace Sim.Application.Agenda.Views;
 
 public class VReminder
 {
-    public enum TReminder { Privado = 0, Setorial = 1, Publico = 2 }
+    public enum TReminder { Privado = 0, Publico = 1 }
     public VReminder()
     { }
     public Guid Id { get; set; }
+
+    [Required]
     public string? Titulo { get; set; }
+
+    [Required]
     public string? Local { get; set; }
     public TReminder Visivel { get; set; }
 

@@ -13,7 +13,7 @@ using Sim.Application.Sebrae.Interfaces;
 namespace Sim.UI.Web.Areas.Sebrae.Pages.RAE
 {
 
-    [Authorize(Roles = $"{AccountType.Adm_Global},{Access.Module}")]
+    [RoleOrClaimAuthorize(Access.Module, "Permission", AccountType.IsAdminGlobal)]
     public class LancadosModel : PageModel
     {
         private readonly IAppServiceRae _appServiceRae;

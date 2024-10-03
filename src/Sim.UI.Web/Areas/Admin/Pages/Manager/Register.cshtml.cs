@@ -9,7 +9,7 @@ using Sim.Identity.Config;
 namespace Sim.UI.Web.Areas.Admin.Pages.Manager
 {
 
-    [Authorize(Roles = $"{AccountType.Adm_Global},{AccountType.Adm_Account}")]
+    [Authorize(Policy = "AdminOrAccounts")]
     public class RegisterModel : PageModel
     {
 
