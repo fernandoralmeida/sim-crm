@@ -1,14 +1,13 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Sim.Application.BancoPovo.ViewModel;
 using Sim.Application.BancoPovo.Interfaces;
-using Sim.Identity.Config;
+using Sim.Identity.Policies;
 using Sim.UI.Web.Areas.Bpp.Services;
 
 namespace Sim.UI.Web.Areas.Bpp.Pages.Contracts;
 
-[Authorize(Roles = $"{AccountType.Adm_Global},{Access.Module}")]
+[RoleOrClaimAuthorize(Module.Name, PolicyTypes.Permission, PolicyTypes.Adm_Global)]
 public class IndexModel : PageModel
 {
     private readonly IAppServiceContratos _appcontratos;

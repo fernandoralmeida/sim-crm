@@ -5,12 +5,12 @@ using Sim.UI.Web.Areas.Admin.ViewModel;
 using Sim.Identity.Interfaces;
 using Sim.Identity.Entity;
 using Microsoft.AspNetCore.Identity;
-using Sim.Identity.Config;
+using Sim.Identity.Policies;
 
 namespace Sim.UI.Web.Areas.Admin.Pages.Manager
 {
 
-    [Authorize(Policy = "AdminOrAccounts")]
+    [Authorize(Policy = PolicyExtensions.IsAdminAccounts)]
     public class IndexModel : PageModel
     {
         private readonly IServiceUser _appIdentity;
@@ -34,9 +34,9 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
 
         private async Task LoadAsync()
         {
-            var _adm_global = await _userManager.GetUsersInRoleAsync(AccountType.Adm_Global);
-            var _adm_account = await _userManager.GetUsersInRoleAsync(AccountType.Adm_Account);
-            var _adm_config = await _userManager.GetUsersInRoleAsync(AccountType.Adm_Settings);
+            var _adm_global = await _userManager.GetUsersInRoleAsync(PolicyTypes.Adm_Global);
+            var _adm_account = await _userManager.GetUsersInRoleAsync(PolicyTypes.Adm_Account);
+            var _adm_config = await _userManager.GetUsersInRoleAsync(PolicyTypes.Adm_Settings);
 
             Users_Admin_Global = _adm_global.Where(s => s.LockoutEnabled == false && s.UserName != "Admin").OrderBy(o => o.UserName);
             Users_Admin_Account = _adm_account.Where(s => s.LockoutEnabled == false).OrderBy(o => o.UserName);

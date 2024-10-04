@@ -27,7 +27,7 @@
                     <div class="card-header grey-text">Panorama<i class="material-icons left">receipt_long</i></div>
                     <div class="box-around">
                         <a class="box-cell-item-flex font-size-12">
-                            <p class="grey-text">@Model.LReports.Atendimentos.Key</p>
+                            <p class="grey-text">@Model.LReports!.Atendimentos.Key</p>
                             <p class="blue-text font-h5">@Model.LReports.Atendimentos.Value</p>
                         </a>
                         <a class="box-cell-item-flex font-size-12">
@@ -46,7 +46,7 @@
                 <div  class="box-card">
                     <div class="card-header grey-text">Atendimentos Realizados<i class="material-icons left">timelapse</i></div>
                     <div class="box-around">
-                        @foreach (var item in Model.LReports.AtendimentosMonth)
+                        @foreach (var item in Model.LReports!.AtendimentosMonth!)
                         {
                             float v1 = item.Value;
                             float v2 = Model.LReports.Atendimentos.Value;
@@ -65,7 +65,7 @@
                 <div  class="box-card">
                     <div class="card-header grey-text">Serviços Realizados<i class="material-icons left">construction</i></div>
                     <div class="box-around">
-                        @foreach (var item in Model.LReports.ServicesMonth)
+                        @foreach (var item in Model!.LReports!.ServicesMonth!)
                         {
                             float v1 = item.Value;
                             float v2 = Model.LReports.Serviços.Value;
@@ -84,7 +84,7 @@
                 <div  class="box-card">
                     <div class="card-header grey-text">Eventos Realizados<i class="material-icons left">calendar_month</i></div>
                     <div class="box-around">
-                        @foreach (var item in Model.LReports.EventosMonth)
+                        @foreach (var item in Model.LReports?.EventosMonth!)
                         {
                             float v1 = item.Value;
                             float v2 = Model.LReports.Eventos.Value;
@@ -104,7 +104,7 @@
                 <div  class="box-card">
                     <div class="card-header grey-text">Clientes<i class="material-icons left">person</i></div>
                     <div class="box-around">
-                        @foreach (var op in Model.LReports.Clientes)
+                        @foreach (var op in Model.LReports!.Clientes!)
                         {
                             float v1 = op.Value;
                             float v2 = Model.LReports.Atendimentos.Value;
@@ -120,7 +120,7 @@
                 <div  class="box-card">
                     <div class="card-header grey-text">Perfil<i class="material-icons left">contact_page</i></div>
                     <div class="box-around">
-                        @foreach (var item in Model.LReports.PerfilCliente)
+                        @foreach (var item in Model.LReports!.PerfilCliente!)
                         {
                             float v1 = item.Value;
                             float v2 = Model.LReports.Atendimentos.Value;
@@ -137,7 +137,7 @@
                 <div class="box-card">
                     <div class="card-header grey-text">Genero<i class="material-icons left">female male</i></div>
                     <div class="box-around">
-                        @foreach (var op in Model.LReports.GeneroCliente)
+                        @foreach (var op in Model.LReports!.GeneroCliente!)
                         {
                             float v1 = op.Value;
                             float v2 = Model.LReports.Atendimentos.Value;
@@ -155,7 +155,7 @@
                 <div  class="box-card">
                     <div class="card-header grey-text">Faixa Etária<i class="material-icons left">groups</i></div>
                     <div class="box-around">
-                        @foreach (var item in Model.LReports.FaixaEtariaCliente)
+                        @foreach (var item in Model.LReports.FaixaEtariaCliente!)
                         {
                             float v1 = item.Value;
                             float v2 = Model.LReports.Atendimentos.Value;

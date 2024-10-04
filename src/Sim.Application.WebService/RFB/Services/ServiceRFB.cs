@@ -36,25 +36,25 @@ public class ServiceRFB : IServiceRFB
             string strewq = "data:image/jpeg;base64," + Convert.ToBase64String(data, 0, data.Length);
             return strewq;
         }
-        return null;
+        return null!;
     }
 
     public async Task<ECompany> Search(string document, string captcha) =>
         await Task.Run(() => {
             var _company = new ECompany();
 
-            var request = (HttpWebRequest)WebRequest.Create($"{_url}{_validatepage}");
+            var request = (HttpWebRequest)WebRequest.Create($"{_url!}{_validatepage!}");
                       
             request.ProtocolVersion = HttpVersion.Version10;
             request.CookieContainer = _cookies;
             request.Method = "POST";
 
             string postData = "";
-            postData = postData + "origem=comprovante&";
+            postData += "origem=comprovante&";
             postData = postData + "cnpj=" + new Regex(@"[^\d]").Replace(document, string.Empty) + "&";
             postData = postData + "txtTexto_captcha_serpro_gov_br=" + captcha + "&";
-            postData = postData + "submit1=Consultar&";
-            postData = postData + "search_type=cnpj";
+            postData += "submit1=Consultar&";
+            postData += "search_type=cnpj";
 
             byte[] byteArray = Encoding.UTF8.GetBytes(postData);
             request.ContentType = "application/x-www-form-urlencoded";
@@ -65,7 +65,7 @@ public class ServiceRFB : IServiceRFB
             dataStream.Close();
 
             WebResponse response = request.GetResponse();
-            StreamReader stHtml = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("ISO-8859-1"));
+            StreamReader stHtml = new (response.GetResponseStream(), Encoding.GetEncoding("ISO-8859-1"));
             string paginaHTML = stHtml.ReadToEnd();
 
             if (paginaHTML.Contains("Verifique se o mesmo foi digitado corretamente"))

@@ -1,18 +1,17 @@
 
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Sim.Application.Interfaces;
 using Sim.Application.Sebrae.Interfaces;
 using Sim.Domain.Entity;
-using Sim.Identity.Config;
+using Sim.Identity.Policies;
 using Sim.UI.Web.Areas.Sebrae.Services;
 using Sim.UI.Web.Functions;
 
 namespace Sim.UI.Web.Areas.Sebrae.Pages.RAE;
 
-[RoleOrClaimAuthorize(Access.Module, "Permission", AccountType.IsAdminGlobal)]
+[RoleOrClaimAuthorize(Module.Name, PolicyTypes.Permission, PolicyTypes.Adm_Global)]
 public class ExportModel : PageModel
 {
     private readonly IAppServiceAtendimento _repository;
@@ -44,12 +43,12 @@ public class ExportModel : PageModel
 
     public async Task OnPostAsync()
     {
-        Atendimentos = await _repository.DoListAsync(s => s.Data!.Value.Date >= DataI.Date && s.Data.Value.Date <= DataF.Date && s.Setor == Access.Module);
+        Atendimentos = await _repository.DoListAsync(s => s.Data!.Value.Date >= DataI.Date && s.Data.Value.Date <= DataF.Date && s.Setor == Module.Name);
     }
 
     public async Task<IActionResult> OnPostExportToFile()
     {
-        Atendimentos = await _repository.DoListAsync(s => s.Data!.Value.Date >= DataI.Date && s.Data.Value.Date <= DataF.Date && s.Setor == Access.Module);
+        Atendimentos = await _repository.DoListAsync(s => s.Data!.Value.Date >= DataI.Date && s.Data.Value.Date <= DataF.Date && s.Setor == Module.Name);
         var _file = await _sebrae.DoExport(Atendimentos, User.Identity!.Name!);
         return File(_file.StreamFile, _file.ContentType, _file.Name);
     }

@@ -3,6 +3,7 @@
 @using Sim.Identity.Entity
 @using Sim.Identity.Config;
 @using Sim.Application.Interfaces
+@using Sim.Identity.Policies
 
 @inject UserManager<ApplicationUser> _userManager
 @inject IAuthorizationService AuthorizationService
@@ -27,9 +28,8 @@
     var _setorativo = Context.Session.GetString("SetorAtivo");
     var _url = Url.ActionContext.HttpContext.Request.Path.Value;
 
-    var IsAdmin = (await AuthorizationService.AuthorizeAsync(User, AccountType.IsAdminGlobal)).Succeeded;
-    var IsSetting = (await AuthorizationService.AuthorizeAsync(User, "CanEditSettings")).Succeeded;
-    var IsAccount = (await AuthorizationService.AuthorizeAsync(User, "CanManageAccounts")).Succeeded;
+    var IsSetting = (await AuthorizationService.AuthorizeAsync(User, PolicyExtensions.IsAdminSettings)).Succeeded;
+    var IsAccount = (await AuthorizationService.AuthorizeAsync(User, PolicyExtensions.IsAdminAccounts)).Succeeded;
 }
 <input id="meustatusonline" type="text" value="@_idstatus" hidden />
 
@@ -60,14 +60,14 @@
                 </div>
                 <div class="col s6 m6 l6 no-padding">
                     <ul class="right">
-                        @if (IsAdmin || IsAccount)
+                        @if (IsAccount)
                         {
                             <li class="@LayoutNavPages.ConfigContasNavClass(ViewContext)">
                                 <a asp-area="Admin" asp-page="/Manager/Index"><i
                                         class="material-icons online">manage_accounts</i></a>
                             </li>
                         }
-                        @if (IsAdmin || IsSetting)
+                        @if (IsSetting)
                         {
                             <li class="@LayoutNavPages.ConfigSistemaNavClass(ViewContext)">
                                 <a asp-area="Settings" asp-page="/Common/Index"><i

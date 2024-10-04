@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Sim.Identity.Context;
 using Sim.Identity.Interfaces;
 using Sim.Identity.Repository;
+using Sim.Identity.Policies;
 
 namespace Sim.Identity.IoC;
 public static class Container
@@ -25,7 +26,7 @@ public static class Container
         if (services == null) throw new ArgumentNullException(nameof(services));
 
         services.AddScoped<IServiceUser, RepositoryUser>();
-        
+
         services.Configure<IdentityOptions>(options =>
         {
             options.SignIn.RequireConfirmedAccount = true;
@@ -42,8 +43,29 @@ public static class Container
             options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
             options.Lockout.MaxFailedAccessAttempts = 5;
         });
+    }
 
-        
+    public static void AuthorizationPolices(this IServiceCollection services)
+    {
+        services.AddAuthorizationCore(options =>
+        {
+            options.AddPolicy(PolicyExtensions.IsAdminGlobal, policy =>
+                policy.RequireClaim(PolicyTypes.Permission, PolicyTypes.Adm_Global));
 
+
+            options.AddPolicy(PolicyExtensions.IsAdminSettings, policy =>
+            {
+                policy.RequireAssertion(context =>
+                    context.User.HasClaim(PolicyTypes.Permission, PolicyTypes.Adm_Global) ||
+                    context.User.HasClaim(PolicyTypes.Permission, PolicyTypes.Adm_Settings));
+            });
+
+            options.AddPolicy(PolicyExtensions.IsAdminAccounts, policy =>
+            {
+                policy.RequireAssertion(context =>
+                    context.User.HasClaim(PolicyTypes.Permission, PolicyTypes.Adm_Global) ||
+                    context.User.HasClaim(PolicyTypes.Permission, PolicyTypes.Adm_Account));
+            });
+        });
     }
 }

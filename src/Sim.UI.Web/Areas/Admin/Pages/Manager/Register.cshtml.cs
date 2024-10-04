@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Sim.UI.Web.Areas.Admin.ViewModel;
 using Sim.Identity.Entity;
-using Sim.Identity.Config;
+using Sim.Identity.Policies;
 
 namespace Sim.UI.Web.Areas.Admin.Pages.Manager
 {
 
-    [Authorize(Policy = "AdminOrAccounts")]
+    [Authorize(Policy = PolicyExtensions.IsAdminAccounts)]
     public class RegisterModel : PageModel
     {
 

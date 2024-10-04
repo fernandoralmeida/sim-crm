@@ -7,6 +7,8 @@
     ViewData["ActivePageLi"] = Web.Pages.Shared.LayoutNavPages.Calendar;
 }
 
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
 <!-- Dropdown Structure Year -->
 <ul id="dropdownYear" class="dropdown-content">
     @foreach (var item in Model.DoCalendar.Years!)
@@ -67,28 +69,42 @@
                 {
                     <a class="btn-link right text-color-blue modal-trigger open-days" data-d="@item.Title"
                         data-m="@Model.CtrlCalendar.Month" data-a="@Model.CtrlCalendar.Ano" href="#modalEvents"><i
-                            class="material-icons" title="Adicionar Lembrete">calendar_month</i></a>
+                            class="material-icons" title="Ver Eventos do Dia">calendar_month</i></a>
+
                     <a class="btn-link right text-color-purple modal-trigger save-btn" data-d="@item.Title"
                         data-m="@Model.CtrlCalendar.Month" data-a="@Model.CtrlCalendar.Ano" href="#modalNew"><i
-                            class="material-icons" title="Adicionar Lembrete">bookmark_add</i></a>
+                            class="material-icons" title="Adicionar Novo Lembrete">bookmark_add</i></a>
                 }
             </div>
             <div>
                 @if (item.Events!.Any())
                 {
-                    @foreach (var subitem in item.Events!)
+                    @foreach (var subitem in item.Events!.OrderBy(o => o.Data))
                     {
                         var _d = subitem.Data < DateTime.Now ? " old" : "";
+                        var _name = $"{subitem.Name} {subitem.Local}";
 
                         if (!subitem.IsRemind)
                         {
-                            <a class="content items reminders @_d modal-trigger open-event-modal" href="#modalEvents"
-                                data-id="@subitem.Code">@subitem.Name</a>
+                            <a class="content items @_d modal-trigger open-event-modal" href="#modalEvents" data-id="@subitem.Code"
+                                title="Evento: @subitem.Name">@_name</a>
                         }
                         else
                         {
-                            <a class="content items @_d modal-trigger open-reminder-modal" href="#modalLembretes"
-                                data-id="@subitem.Id">@subitem.Name</a>
+                            <a class="content items reminders @_d modal-trigger open-reminder-modal" href="#modalLembretes"
+                                data-id="@subitem.Id" title="Lembrete: @subitem.Name">
+                                <div class="a-container">
+                                    <div>
+                                        @if (subitem.IsPrivate == Application.Agenda.Views.VReminder.TReminder.Privado)
+                                        {
+                                            <i class="material-icons private">lock</i>
+                                        }
+                                    </div>
+                                    <div>
+                                        @_name
+                                    </div>
+                                </div>
+                            </a>
                         }
                     }
                 }
@@ -103,15 +119,19 @@
 
 <div id="modalLembretes" class="modal">
     <div class="modal-content">
-        <a id="removeButton" class="modal-close btn-link text-color-red right mgn-l-10"><i
-                class="material-icons" title="Alterar Lembrete">delete</i></a>
-        <a id="editButton" class="modal-close btn-link text-color-purple modal-trigger right mgn-r-10" href="#modalNew"><i
-                class="material-icons" title="Alterar Lembrete">edit</i></a>
+
+        <a id="removeButton" class="modal-close btn-link text-color-red right mgn-l-10"><i class="material-icons"
+                title="Apagar Lembrete">delete</i></a>
+
+        <a id="editButton" class="modal-close btn-link text-color-purple modal-trigger right mgn-r-10"
+            href="#modalNew"><i class="material-icons" title="Alterar Lembrete">edit</i></a>
+
         <h5 id="reminder-title" class="mgn-t-0"></h5>
         <p id="reminder-location"></p>
         <p id="reminder-date"></p>
         <p id="reminder-description"></p>
         <p id="reminder-owner"></p>
+        <p id="reminder-privacy"></p>
         <p id="reminder-status" class="mgn-b-0"></p>
     </div>
 </div>
@@ -128,9 +148,13 @@
         <h6>Lembrete</h6>
         <div class="divider"></div>
         <form class="row mgn-0" method="post">
-            <div class="input-field col s12" hidden>
+            <div class="input-field col s6" hidden>
                 <input type="text" asp-for="InputModel.Id">
                 <label asp-for="InputModel.Id"></label>
+            </div>
+            <div class="input-field col s6" hidden>
+                <label asp-for="OnEdit"></label>
+                <input type="checkbox" asp-for="OnEdit" />
             </div>
             <div class="input-field col s6">
                 <input type="text" asp-for="InputModel.Titulo" required>
@@ -184,7 +208,14 @@
                 var _date = new Date(year, month - 1, day);
                 // Formate a data para o formato ISO (YYYY-MM-DD)
                 var formattedDate = _date.toISOString().slice(0, 10);
-                document.getElementById('InputDate').value = formattedDate;
+                document.getElementById('InputModel_Id').value = '';
+                document.getElementById('InputModel_Titulo').value = '';
+                document.getElementById('InputModel_Local').value = '';
+                document.getElementById('InputModel_Visivel').value = 'Privado';
+                document.getElementById('InputDate').value = _date.toISOString().split('T')[0];
+                document.getElementById('InputTime').value = "00:00";
+                document.getElementById('InputModel_Descricao').value = '';
+                document.getElementById('OnEdit').checked = false;
             });
         });
 
@@ -206,7 +237,7 @@
                     })
                     .then(function (data) {
 
-                        var editButton = document.getElementById('editButton');                        
+                        var editButton = document.getElementById('editButton');
                         editButton.setAttribute('data-id', data.id);
 
                         var removeButton = document.getElementById('removeButton');
@@ -218,6 +249,7 @@
                         document.getElementById('reminder-date').textContent = `Data: ${new Date(data.data).toLocaleString()}`;
                         document.getElementById('reminder-description').textContent = `Descrição: ${data.descricao}`;
                         document.getElementById('reminder-owner').textContent = `Responsável: ${data.owner}`;
+                        document.getElementById('reminder-privacy').textContent = `Visivel: ${data.visivel}`;
                         document.getElementById('reminder-status').textContent = `Status: ${data.status ? 'Ativo' : 'Inativo'}`;
                     })
                     .catch(function (error) {
@@ -254,13 +286,24 @@
                             eventElement.classList.add('event');
 
                             // Adiciona os dados principais do evento
-                            eventElement.innerHTML = `<i class="material-icons left">calendar_month</i><h6>${item.title}</h6>`;
+                            eventElement.innerHTML = `<i class="material-icons left">calendar_month</i><h6 class="mgn-t-0">${item.title}</h6>`;
 
                             const inscritosList = document.createElement('ul');
+                            inscritosList.classList.add('mgn-b-0');
 
                             item.events.forEach(event => {
+
+                                // Supondo que event.data seja uma string ou objeto contendo a data
+                                var eventDate = new Date(event.data); // Converter para objeto Date
+
+                                // Obter apenas a hora em formato local (PT-BR)
+                                var timeString = eventDate.toLocaleTimeString('pt-BR', {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                });
+
                                 const inscritoItem = document.createElement('li');
-                                inscritoItem.innerText = `- ${event.name} (Data: ${event.data})`;
+                                inscritoItem.innerText = `${timeString} - ${event.name} - ${event.local} - ${event.descricao}`;
                                 inscritosList.appendChild(inscritoItem);
                             });
                             eventElement.appendChild(inscritosList);
@@ -290,6 +333,7 @@
         document.getElementById('editButton').addEventListener('click', function () {
             // ID do lembrete que você quer editar (você pode pegar isso dinamicamente)
             const _id = this.getAttribute('data-id');
+            document.getElementById('OnEdit').checked = true;
             // Fetch para pegar os dados da API
             fetch(`/api/v1/reminder/${_id}`)
                 .then(response => response.json())
@@ -301,11 +345,12 @@
                     document.getElementById('InputModel_Visivel').value = data.visivel;
 
                     // Converte a data para o formato YYYY-MM-DD para o input de data
-                    const date = new Date(data.date);
-                    document.getElementById('InputDate').value = date.toISOString().split('T')[0];
+                    const _date = new Date(data.data);
 
-                    // Converte a hora para o formato HH:MM para o input de hora
-                    document.getElementById('InputTime').value = date.toTimeString().split(' ')[0].slice(0, 5);
+                    document.getElementById('InputDate').value = _date.toISOString().split('T')[0];
+
+                    // Converte a hora para o formato HH:MM para o input de hora                    
+                    document.getElementById('InputTime').value = _date.toTimeString().split(' ')[0].slice(0, 5);
 
                     document.getElementById('InputModel_Descricao').value = data.descricao;
                 })
@@ -351,7 +396,7 @@
 
             // Adiciona os dados principais do evento
             eventElement.innerHTML = `
-                    <h5>${event.nome}</h5>
+                    <h5 class="mgn-t-0">${event.nome}</h5>
                     <p><strong>Tipo:</strong> ${event.tipo}</p>
                     <p><strong>Formato:</strong> ${event.formato}</p>
                     <p><strong>Data:</strong> ${new Date(event.data).toLocaleString('pt-BR')}</p>

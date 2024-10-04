@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,13 +8,12 @@ using Sim.Application.BancoPovo.ViewModel;
 using Sim.Application.Customer.Interfaces;
 using Sim.Application.Interfaces;
 using Sim.Domain.BancoPovo.Models;
-using Sim.Identity.Config;
+using Sim.Identity.Policies;
 using Sim.UI.Web.Areas.Bpp.Services;
-using Sim.UI.Web.Functions;
 
 namespace Sim.UI.Web.Areas.Bpp.Pages.Add;
 
-[Authorize(Roles = $"{AccountType.Adm_Global},{Access.Module}")]
+[RoleOrClaimAuthorize(Module.Name, PolicyTypes.Permission, PolicyTypes.Adm_Global)]
 public class IndexModel : PageModel
 {
     private readonly IMapper _mapper;

@@ -22,7 +22,11 @@ public class DeleteModel : PageModel
         try
         {
             var _reminds = await _appServiceReminder.GetAsNoTrackingAsync(new Guid(id));
-            await _appServiceReminder.RemoveAsync(_reminds!);
+            if (_reminds!.Owner == User.Identity!.Name)
+                await _appServiceReminder.RemoveAsync(_reminds!);
+            else
+                StatusMessage = $"Erro: Não é permitido apagar lembretes do operador {_reminds.Owner}";
+
             return RedirectToPage("/Calendar/Index");
         }
         catch (Exception ex)

@@ -8,16 +8,16 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.ComponentModel.DataAnnotations;
 using Sim.UI.Web.Areas.Admin.ViewModel;
 using Sim.Identity.Entity;
-using Sim.Identity.Config;
 using AutoMapper;
 using Sim.Application.Interfaces;
 
 using System.Security.Claims;
+using Sim.Identity.Policies;
 
 namespace Sim.UI.Web.Areas.Admin.Pages.Manager
 {
 
-    [Authorize(Policy = "AdminOrAccounts")]
+    [Authorize(Policy = PolicyExtensions.IsAdminAccounts)]
     public class UserRolesModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -53,36 +53,24 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
         public string? Selecionado { get; set; }
 
         public SelectList? RoleList { get; set; }
-        public IEnumerable<KeyValuePair<string, IEnumerable<KeyValuePair<string, string>>>>? OwnerList { get; set; }
+        public IEnumerable<KeyValuePair<string, IEnumerable<string>>>? OwnerList { get; set; }
 
         [BindProperty]
         public string? OwnerSelect { get; set; }
 
         private async Task LoadAsync(string id)
         {
-            // var _owners = await _secretaria.DoListHierarquia1Async(await _secretaria.DoListAsync());
-            // var _subowners = await _secretaria.DoListHierarquia2Async(await _secretaria.DoListAsync());
 
-            // OwnerList = from _s in _owners.Where(s => s.Hierarquia == Domain.Organizacao.Model.EHierarquia.Secretaria)
-            //             select (new KeyValuePair<string, IEnumerable<KeyValuePair<string, Guid>>>(_s.Acronimo!,
-            //                     from _sb in _subowners.Where(s => s.Dominio == _s.Id)
-            //                     select (new KeyValuePair<string, Guid>(_sb.Acronimo!, _sb.Id))));
-
-            OwnerList = new List<KeyValuePair<string, IEnumerable<KeyValuePair<string, string>>>>
+            OwnerList = new List<KeyValuePair<string, IEnumerable<string>>>
             {
-                new(
-                    "Permissions", new List<KeyValuePair<string, string>>
-                    {
-                        new("Permission", "Adm_Settings"),
-                        new("Permission", "Adm_Accounts")
-                    })
+                new("Permissions", PolicyTypes.ToList())
             };
 
             var roles = _roleManager.Roles.ToList();
-            if (User.IsInRole(AccountType.Adm_Global))
+            if (User.IsInRole(PolicyTypes.Adm_Global))
                 RoleList = new SelectList(roles.OrderBy(o => o.Name), nameof(IdentityRole.Name));
             else
-                RoleList = new SelectList(roles.Where(s => s.Name != AccountType.Adm_Global && s.Name != AccountType.Adm_Account).OrderBy(o => o.Name), nameof(IdentityRole.Name));
+                RoleList = new SelectList(roles.Where(s => s.Name != PolicyTypes.Adm_Global && s.Name != PolicyTypes.Adm_Account).OrderBy(o => o.Name), nameof(IdentityRole.Name));
 
             var u = await _userManager.FindByIdAsync(id);
             var r = await _userManager.GetRolesAsync(u);
@@ -172,21 +160,7 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
             {
                 var _user = await _userManager.FindByIdAsync(id);
 
-                // var _setor = await _secretaria.GetAsync(Guid.Parse(OwnerSelect!));
-
-                // var _clains = await _userManager.GetClaimsAsync(_user);
-
-                // foreach (var item in _clains)
-                // {
-                //     var _verificardominio = await _secretaria.GetAsync(Guid.Parse(item.Value));
-                //     if (_verificardominio != null && _setor.Dominio != _verificardominio.Dominio)
-                //     {
-                //         var _userdominio = await _secretaria.GetAsync((Guid)_verificardominio.Dominio!);
-                //         throw new Exception($"Usuário vinculado ao Dominio {_userdominio.Acronimo}!");
-                //     }
-                // }
-
-                Claim _claim = new("Permission", OwnerSelect! ,ClaimValueTypes.String);
+                Claim _claim = new(PolicyTypes.Permission, OwnerSelect!, ClaimValueTypes.String);
 
                 IdentityResult result = await _userManager.AddClaimAsync(_user, _claim);
 

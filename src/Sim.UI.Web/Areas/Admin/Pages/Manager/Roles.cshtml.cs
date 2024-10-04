@@ -2,15 +2,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Sim.UI.Web.Areas.Admin.ViewModel;
 using Sim.Application.Interfaces;
-using Sim.Identity.Config;
+using Sim.Identity.Policies;
 
 namespace Sim.UI.Web.Areas.Admin.Pages.Manager
 {
 
-    [Authorize(Policy = "AdminOrAccounts")]
+    [Authorize(Policy = PolicyExtensions.IsAdminAccounts)]
     public class RolesModel : PageModel
     {
         private readonly RoleManager<IdentityRole> _roleManager;

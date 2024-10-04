@@ -7,6 +7,7 @@ using Sim.Application.Agenda.Interfaces;
 using Sim.Application.Agenda.Views;
 using Sim.Application.Interfaces;
 using Sim.Domain.Evento.Model;
+using static Sim.Application.Agenda.Views.VReminder;
 
 namespace Sim.UI.Web.Pages.Calendar;
 
@@ -49,8 +50,11 @@ public partial class CalendarPage : PageModel
                 public Guid Id { get; set; }
                 public string? Code { get; set; }
                 public string? Name { get; set; }
+                public string? Local { get; set; }
+                public string? Descricao { get; set; }
                 public DateTime? Data { get; set; }
                 public bool IsRemind { get; set; } = false;
+                public TReminder IsPrivate { get; set; }
             }
         }
     }
@@ -71,6 +75,12 @@ public partial class CalendarPage : PageModel
     [BindProperty(SupportsGet = true)]
     [DataType(DataType.Time)]
     public DateTime InputTime { get; set; } = new();
+
+    [BindProperty(SupportsGet = true)]
+    public bool OnEdit { get; set; } = false;
+
+    [TempData]
+    public string? StatusMessage { get; set; }
 
     private async Task ConstructCalendar(int year, int month, IEnumerable<EEvento> eventos, IEnumerable<VReminder> reminds)
     {
@@ -106,12 +116,12 @@ public partial class CalendarPage : PageModel
                 var _eventos = new List<Calendar.CalendarDays.Event>();
                 foreach (var e in eventos.Where(s => s.Data!.Value.Day == i))
                 {
-                    _eventos.Add(new() { Id = e.Id, Name = e.Nome, Code = e.Codigo.ToString(), Data = e.Data, IsRemind = false });
+                    _eventos.Add(new() { Id = e.Id, Name = e.Nome, Code = e.Codigo.ToString(), Data = e.Data, IsRemind = false, Local = e.Owner, Descricao = e.Descricao });
                 }
 
                 foreach (var r in reminds.Where(s => s.Data!.Day == i))
                 {
-                    _eventos.Add(new() { Id = r.Id, Name = r.Titulo, Code = r.Id.ToString(), Data = r.Data, IsRemind = true });
+                    _eventos.Add(new() { Id = r.Id, Name = r.Titulo, Code = r.Id.ToString(), Data = r.Data, IsRemind = true, IsPrivate = r.Visivel, Local = r.Local, Descricao = r.Descricao });
                 }
 
                 DoCalendar.Days!.Add(new() { Title = i.ToString(), Events = _eventos });
@@ -133,6 +143,7 @@ public partial class CalendarPage : PageModel
 
     public async Task OnGetAsync(int y, int m)
     {
+        OnEdit = false;
         var _year = y == 0 ? DateTime.Now.Year : y;
         var _month = m == 0 ? DateTime.Now.Month : m;
 
@@ -154,12 +165,41 @@ public partial class CalendarPage : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        // try
+        // {
         var timeSpan = TimeSpan.Parse(InputTime.ToShortTimeString());
-        InputModel.Data = InputDate.Date.Add(timeSpan);
-        InputModel.Owner = User.Identity!.Name;
-        InputModel.Status = true;        
-        await _appServiceReminder.AddNewAsync(InputModel);
+        if (OnEdit)
+        {
+            var _alt = await _appServiceReminder.GetAsNoTrackingAsync(InputModel.Id);
+            
+            _alt!.Titulo = InputModel.Titulo;
+            _alt!.Local = InputModel.Local;
+            _alt!.Visivel = InputModel.Visivel;
+            _alt!.Descricao = InputModel.Descricao;
+            _alt.Data = InputDate.Date.Add(timeSpan);
+            _alt.Status = true;
+
+            if (_alt.Owner == User.Identity!.Name)
+                await _appServiceReminder.UpdateAsync(_alt);
+            else
+                StatusMessage = "Erro: Não é possivel editar lembrete de outro usuário!";
+
+        }
+        else
+        {
+            InputModel.Data = InputDate.Date.Add(timeSpan);
+            InputModel.Owner = User.Identity!.Name;
+            InputModel.Status = true;
+            await _appServiceReminder.AddNewAsync(InputModel);
+        }
+
         return RedirectToPage("./Index");
+        // }
+        // catch (Exception ex)
+        // {
+        //     StatusMessage = $"Erro: {ex.Message}";
+        //     return RedirectToPage("./Index");
+        // }
     }
 
 }

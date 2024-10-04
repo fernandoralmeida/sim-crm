@@ -6,12 +6,12 @@ using Sim.Application.Sebrae.Interfaces;
 using Sim.Domain.Entity;
 using Sim.Domain.Helpers;
 using Sim.Domain.Sebrae.Model;
-using Sim.Identity.Config;
+using Sim.Identity.Policies;
 using Sim.UI.Web.Areas.Sebrae.Services;
 
 namespace Sim.UI.Web.Areas.Sebrae.Pages.Simples;
 
-[RoleOrClaimAuthorize(Access.Module, "Permission", AccountType.IsAdminGlobal)]
+[RoleOrClaimAuthorize(Module.Name, PolicyTypes.Permission, PolicyTypes.Adm_Global)]
 public class AddModel : PageModel
 {
     private readonly IAppServiceSimples _simples;

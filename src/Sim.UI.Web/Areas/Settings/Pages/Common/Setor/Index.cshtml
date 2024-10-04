@@ -16,11 +16,10 @@
         </div>
         <div class="row">
             <div class="card-header">
-                @if (User.IsInRole(Sim.Identity.Config.AccountType.Adm_Global))
-                {
-                    <a asp-area="Settings" asp-page="/Common/Unidade/Index" class="btn-small waves-effect waves-light grey"
-                        title="Voltar"><i class="material-icons">undo</i></a>
-                }
+
+                <a asp-area="Settings" asp-page="/Common/Unidade/Index" class="btn-small waves-effect waves-light grey"
+                    title="Voltar"><i class="material-icons">undo</i></a>
+
                 <span class="pdn-10">Inclua e gerencie os
                     setores da unidade</span>
             </div>
@@ -45,7 +44,7 @@
                 <tr>
                     <th>Unidade</th>
                     <th>Servicos</th>
-                    <th>Situação</th>                    
+                    <th>Situação</th>
                     <th>Gerênciar</th>
                     <th>Ações</th>
                 </tr>
@@ -82,13 +81,12 @@
                                     asp-route-dm="@Model.Unidade!.Id" class="btn-floating waves-effect waves-light orange"><i
                                         class="material-icons">edit</i></a>
                                 |
-                                @if (User.IsInRole(Sim.Identity.Config.AccountType.Adm_Global))
-                                {
-                                    <a asp-area="Settings" asp-page-handler="Remove" asp-route-id="@item.Id"
-                                        asp-route-dm="@Model.Unidade!.Id" class="btn-floating waves-effect waves-light red"><i
-                                            class="material-icons">remove</i></a>
 
-                                }
+                                <a asp-area="Settings" asp-page-handler="Remove" asp-route-id="@item.Id"
+                                    asp-route-dm="@Model.Unidade!.Id" class="btn-floating waves-effect waves-light red"><i
+                                        class="material-icons">remove</i></a>
+
+
                             </td>
                         </tr>
                     }

@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
 using Sim.Application.Sebrae.Interfaces;
 using Sim.Domain.Sebrae.Model;
-using Sim.Identity.Config;
+using Sim.Identity.Policies;
 using Sim.UI.Web.Areas.Sebrae.Services;
 
 namespace Sim.UI.Web.Areas.Sebrae.Pages.Simples;
 
-[RoleOrClaimAuthorize(Access.Module, "Permission", AccountType.IsAdminGlobal)]
+[RoleOrClaimAuthorize(Module.Name, PolicyTypes.Permission, PolicyTypes.Adm_Global)]
 public class IndexModel : PageModel
 {
     private readonly IAppServiceSimples _simples;

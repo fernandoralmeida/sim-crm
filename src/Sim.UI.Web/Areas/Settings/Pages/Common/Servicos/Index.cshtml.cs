@@ -6,11 +6,11 @@ using Sim.Application.VM;
 using Sim.Application.Interfaces;
 using Sim.Domain.Organizacao.Model;
 using Microsoft.AspNetCore.Authorization;
-using Sim.Identity.Config;
+using Sim.Identity.Policies;
 
 namespace Sim.UI.Web.Areas.Settings.Pages.Common.Servicos;
 
-[Authorize(Policy = "AdminOrSettings")]
+[Authorize(Policy = PolicyExtensions.IsAdminSettings)]
 public class IndexModel : PageModel
 {
     private readonly IAppServiceServico _appservicos;

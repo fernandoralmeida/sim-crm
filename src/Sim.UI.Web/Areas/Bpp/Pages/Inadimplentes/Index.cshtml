@@ -31,8 +31,8 @@
                             <td>@_cont</td>
                             <td>@Html.DisplayFor(model => c.Numero)</td>
                             <td>
-                                @Html.DisplayFor(Model => c.Cliente.Nome)
-                                <br>@Html.DisplayFor(Model => c.Empresa.CNPJ) @Html.DisplayFor(Model => c.Empresa.Nome_Empresarial)
+                                @Html.DisplayFor(Model => c.Cliente!.Nome)
+                                <br>@Html.DisplayFor(Model => c.Empresa!.CNPJ) @Html.DisplayFor(Model => c.Empresa!.Nome_Empresarial)
                             </td>
                             <td>@Html.DisplayFor(model => c.Data) ~ @Html.DisplayFor(model => c.DataSituacao)</td>
                             <td>
@@ -44,7 +44,7 @@
                                 <a class="btn-small waves-effect waves-light red modal-trigger showmodal" data-id="@c.Id" data-sto="@c.Situacao" data-pgo="@c.Pagamento" href="#modal1">@Html.DisplayFor(model => _pag)</a>
                             </td>
                             <td>@NumberFormatInfo.CurrentInfo.CurrencySymbol @Html.DisplayFor(model => c.Valor)</td>
-                            <td><a class="btn-small waves-effect waves-light cyan modal-trigger showmodal" data-id="@c.Id" data-cli="@c.Cliente.Nome" data-valor="@c.Valor" href="#modalR" title="Renegociar?"><i class="material-icons">currency_exchange</i></a></td>
+                            <td><a class="btn-small waves-effect waves-light cyan modal-trigger showmodal" data-id="@c.Id" data-cli="@c.Cliente!.Nome" data-valor="@c.Valor" href="#modalR" title="Renegociar?"><i class="material-icons">currency_exchange</i></a></td>
                         </tr>                        
                     }       
                 </tbody>

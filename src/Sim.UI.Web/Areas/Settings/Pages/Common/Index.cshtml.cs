@@ -6,11 +6,11 @@ using Sim.Application.VM;
 using Sim.Domain.Organizacao.Model;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Sim.Identity.Config;
+using Sim.Identity.Policies;
 
 namespace Sim.UI.Web.Areas.Settings.Pages.Common
 {
-    [Authorize(Policy = "AdminOrSettings")]
+    [Authorize(Policy = PolicyExtensions.IsAdminSettings)]
     public class IndexModel : PageModel
     {
         private readonly IAppServiceSecretaria _appServicePrefeitura;
@@ -39,13 +39,13 @@ namespace Sim.UI.Web.Areas.Settings.Pages.Common
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            if (User.IsInRole(AccountType.Adm_Settings))
-            {
-                var _dominioativo = HttpContext.Session.GetString("Dominio");
-                var _dominioID = await _appServicePrefeitura.DoListAsync(s => s.Acronimo == _dominioativo);
+            // if (User.IsInRole(AccountType.Adm_Settings))
+            // {
+            //     var _dominioativo = HttpContext.Session.GetString("Dominio");
+            //     var _dominioID = await _appServicePrefeitura.DoListAsync(s => s.Acronimo == _dominioativo);
 
-                return RedirectToPage("/Common/Setor/Index", new { id = _dominioID.FirstOrDefault()?.Id });
-            }
+            //     return RedirectToPage("/Common/Setor/Index", new { id = _dominioID.FirstOrDefault()?.Id });
+            // }
             await OnLoad();
             return Page();
         }

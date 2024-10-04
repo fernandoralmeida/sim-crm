@@ -5,11 +5,11 @@ using Sim.Application.Customer.Interfaces;
 using Sim.Application.Interfaces;
 using Sim.Domain.Customer.Models;
 using Sim.UI.Web.Functions;
-using Sim.Identity.Config;
+using Sim.Identity.Policies;
 
 namespace Sim.UI.Web.Pages.Bind;
 
-[Authorize(Roles = $"{AccountType.Adm_Global},{AccountType.Adm_Settings}")]
+[Authorize(Policy = PolicyExtensions.IsAdminGlobal)]
 public class AdminModel : PageModel
 {
     private readonly IAppServiceBindings _bindings;

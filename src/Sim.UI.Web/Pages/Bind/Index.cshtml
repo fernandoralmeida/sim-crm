@@ -21,11 +21,9 @@
             </div>
             <ul class="right">
                 <li><a asp-page="./Add"><i class="material-icons blue-text">add</i></a></li>
-                @if (User.IsInRole(AccountType.Adm_Settings) ||
-                User.IsInRole(AccountType.Adm_Global))
-                {
+                
                     <li><a asp-page="./Admin" class="submit"><i class="material-icons blue-text">settings</i></a></li>
-                }
+                
             </ul>
         </div>
     </nav>

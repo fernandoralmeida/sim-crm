@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Sim.Identity.Entity;
-using Sim.Identity.Config;
+using Sim.Identity.Policies;
 
 namespace Sim.UI.Web.Areas.Identity.Pages.Account
 {
-    [Authorize(Policy = $"{AccountType.IsAdminGlobal}")]
+    [Authorize(Policy = PolicyExtensions.IsAdminAccounts)]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -44,7 +44,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
         {
             [Required]
             [Display(Name = "Identificador")]
-            public string? UserName  { get; set; }
+            public string? UserName { get; set; }
 
             [Required]
             [Display(Name = "Nome")]

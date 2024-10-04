@@ -16,8 +16,9 @@
                 <div class="box-column-row">
                     <div class="box-card">
                         <div class="card-header">
-                            <a asp-page="/Bind/Index" class="btn-small waves-effect waves-light grey submit" title="Voltar"><i
-                                    class="material-icons">undo</i></a><span class="pdn-10">Gerenciar Vinculos</span>
+                            <a asp-page="/Bind/Index" class="btn-small waves-effect waves-light grey submit"
+                                title="Voltar"><i class="material-icons">undo</i></a><span class="pdn-10">Gerenciar
+                                Vinculos</span>
                         </div>
                         <div class="box-around">
                             @if (Model.NotBindings != null)
@@ -30,14 +31,13 @@
                                     </div>
                                 }
                             }
-                            @if (User.IsInRole(Identity.Config.AccountType.Adm_Global))
-                            {
-                                <button asp-page-handler="Bindings"
-                                    class="box-cell-item-flex font-size-12 btn-nobg waves-effect bg-color-light">
-                                    <p>Verificar</p>
-                                    <p class="text-color-dark font-h5">Iniciar Vinculos</p>
-                                </button>
-                            }
+
+                            <button asp-page-handler="Bindings"
+                                class="box-cell-item-flex font-size-12 btn-nobg waves-effect bg-color-light">
+                                <p>Verificar</p>
+                                <p class="text-color-dark font-h5">Iniciar Vinculos</p>
+                            </button>
+
                         </div>
                     </div>
                 </div>

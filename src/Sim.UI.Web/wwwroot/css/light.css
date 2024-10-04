@@ -12,6 +12,11 @@ for details on configuring this project to bundle and minify static web assets. 
     --color-9: #ffa500;
     --color-10: #d87093;
     --color-11: #8a2be2;
+    --color-12: #6e2aad;
+    --color-13: #a3c6f5;
+    --color-14: #d3bce8;
+    --color-15: #bfa6d9;
+    --color-16: #4169e1;
     --color-gb-05: rgba(0, 0, 0, .05);
     --color-gb-20: rgba(0, 0, 0, .2);
     --color-gb-50: rgba(0, 0, 0, .5);
@@ -1191,14 +1196,14 @@ nav,
     padding: 2px 6px;
     border-radius: 4px;
     border: solid 1px var(--color-6);
-    background-color: var(--color-1);
+    background-color: var(--color-16);
     color: var(--color-6);
     font-size: 12px;
 }
 
 .content.items.reminders {
     display: block;
-    padding: 2px;
+    padding: 2px 6px;
     border-radius: 4px;
     border: solid 1px var(--color-6);
     background-color: var(--color-11);
@@ -1208,7 +1213,33 @@ nav,
 
 .content.items.old {
     text-decoration: line-through;
-    opacity: 0.6;
+    background-color: var(--color-13);
+    color: var(--color-5);
+}
+
+.content.items.reminders.old {
+    text-decoration: line-through;
+    background-color: var(--color-14);
+    color: var(--color-5);
+}
+
+.content.items.reminders.private.old {
+    text-decoration: line-through;
+    background-color: var(--color-15);
+    color: var(--color-5);
+}
+
+.a-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.material-icons.private {
+    font-size: 18px;
+    margin-right: 2px;
+    margin-left: -4px;
+    margin-top: 3px;
 }
 
 .content.head {

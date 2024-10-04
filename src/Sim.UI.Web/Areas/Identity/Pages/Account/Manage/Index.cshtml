@@ -64,28 +64,26 @@
         <div class="col s12 l6">
             <div class="card">
                 <div class="card-header grey-text">Vínculos<i class="left material-icons">account_box</i></div>
-                @if (User.IsInRole(Sim.Identity.Config.AccountType.Adm_Global) ||
-                User.IsInRole(Sim.Identity.Config.AccountType.Adm_Account))
-                {
-                    <div class="row no-padding mgn-0">
-                        <div class="col s12 m6 l6 mgn-b-10 valign-wrapper">
-                            <select asp-for="OwnerSelect" class="browser-default">
-                                <option>-- Associar Vinculo --</option>
-                                @foreach (var item in Model.OwnerList!)
-                                {
-                                    <optgroup label="@item.Key">
-                                        @foreach (var subitem in item.Value)
-                                        {
-                                            <option value="@subitem.Value">@subitem.Key</option>
-                                        }
-                                    </optgroup>
-                                }
-                            </select>
-                            <button type="submit" asp-page-handler="BindAccount" asp-route-id="@Model.Input!.Id"
-                                class="btn waves-effect mgn-l-10"><i class="material-icons">link</i></button>
-                        </div>
+
+                <div class="row no-padding mgn-0">
+                    <div class="col s12 m6 l6 mgn-b-10 valign-wrapper">
+                        <select asp-for="OwnerSelect" class="browser-default">
+                            <option>-- Associar Vinculo --</option>
+                            @foreach (var item in Model.OwnerList!)
+                            {
+                                <optgroup label="@item.Key">
+                                    @foreach (var subitem in item.Value)
+                                    {
+                                        <option value="@subitem.Value">@subitem.Key</option>
+                                    }
+                                </optgroup>
+                            }
+                        </select>
+                        <button type="submit" asp-page-handler="BindAccount" asp-route-id="@Model.Input!.Id"
+                            class="btn waves-effect mgn-l-10"><i class="material-icons">link</i></button>
                     </div>
-                }
+                </div>
+
                 <div class="divider"></div>
                 <table class="responsive-table">
                     <tbody>
@@ -98,16 +96,14 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Value)
                                 </td>
-                                @if (User.IsInRole(Sim.Identity.Config.AccountType.Adm_Global) ||
-                               User.IsInRole(Sim.Identity.Config.AccountType.Adm_Account))
-                                {
-                                    <td>
-                                        <button type="submit" asp-page-handler="UnbindAccount" asp-route-id="@Model.Input!.Id"
-                                            asp-route-ct="@item.Type" asp-route-cv="@item.Value"
-                                            class="btn-small waves-effect waves-light materialize-red"
-                                            title="Excluir Vínculo"><i class="material-icons">remove</i></button>
-                                    </td>
-                                }
+
+                                <td>
+                                    <button type="submit" asp-page-handler="UnbindAccount" asp-route-id="@Model.Input!.Id"
+                                        asp-route-ct="@item.Type" asp-route-cv="@item.Value"
+                                        class="btn-small waves-effect waves-light materialize-red"
+                                        title="Excluir Vínculo"><i class="material-icons">remove</i></button>
+                                </td>
+
                             </tr>
                         }
                     </tbody>

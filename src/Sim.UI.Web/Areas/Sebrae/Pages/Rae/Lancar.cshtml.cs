@@ -1,15 +1,14 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Sim.Application.Interfaces;
 using Sim.Application.Sebrae.Interfaces;
 using Sim.Domain.Entity;
-using Sim.Identity.Config;
+using Sim.Identity.Policies;
 using Sim.UI.Web.Areas.Sebrae.Services;
 
 namespace Sim.UI.Web.Areas.Sebrae.Pages.RAE
 {
-    [RoleOrClaimAuthorize(Access.Module, "Permission", AccountType.IsAdminGlobal)]
+    [RoleOrClaimAuthorize(Module.Name, PolicyTypes.Permission, PolicyTypes.Adm_Global)]
     public class LancarModel : PageModel
     {
         private readonly IAppServiceRae _appServiceRae;

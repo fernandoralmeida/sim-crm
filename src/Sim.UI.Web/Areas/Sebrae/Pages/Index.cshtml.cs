@@ -1,18 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Authorization;
 using Sim.Application.Interfaces;
 using Sim.UI.Web.Functions;
 using Microsoft.EntityFrameworkCore;
 using Sim.Domain.Entity;
-using Sim.Identity.Config;
 using Sim.UI.Web.Areas.Sebrae.Services;
 using Sim.Application.Sebrae.Interfaces;
-using System.Security.Claims;
+using Sim.Identity.Policies;
 
 namespace Sim.UI.Web.Areas.Sebrae.Pages
 {
-    [RoleOrClaimAuthorize(Access.Module, "Permission", AccountType.IsAdminGlobal)]
+    [RoleOrClaimAuthorize(Module.Name, PolicyTypes.Permission, PolicyTypes.Adm_Global)]
     public class IndexModel : PageModel
     {
         private readonly IAppServiceRae? _appServiceRae;

@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Sim.Application.Interfaces;
 using Sim.Application.VM;
 using Sim.Domain.Organizacao.Model;
-using Sim.Identity.Config;
+using Sim.Identity.Policies;
 
 namespace Sim.UI.Web.Areas.Settings.Pages.Common.Canal;
 
-[Authorize(Policy = "AdminOrSettings")]
+[Authorize(Policy = PolicyExtensions.IsAdminSettings)]
 public class IndexModel : PageModel
 {
     private readonly IAppServiceSecretaria _appSecretaria;
