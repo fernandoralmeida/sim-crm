@@ -1,33 +1,33 @@
 ﻿@model string
-
-@if (!String.IsNullOrEmpty(Model))
-{
-    var statusMessageClass = "green";
-    var iconclass = "done";
-    var _msg = Model;
-
-    if (Model.StartsWith("Erro:"))
+<div id="divmessagebox">
+    @if (!String.IsNullOrEmpty(Model))
     {
-        statusMessageClass = "red";
-        iconclass = "error";
-        _msg = Model.Remove(0, 5);
+        var statusMessageClass = "green";
+        var iconclass = "done";
+        var _msg = Model;
+
+        if (Model.StartsWith("Erro:"))
+        {
+            statusMessageClass = "red";
+            iconclass = "error";
+            _msg = Model.Remove(0, 5);
+        }
+        else if (Model.StartsWith("Alerta:"))
+        {
+            statusMessageClass = "orange";
+            iconclass = "warning";
+            _msg = Model.Remove(0, 7);
+        }
+
+        <div class="card-panel mgn-0 no-padding z-depth-0 @statusMessageClass lighten-4 @statusMessageClass-text text-darken-3"
+            role="alert">
+            <div class="row mgn-0 no-padding">
+
+                <i class="left material-icons large">@iconclass</i>
+
+                <span class="line-6r truncate" title="@_msg">@_msg</span>
+
+            </div>
+        </div>
     }
-    else if (Model.StartsWith("Alerta:"))
-    {
-        statusMessageClass = "orange";
-        iconclass = "warning";
-        _msg = Model.Remove(0, 7);
-    }
-
-    <div id="divmessagebox"
-    class="card-panel mgn-0 no-padding z-depth-0 @statusMessageClass lighten-4 @statusMessageClass-text text-darken-3"
-    role="alert">
-    <div class="row mgn-0 no-padding">
-
-        <i class="left material-icons large">@iconclass</i>
-
-        <span class="line-6r truncate" title="@_msg">@_msg</span>
-
-    </div>
 </div>
-}

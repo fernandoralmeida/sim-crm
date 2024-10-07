@@ -8,98 +8,100 @@
 }
 
 <partial name="_StatusMessage" model="Model.StatusMessage" />
-<div class="row no-padding">
-    <div class="col s6 m6 l6 no-padding">
-        <nav class="transparent">
-            <form method="post">
-                <div class="nav-wrapper">             
-                    <div class="input-field no-padding">
-                        <input id="search" placeholder="Digite aqui para pesquisar!" onkeypress="handle(event)" asp-for="Src" type="search" required>
-                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                    </div>            
-                </div>
-            </form>
-        </nav>
-    </div>
-    <div class="col s6 m6 l6 no-padding">
-        <partial name="_SebraeAquiNav" model="@Model.Src" />
-    </div>
-</div>
-<div class="card">
-    <table class="responsive-table">
-        <thead>
-            <tr>
-                <th>
-                    N
-                </th>
-                <th>
-                    Protocolo
-                </th>
-                <th>
-                    Data
-                </th>
-                <th>
-                    Cliente
-                </th>
-                <th>
-                    Servicos
-                </th>
-                <th>
-                    Canal
-                </th>
-                <th>
-                    Rae
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                int cont = 1;
-                int t = (Model.PaginationAtendimentos!.PageIndex - 1) * Model.PaginationAtendimentos.ItemsViews;
-            }
-            @foreach (var item in Model.PaginationAtendimentos)
-            {
-                <tr>
-                    <td>@Sim.UI.Web.Functions.Extensions.Contador(cont++, t)</td>
-                    <td>
-                        <a class="modal-trigger" href="#viewmodal" data-id="@item.Id">@Html.DisplayFor(modelItem => item.Protocolo)</a>
-                    </td>
-                    <td>
-                        @{
-                            var d1 = Convert.ToDateTime(item.Data);
-                            var datainicial = d1.ToShortDateString();
-                        }
 
-                        @Html.DisplayFor(modelItem => datainicial)
-                    </td>
-                    <td class="t-uppercase">
-                        @Html.DisplayFor(modelItem => item.Pessoa!.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Servicos)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Canal)
-                    </td>
-                    <td>
-                        <a asp-page="./Rae/Lancar" class="btn-small waves-effect waves-light" asp-route-y="@Model.Src" asp-route-id="@item.Id" asp-route-edit="@false">Lançar</a>
-                    </td>
+<nav class="row navbar">
+    <div class="nav-wrapper">
+        <form method="post" class="input-field col s6 m6 l6 no-padding">
+            <input id="search" placeholder="Digite aqui para pesquisar!" onkeypress="handle(event)" asp-for="Src"
+                type="search" required>
+            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+        </form>
+        <partial name="_SebraeAquiNav" model="@DateTime.Now.Year" />
+    </div>
+</nav>
+
+<div class="card">
+    <div class="scroll-x">
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        N
+                    </th>
+                    <th>
+                        Protocolo
+                    </th>
+                    <th>
+                        Data
+                    </th>
+                    <th>
+                        Cliente
+                    </th>
+                    <th>
+                        Servicos
+                    </th>
+                    <th>
+                        Canal
+                    </th>
+                    <th>
+                        Rae
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @{
+                    int cont = 1;
+                    int t = (Model.PaginationAtendimentos!.PageIndex - 1) * Model.PaginationAtendimentos.ItemsViews;
+                }
+                @foreach (var item in Model.PaginationAtendimentos)
+                {
+                    <tr>
+                        <td>@Sim.UI.Web.Functions.Extensions.Contador(cont++, t)</td>
+                        <td>
+                            <a class="modal-trigger" href="#viewmodal" data-id="@item.Id">@Html.DisplayFor(modelItem =>
+                            item.Protocolo)</a>
+                        </td>
+                        <td>
+                            @{
+                                var d1 = Convert.ToDateTime(item.Data);
+                                var datainicial = d1.ToShortDateString();
+                            }
+
+                            @Html.DisplayFor(modelItem => datainicial)
+                        </td>
+                        <td class="t-uppercase">
+                            @Html.DisplayFor(modelItem => item.Pessoa!.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Servicos)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Canal)
+                        </td>
+                        <td>
+                            <a asp-page="./Rae/Lancar" class="btn-small waves-effect waves-light" asp-route-y="@Model.Src"
+                                asp-route-id="@item.Id" asp-route-edit="@false">Lançar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
     @{
         var prevDisabled = !Model.PaginationAtendimentos.HasPreviusPage ? "disabled" : "";
         var nextDisabled = !Model.PaginationAtendimentos.HasNextPage ? "disabled" : "";
     }
-    <div class="card-action center">        
-        <span class="left">Página @Model.PaginationAtendimentos.PageIndex de @Model.PaginationAtendimentos.TotalPages - @Model.RegCount Reg.</span>
-        <a asp-page="./Index" asp-route-Src="@Model.Src" asp-route-pag="@(Model.PaginationAtendimentos.PageIndex - 1)" class="btn-small waves-effect waves-light @prevDisabled">
+    <div class="card-action center">
+        <span class="left">Página @Model.PaginationAtendimentos.PageIndex de @Model.PaginationAtendimentos.TotalPages -
+            @Model.RegCount Reg.</span>
+        <a asp-page="./Index" asp-route-Src="@Model.Src" asp-route-pag="@(Model.PaginationAtendimentos.PageIndex - 1)"
+            class="btn-small waves-effect waves-light @prevDisabled">
             <i class="material-icons">navigate_before</i>
         </a>
-        <a asp-page="./Index" asp-route-Src="@Model.Src" asp-route-pag="@(Model.PaginationAtendimentos.PageIndex + 1)" class="btn-small waves-effect waves-light @nextDisabled">
-            <i class="material-icons">navigate_next</i> 
-        </a>        
+        <a asp-page="./Index" asp-route-Src="@Model.Src" asp-route-pag="@(Model.PaginationAtendimentos.PageIndex + 1)"
+            class="btn-small waves-effect waves-light @nextDisabled">
+            <i class="material-icons">navigate_next</i>
+        </a>
     </div>
 </div>
 
@@ -111,7 +113,7 @@
     </div>
 </div>
 
-@section scripts{
+@section scripts {
     <script>
         $(function () {
             $(".modal-trigger").click(function () {
@@ -148,4 +150,3 @@
         });
     </script>
 }
-

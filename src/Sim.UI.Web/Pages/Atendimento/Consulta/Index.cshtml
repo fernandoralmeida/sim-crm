@@ -25,11 +25,13 @@
 </form>
 
 <div class="card">
-    <partial name="_AtendimentoList" model="Model.ListaAtendimento" />
+    <div class="scroll-x">
+        <partial name="_AtendimentoList" model="Model.ListaAtendimento" />
+    </div>    
     @{
         var _isdisabled = Model.ListaAtendimento!.Any() ? null : "disabled";
     }
-    <div class="card-action">
+    <div class="card-action row-flex gap-5">
         <a asp-page="/Atendimento/Export/Index" asp-route-src="@Model.Src"
             class="btn-small waves-effect waves-light green @_isdisabled" title="Exportar todos os atendimentos"><i
                 class="material-icons">description file_download</i></a>

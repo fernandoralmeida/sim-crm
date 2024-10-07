@@ -9,6 +9,7 @@
 <partial name="_NavPage" />
 <div class="card">
     <div class="card-header grey-text">Meus Contratos Renegociados<i class="material-icons left">text_snippet</i></div>
+    <div class="scroll-x">
         @if(Model.MeusContratos != null) {
             <table>
                 <thead>
@@ -58,6 +59,7 @@
                 </tbody>
             </table>
         }
+    </div>
     <div class="card-action">
         Contratos renegociados regulares
         <span class="amber-text right">@NumberFormatInfo.CurrentInfo.CurrencySymbol @Model.TotalCredito</span>
@@ -73,10 +75,10 @@
                 <input id="idservico" asp-for="GetID"/>
             </div>
             <div class="row">
-                <div class="col s4 m4 l4">
+                <div class="col s12 m4 l4">
                     <select id="idsituacao" class="browser-default" asp-for="GetSituacao" asp-items="Model.ESituacoes"></select>
                 </div>
-                <div class="col s8 m8 l8 valign-wrapper">
+                <div class="col s12 m8 l8 valign-wrapper">
                     <select id="idpagamento" class="browser-default" asp-for="GetPagamento" asp-items="Model.EPagamentos"></select>        
                     <button class="btn lighten-1 waves-effect waves-light mgn-l-10" type="submit" asp-page-handler="GoSituacao"><i class="material-icons">check_circle</i></button>              
                 </div>

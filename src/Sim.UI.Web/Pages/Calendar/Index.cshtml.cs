@@ -84,7 +84,12 @@ public partial class CalendarPage : PageModel
 
     private async Task ConstructCalendar(int year, int month, IEnumerable<EEvento> eventos, IEnumerable<VReminder> reminds)
     {
-        Acessos = new SelectList(Enum.GetNames(typeof(VReminder.TReminder)));
+        Acessos = new SelectList(Enum.GetValues(typeof(TReminder))
+               .Cast<TReminder>()
+               .Select(r => new { Value = (int)r, Name = r.ToString() }),
+               "Value", "Name");
+
+        InputModel.Visivel = TReminder.Privado;
 
         await Task.Run(() =>
         {
@@ -106,8 +111,11 @@ public partial class CalendarPage : PageModel
 
             DoCalendar.Days = new();
 
+            var _before = 0;
+
             for (int i = 0; i < _dayweek; i++)
             {
+                _before++;
                 DoCalendar.Days!.Add(new() { Title = "", Events = new() });
             }
 
@@ -116,7 +124,7 @@ public partial class CalendarPage : PageModel
                 var _eventos = new List<Calendar.CalendarDays.Event>();
                 foreach (var e in eventos.Where(s => s.Data!.Value.Day == i))
                 {
-                    _eventos.Add(new() { Id = e.Id, Name = e.Nome, Code = e.Codigo.ToString(), Data = e.Data, IsRemind = false, Local = e.Owner, Descricao = e.Descricao });
+                    _eventos.Add(new() { Id = e.Id, Name = e.Nome, Code = e.Codigo.ToString(), Data = e.Data, IsRemind = false, Local = e.Owner, Descricao = e.Descricao, IsPrivate = TReminder.Publico });
                 }
 
                 foreach (var r in reminds.Where(s => s.Data!.Day == i))
@@ -127,10 +135,10 @@ public partial class CalendarPage : PageModel
                 DoCalendar.Days!.Add(new() { Title = i.ToString(), Events = _eventos });
             }
 
-            // for (int i = _daysmonth; i < 35; i++)
-            // {
-            //     DoCalendar.Days!.Add(new() { Title = "...", Event = new() });
-            // }
+            for (int i = _daysmonth + _before; i < 35; i++)
+            {
+                DoCalendar.Days!.Add(new() { Title = "", Events = new() });
+            }
 
             DoCalendar.Month = new DateTime(year, month, 1).ToString("MMMM", new System.Globalization.CultureInfo("pt-BR"));
             DoCalendar.Year = year;
@@ -159,7 +167,6 @@ public partial class CalendarPage : PageModel
                                         (s.Owner == User.Identity!.Name ||
                                          s.Visivel == EReminder.TReminder.Publico));
 
-
         await ConstructCalendar(_year, _month, _list_e, _reminds!);
     }
 
@@ -171,7 +178,7 @@ public partial class CalendarPage : PageModel
         if (OnEdit)
         {
             var _alt = await _appServiceReminder.GetAsNoTrackingAsync(InputModel.Id);
-            
+
             _alt!.Titulo = InputModel.Titulo;
             _alt!.Local = InputModel.Local;
             _alt!.Visivel = InputModel.Visivel;
@@ -183,11 +190,11 @@ public partial class CalendarPage : PageModel
                 await _appServiceReminder.UpdateAsync(_alt);
             else
                 StatusMessage = "Erro: Não é possivel editar lembrete de outro usuário!";
-
         }
         else
         {
             InputModel.Data = InputDate.Date.Add(timeSpan);
+            InputModel.Data_Cadastro = DateTime.Now;
             InputModel.Owner = User.Identity!.Name;
             InputModel.Status = true;
             await _appServiceReminder.AddNewAsync(InputModel);

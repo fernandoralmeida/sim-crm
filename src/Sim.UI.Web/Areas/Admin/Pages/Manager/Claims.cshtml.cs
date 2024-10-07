@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
 using Sim.UI.Web.Areas.Admin.ViewModel;
-using Sim.Identity.Config;
+using Sim.Identity.Policies;
 
 namespace Sim.UI.Web.Areas.Admin.Pages.Manager
 {
 
-    [Authorize(Policy = "AdminOrAccounts")]
+    [Authorize(Policy = PolicyExtensions.IsAdminAccounts)]
     public class ClaimsModel : PageModel
     {
         [TempData]

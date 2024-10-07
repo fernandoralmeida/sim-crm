@@ -27,28 +27,52 @@
     }
 </ul>
 
+<!-- Dropdown New Calendar, List Calendar -->
+<ul id="dropdownExtend" class="dropdown-content">
+    <li>
+        <a data-m="@Model.CtrlCalendar.Month" data-a="@Model.CtrlCalendar.Ano" href="#modalEvents"
+            class="btn-link right modal-trigger open-month"><i class="material-icons "
+                title="Listar Eventos e Lembrete do Mes">calendar_month</i>Listar Eventos/Lembretes</a>
+    </li>
+    <li class="submit">
+        <a asp-page="/Agenda/Eventos/Index" class="btn-link"><i class="material-icons "
+                title="Adicionar Evento">calendar_add_on</i>Novo Evento</a>
+    </li>
+</ul>
+
 <nav class="navbar transparent">
     <div class="nav-wrapper">
+        <a class="left pdn-h-18 dropdown-trigger hide-on-large-only" href="#!" data-target="dropdownExtend"><i
+                class="material-icons">menu</i></a>
         <ul class="right">
-            <li class="submit">
-                <a asp-page="/Agenda/Eventos/Index" class="btn-link right "><i class="material-icons "
-                        title="Adicionar Evento">calendar_add_on</i></a>
-            </li>
             <li class="submit">
                 <a asp-page="./Index" asp-route-y="@Model.CtrlCalendar.Ano"
                     asp-route-m="@Model.CtrlCalendar.Previous"><i class="material-icons">arrow_back_ios</i></a>
             </li>
             <li>
-                <a class="dropdown-trigger" href="#!" data-target="dropdownYear">@Model.CtrlCalendar.Ano<i
-                        class="material-icons right">keyboard_arrow_down</i></a>
+                <a class="dropdown-trigger" href="#!" data-target="dropdownYear">@Model.CtrlCalendar.Ano
+                    @* <i class="material-icons right">keyboard_arrow_down</i> *@
+                </a>
             </li>
             <li>
-                <a class="dropdown-trigger" href="#!" data-target="dropdownMonth">@Model.DoCalendar.Month?.ToUpper()<i
-                        class="material-icons right">keyboard_arrow_down</i></a>
+                <a class="dropdown-trigger" href="#!" data-target="dropdownMonth">@Model.DoCalendar.Month?.ToUpper()
+                    @* <i class="material-icons right">keyboard_arrow_down</i> *@
+                </a>
             </li>
             <li class="submit">
                 <a asp-page="./Index" asp-route-y="@Model.CtrlCalendar.Ano" asp-route-m="@Model.CtrlCalendar.Next"><i
                         class="material-icons">arrow_forward_ios</i></a>
+            </li>
+        </ul>
+        <ul class="right hide-on-med-and-down">
+            <li>
+                <a data-m="@Model.CtrlCalendar.Month" data-a="@Model.CtrlCalendar.Ano" href="#modalEvents"
+                    class="btn-link right modal-trigger open-month"><i class="material-icons "
+                        title="Listar Eventos e Lembrete do Mes">calendar_month</i></a>
+            </li>
+            <li class="submit">
+                <a asp-page="/Agenda/Eventos/Index" class="btn-link right "><i class="material-icons "
+                        title="Adicionar Evento">calendar_add_on</i></a>
             </li>
         </ul>
     </div>
@@ -57,15 +81,18 @@
 <div class="calendar">
     @foreach (var item in Model.DoCalendar.Head!)
     {
-        <div class="calendar cell head">@item</div>
+        <div class="calendar cell head hide-on-mobile">@item</div>
     }
     @foreach (var item in Model.DoCalendar.Days!)
     {
-        <div class="calendar cell content">
+        var _hide = item.Title == "" ? "hide-on-mobile" : "";
+
+        <div class="calendar cell content @_hide">
+
             <div class="content head">
                 @item.Title
 
-                @if (item.Title != "...")
+                @if (item.Title != "")
                 {
                     <a class="btn-link right text-color-blue modal-trigger open-days" data-d="@item.Title"
                         data-m="@Model.CtrlCalendar.Month" data-a="@Model.CtrlCalendar.Ano" href="#modalEvents"><i
@@ -86,8 +113,8 @@
 
                         if (!subitem.IsRemind)
                         {
-                            <a class="content items @_d modal-trigger open-event-modal" href="#modalEvents" data-id="@subitem.Code"
-                                title="Evento: @subitem.Name">@_name</a>
+                            <a class="content items events @_d modal-trigger open-event-modal" href="#modalEvents"
+                                data-id="@subitem.Code" title="Evento: @subitem.Name">@_name</a>
                         }
                         else
                         {
@@ -110,7 +137,10 @@
                 }
                 else
                 {
-                    <span class="no-events" aria-label="Nenhum evento">Nenhum evento</span>
+                    if (item.Title != "")
+                    {
+                        <span class="no-events" aria-label="Nenhum evento">nenhum evento</span>
+                    }
                 }
             </div>
         </div>
@@ -148,33 +178,35 @@
         <h6>Lembrete</h6>
         <div class="divider"></div>
         <form class="row mgn-0" method="post">
-            <div class="input-field col s6" hidden>
+            <div class="input-field col s12 l6" hidden>
                 <input type="text" asp-for="InputModel.Id">
                 <label asp-for="InputModel.Id"></label>
             </div>
-            <div class="input-field col s6" hidden>
+            <div class="input-field col s12 l6" hidden>
                 <label asp-for="OnEdit"></label>
                 <input type="checkbox" asp-for="OnEdit" />
             </div>
-            <div class="input-field col s6">
+            <div class="col s12 mgn-t-12">
+                <div class="row no-padding">
+                    <select asp-for="InputModel.Visivel" class="browser-default col s7 l4" asp-items="Model.Acessos"
+                        title="Acesso: quem pode ver o meu lembrete!">
+                    </select>
+                    <i id="iconVisibility" class="material-icons mgn-t-10">lock</i>
+                </div>
+            </div>
+            <div class="input-field col s12 l6">
                 <input type="text" asp-for="InputModel.Titulo" required>
                 <label asp-for="InputModel.Titulo"></label>
             </div>
-            <div class="input-field col s6">
+            <div class="input-field col s12 l6">
                 <input type="text" asp-for="InputModel.Local">
                 <label asp-for="InputModel.Local"></label>
             </div>
-            <div class="input-field col s4">
-                <select asp-for="InputModel.Visivel" asp-items="Model.Acessos"
-                    title="Acesso: quem pode ver o meu lembrete!">
-                </select>
-                <label asp-for="InputModel.Visivel"></label>
-            </div>
-            <div class="input-field col s4">
+            <div class="input-field col s12 l6">
                 <input type="date" asp-for="InputDate">
                 <label asp-for="InputDate"></label>
             </div>
-            <div class="input-field col s4">
+            <div class="input-field col s12 l6">
                 <input type="time" asp-for="InputTime">
                 <label asp-for="InputTime"></label>
             </div>
@@ -191,6 +223,20 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+
+        document.getElementById('InputModel_Visivel').addEventListener('change', function () {
+            var icon = document.getElementById('iconVisibility');
+            var selectedValue = this.value;
+
+            if (selectedValue == 0) {
+                // Se for "Privado", exibe o ícone de 'lock'
+                icon.textContent = 'lock';
+            } else if (selectedValue == 1) {
+                // Se for "Público", exibe o ícone de 'lock_open'
+                icon.textContent = 'lock_open';
+            }
+        });
+
         // Seleciona todos os links com a classe 'save-btn'
         const saveButtons = document.querySelectorAll('.save-btn');
 
@@ -211,7 +257,8 @@
                 document.getElementById('InputModel_Id').value = '';
                 document.getElementById('InputModel_Titulo').value = '';
                 document.getElementById('InputModel_Local').value = '';
-                document.getElementById('InputModel_Visivel').value = 'Privado';
+                document.getElementById('InputModel_Visivel').value = 0;
+                document.getElementById('iconVisibility').textContent = 'lock';
                 document.getElementById('InputDate').value = _date.toISOString().split('T')[0];
                 document.getElementById('InputTime').value = "00:00";
                 document.getElementById('InputModel_Descricao').value = '';
@@ -258,6 +305,17 @@
             });
         });
 
+        document.querySelectorAll('.open-month').forEach(function (element) {
+            element.addEventListener('click', function (e) {
+
+                // Obtém os valores dos atributos data
+                const m = this.getAttribute('data-m');
+                const y = this.getAttribute('data-a');
+
+                listEvents(`/api/v1/calendar/${y}/${m}`);
+            });
+        });
+
         // Seleciona todos os links com a classe 'open-reminder-modal'
         document.querySelectorAll('.open-days').forEach(function (element) {
             element.addEventListener('click', function (e) {
@@ -271,50 +329,51 @@
                 const m = this.getAttribute('data-m');
                 const y = this.getAttribute('data-a');
 
+                listEvents(`/api/v1/calendar/${y}/${m}/${d}`);
                 // Faz a requisição para a API usando Fetch
-                fetch(`/api/v1/calendar/${y}/${m}/${d}`)
+    @* fetch(`/api/v1/calendar/${y}/${m}/${d}`)
                     .then(function (response) {
-                        if (!response.ok) {
-                            throw new Error('Erro ao buscar dados da API');
-                        }
-                        return response.json();
+                    if (!response.ok) {
+                    throw new Error('Erro ao buscar dados da API');
+                    }
+                    return response.json();
                     })
                     .then(function (data) {
-                        // Preenche os elementos do modal com os dados retornados
-                        data.forEach(item => {
-                            const eventElement = document.createElement('div');
-                            eventElement.classList.add('event');
+                    // Preenche os elementos do modal com os dados retornados
+                    data.forEach(item => {
+                    const eventElement = document.createElement('div');
+                    eventElement.classList.add('event');
 
-                            // Adiciona os dados principais do evento
-                            eventElement.innerHTML = `<i class="material-icons left">calendar_month</i><h6 class="mgn-t-0">${item.title}</h6>`;
+                    // Adiciona os dados principais do evento
+                    eventElement.innerHTML = `<i class="material-icons left">calendar_month</i><h6 class="mgn-t-0">${item.title}</h6>`;
 
-                            const inscritosList = document.createElement('ul');
-                            inscritosList.classList.add('mgn-b-0');
+                    const inscritosList = document.createElement('ul');
+                    inscritosList.classList.add('mgn-b-0');
 
-                            item.events.forEach(event => {
+                    item.events.forEach(event => {
 
-                                // Supondo que event.data seja uma string ou objeto contendo a data
-                                var eventDate = new Date(event.data); // Converter para objeto Date
+                    // Supondo que event.data seja uma string ou objeto contendo a data
+                    var eventDate = new Date(event.data); // Converter para objeto Date
 
-                                // Obter apenas a hora em formato local (PT-BR)
-                                var timeString = eventDate.toLocaleTimeString('pt-BR', {
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                });
+                    // Obter apenas a hora em formato local (PT-BR)
+                    var timeString = eventDate.toLocaleTimeString('pt-BR', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                    });
 
-                                const inscritoItem = document.createElement('li');
-                                inscritoItem.innerText = `${timeString} - ${event.name} - ${event.local} - ${event.descricao}`;
-                                inscritosList.appendChild(inscritoItem);
-                            });
-                            eventElement.appendChild(inscritosList);
+                    const inscritoItem = document.createElement('li');
+                    inscritoItem.innerText = `${timeString} - ${event.name} - ${event.local} - ${event.descricao}`;
+                    inscritosList.appendChild(inscritoItem);
+                    });
+                    eventElement.appendChild(inscritosList);
 
-                            // Adiciona o elemento de evento ao contêiner
-                            container.appendChild(eventElement);
-                        })
+                    // Adiciona o elemento de evento ao contêiner
+                    container.appendChild(eventElement);
+                    })
                     })
                     .catch(function (error) {
-                        alert('Erro ao carregar lembrete: ' + error.message);
-                    });
+                    alert('Erro ao carregar lembrete: ' + error.message);
+                    }); *@
             });
         });
 
@@ -343,6 +402,7 @@
                     document.getElementById('InputModel_Titulo').value = data.titulo;
                     document.getElementById('InputModel_Local').value = data.local;
                     document.getElementById('InputModel_Visivel').value = data.visivel;
+                    document.getElementById('iconVisibility').textContent = data.visivel == 0 ? 'lock' : 'lock_open';
 
                     // Converte a data para o formato YYYY-MM-DD para o input de data
                     const _date = new Date(data.data);
@@ -362,6 +422,66 @@
 </script>
 
 <script>
+
+    function listEvents(api) {
+        // Obtém o valor do atributo data-id
+        const container = document.getElementById('event-container');
+        container.innerHTML = ''
+        // Faz a requisição para a API usando Fetch
+        fetch(api)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar dados da API');
+                }
+                return response.json();
+            })
+            .then(function (data) {
+                // Preenche os elementos do modal com os dados retornados
+                data.forEach(item => {
+                    const eventElement = document.createElement('div');
+                    eventElement.classList.add('event');
+
+                    // Adiciona os dados principais do evento
+                    eventElement.innerHTML = `<i class="material-icons left">calendar_month</i><h6 class="mgn-t-0">${item.title}</h6>`;
+
+                    const inscritosList = document.createElement('ul');
+                    //inscritosList.classList.add('collection');
+                    inscritosList.classList.add('mgn-b-0');
+
+                    item.events.forEach(event => {
+
+                        // Supondo que event.data seja uma string ou objeto contendo a data
+                        var eventDate = new Date(event.data); // Converter para objeto Date
+
+                        // Obter apenas a hora em formato local (PT-BR)
+                        var timeString = eventDate.toLocaleTimeString('pt-BR', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+
+                        const inscritoItem = document.createElement('li');
+
+                        inscritoItem.classList.add('event-list');
+                        inscritoItem.classList.add(event.isRemind ? "items-r" : "items-e");
+
+                        const _private = event.isPrivate === 0 ? '<i class="material-icons right">lock</i>' : '';
+
+                        inscritoItem.innerHTML = `<span><span class="text-color-dark">${eventDate.toISOString().split('T')[0]}</span><span class="text-color-grey"> ${timeString}</span><span>${_private} ${event.name} - ${event.local} - ${event.descricao}</span></span>`;
+                        //inscritoItem.innerText = `${eventDate.toISOString().split('T')[0]} ${timeString} - ${event.name} - ${event.local} - ${event.descricao}`;
+                        inscritosList.appendChild(inscritoItem);
+                    });
+                    eventElement.appendChild(inscritosList);
+
+                    // Adiciona o elemento de evento ao contêiner
+                    container.appendChild(eventElement);
+                })
+            })
+            .catch(function (error) {
+                alert('Erro ao carregar lembrete: ' + error.message);
+            });
+    }
+
+
     // Função para consumir a API e exibir os dados
     function fetchEvents(apiUrl) {
 

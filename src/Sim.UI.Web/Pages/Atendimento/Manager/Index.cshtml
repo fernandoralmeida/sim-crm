@@ -21,12 +21,12 @@
             <input asp-for="Input!.Owner_AppUser_Id" readonly>
         </div>
     </div>
-    <div class="card mgn-0">
+    <div class="card mgn-0 scroll-x">
         <div class="card-header alpha-text-5">
             <a asp-page="/Atendimento/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i
                     class="material-icons">undo</i></a><span class="pdn-10">Cliente</span>
         </div>
-        <table class="responsive-table">
+        <table>
             <!--<caption>Informações do Cliente</caption>-->
             <thead>
                 <tr>
@@ -137,11 +137,11 @@
                 <label asp-for="Input!.Descricao" for="input_descricao"></label>
             </div>
         </div>
-        <div class="card-action">
-            <button id="onbtn" type="submit" role="button" class="btn waves-effect waves-light"
+        <div class="card-action row-flex gap-20 s-between">
+            <button id="onbtn" type="submit" role="button" class="btn waves-effect waves-light btn-mobile-r"
                 asp-page-handler="Alterar" asp-route-id="@Model.Input.Id">Alterar Atendimento</button>
 
-            <button type="submit" role="button" class="btn waves-effect waves-light red right"
+            <button type="submit" role="button" class="btn waves-effect waves-light red right btn-mobile-r"
                 asp-page-handler="Excluir" asp-route-id="@Model.Input.Id">Excluir Atendimento</button>
         </div>
     </div>

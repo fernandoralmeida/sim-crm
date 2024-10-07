@@ -10,13 +10,13 @@
 <form method="post">
 
     <div class="row">
-        
+
         <div class="card no-padding mgn-0">
             <div class="card-header alpha-text-5">
                 <a asp-page="/Atendimento/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i
                         class="material-icons">undo</i></a><span class="pdn-10">Novo Atendimento</span>
             </div>
-            <div style="overflow-x:auto;" class="">
+            <div class="scroll-x">
                 <span class="pdn-10">Cliente!</span>
                 <table class="small">
                     <tbody>
@@ -49,8 +49,8 @@
                                 <td><input asp-for="Input!.Empresa!.Id" class="browser-default borderless" hidden />
                                     <input asp-for="Input!.Empresa!.CNPJ" class="browser-default borderless" />
                                 </td>
-                                <td><input asp-for="Input!.Empresa!.Nome_Empresarial"
-                                        class="browser-default borderless" /></td>
+                                <td><input asp-for="Input!.Empresa!.Nome_Empresarial" class="browser-default borderless" />
+                                </td>
                                 <td><input asp-for="Input!.Empresa!.Telefone" class="browser-default borderless" /></td>
                                 <td><input asp-for="Input!.Empresa!.Email" class="browser-default borderless" /></td>
                                 <td><button asp-page-handler="RemoverEmpresa" title="Remover"
@@ -61,25 +61,26 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card-action">
+            <div class="card-action row-flex gap-20">
                 @if (Model.HasBind == true)
                 {
                     <button asp-page-handler="Bindings" asp-route-pid="@Model.Input!.Pessoa!.Id"
                         asp-route-eid="@Model.Input!.Empresa!.Id" type="submit"
-                        class="btn waves-effect waves-light blue" title="Víncular">Víncular Cliente | Empresa</button>
-                    <button asp-page-handler="Save" type="submit" class="btn waves-effect">Iniciar
+                        class="btn waves-effect waves-light blue btn-mobile-r" title="Víncular">Víncular Cliente |
+                        Empresa</button>
+                    <button asp-page-handler="Save" type="submit" class="btn waves-effect waves-light red btn-mobile-r">Iniciar
                         Atendimento</button>
                     @* <a asp-page="/Atendimento/Index" class="grey btn waves-effect">Cancelar</a> *@
                 }
                 else
                 {
-                    <button asp-page-handler="Save" type="submit" class="btn waves-effect waves-light"
+                    <button asp-page-handler="Save" type="submit" class="btn waves-effect waves-light btn-mobile-r"
                         title="Iniciar Atendimento">Iniciar Atendimento</button>
                     @* <a asp-page="/Atendimento/Index" class="grey btn waves-effect">Cancelar</a> *@
                 }
             </div>
         </div>
-        
+
     </div>
 </form>
 

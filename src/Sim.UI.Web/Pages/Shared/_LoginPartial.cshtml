@@ -36,65 +36,51 @@
 <div class="navbar-fixed bg-color-dark">
     <nav class="navbar z-depth-0">
         <div class="nav-wrapper">
-            <div class="row">
-                <div class="col s6 m6 l6 no-padding">
-                    <ul>
-                        <li>
-                            <a href="#" data-target="sidenav-left" class="sidenav-trigger ">
-                                <i class="material-icons">menu</i></a>
-                        </li>
-                        <li>
-                            <i class="material-icons">chevron_right</i>
-                        </li>
-                        <li>
-                            <a class="dropdown-trigger" data-target="dropsection">
-                                Setor
-                            </a>
-                        </li>
 
-                        <li>
-                            <i class="material-icons left">chevron_right</i>
-                            @_setorativo : @ViewData["Title"]
-                        </li>
-                    </ul>
-                </div>
-                <div class="col s6 m6 l6 no-padding">
-                    <ul class="right">
-                        @if (IsAccount)
-                        {
-                            <li class="@LayoutNavPages.ConfigContasNavClass(ViewContext)">
-                                <a asp-area="Admin" asp-page="/Manager/Index"><i
-                                        class="material-icons online">manage_accounts</i></a>
-                            </li>
-                        }
-                        @if (IsSetting)
-                        {
-                            <li class="@LayoutNavPages.ConfigSistemaNavClass(ViewContext)">
-                                <a asp-area="Settings" asp-page="/Common/Index"><i
-                                        class="material-icons online">settings</i></a>
-                            </li>
-                        }
-                        @* <li>
-                        <a asp-area="Identity" asp-page="/Theme" asp-route-url="@_url"
-                        asp-route-theme="@_changetheme"><i class="material-icons online">@_icon</i></a>
-                        </li> *@
-                        @if (User.Identity!.IsAuthenticated)
-                        {
-                            @if (!_status)
-                            { account_color = "offline"; }
-                            else
-                            { account_color = "online"; }
+            <a href="#" data-target="sidenav-left" class="sidenav-trigger ">
+                <i class="material-icons">menu</i></a>
 
-                            <li class="dropdown-trigger @LayoutNavPages.LoginNavClass(ViewContext)"
-                                data-target="dropdownuser">
-                                <a id="btnstatus" class="@account_color" href="#">@DisplayName<i
-                                        class="left material-icons">person</i><i
-                                        class="right material-icons">keyboard_arrow_down</i></a>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </div>
+            <ul class=" left">
+                <li>
+                    <a class="dropdown-trigger" data-target="dropsection">
+                        Setor
+                        <i class="material-icons right">keyboard_arrow_down</i>
+                    </a>
+                </li>
+            </ul>            
+
+            <span class="hide-on-small-and-down">
+                @_setorativo : @ViewData["Title"]
+            </span>
+
+            <ul class="right">
+                @if (IsAccount)
+                {
+                    <li class="@LayoutNavPages.ConfigContasNavClass(ViewContext) hide-on-small-and-down">
+                        <a asp-area="Admin" asp-page="/Manager/Index"><i class="material-icons">manage_accounts</i></a>
+                    </li>
+                }
+                @if (IsSetting)
+                {
+                    <li class="@LayoutNavPages.ConfigSistemaNavClass(ViewContext) hide-on-small-and-down">
+                        <a asp-area="Settings" asp-page="/Common/Index"><i class="material-icons">settings</i></a>
+                    </li>
+                }
+                @if (User.Identity!.IsAuthenticated)
+                {
+                    @if (!_status)
+                    { account_color = "offline"; }
+                    else
+                    { account_color = "online"; }
+
+                    <li class="dropdown-trigger @LayoutNavPages.LoginNavClass(ViewContext)" data-target="dropdownuser">
+                        <a id="btnstatus" class="@account_color" href="#">
+                            @DisplayName
+                            <i class="material-icons right">keyboard_arrow_down</i></a>
+                    </li>
+                }
+            </ul>
+
         </div>
     </nav>
 </div>
@@ -112,14 +98,24 @@
 </div>
 
 <div id="dropdownuser" class="dropdown-content rounded-default row bg-color-white">
-    <div class="center-align"><a asp-area="Identity" asp-page="/Account/Manage/Index">Meu Perfil</a>
-    </div>
-    <div class="divider"></div>
     <div class="center-align pdn-h-10">
         <div class="switch" title="Alterar meu status"><label>OFF<input id="chkstatus" checked="@_status"
                     type="checkbox" onclick="myStatus()" /><span class="lever"></span>ON</label></div>
     </div>
-    <div class="divider"></div>
+    <div class="center-align"><a asp-area="Identity" asp-page="/Account/Manage/Index">Meu Perfil</a>
+    </div>
+    @if (IsAccount)
+    {
+        <div class="@LayoutNavPages.ConfigContasNavClass(ViewContext) hide-on-med-and-up">
+            <a asp-area="Admin" asp-page="/Manager/Index">Contas<i class="material-icons left">manage_accounts</i></a>
+        </div>
+    }
+    @if (IsSetting)
+    {
+        <div class="@LayoutNavPages.ConfigSistemaNavClass(ViewContext) hide-on-med-and-up">
+            <a asp-area="Settings" asp-page="/Common/Index">Opções<i class="material-icons left">settings</i></a>
+        </div>
+    }
     <div><a asp-area="Identity" asp-page="/Account/Logout">Sair<i class="left material-icons">logout</i></a></div>
 </div>
 

@@ -12,6 +12,7 @@ public class EReminder
     public string? Local { get; set; }
     public TReminder Visivel { get; set; }
     public DateTime Data { get; set; }
+    public DateTime Data_Cadastro { get; set; }
     public string? Descricao { get; set; }
     public string? Owner { get; set; }
     public bool? Status { get; set; }

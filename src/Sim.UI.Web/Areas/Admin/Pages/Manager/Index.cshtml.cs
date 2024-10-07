@@ -32,6 +32,8 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
         public IEnumerable<ApplicationUser>? Users_Admin_Account { get; set; }
         public IEnumerable<ApplicationUser>? Users_Admin_Config { get; set; }
 
+        public IEnumerable<KeyValuePair<string, IEnumerable<ApplicationUser>>>? GroupedUsers { get; set; }
+
         private async Task LoadAsync()
         {
             var _adm_global = await _userManager.GetUsersInRoleAsync(PolicyTypes.Adm_Global);
@@ -68,6 +70,8 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
             {
                 Users = _users.OrderBy(o => o.UserName)
             };
+
+            GroupedUsers = await _appIdentity.GetUsersGroupedByRolesAndClaimsAsync();
         }
 
         public async Task<IActionResult> OnGetAsync()

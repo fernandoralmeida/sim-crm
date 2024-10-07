@@ -1,9 +1,9 @@
-﻿@page "/gerencia/contas/funcoes"
+﻿@page "/gerencia/contas/grupos"
 @model Sim.UI.Web.Areas.Admin.Pages.Manager.RolesModel
 @{
     Layout = "_Layout.cshtml";
 
-    ViewData["Title"] = "Funções";
+    ViewData["Title"] = "Grupos";
     ViewData["ActivePageAreaAdmin"] = AdminNavPages.Roles;
 }
 
@@ -14,7 +14,7 @@
     <div class="card">
         <div class="card-header grey-text">Grupos<i class="left material-icons">account_box</i></div>
         <div class="row">
-            <div class="input-field col s3 m3 l3 valign-wrapper">
+            <div class="input-field col s12 m8 l6 valign-wrapper">
                 @* <select asp-for="Funcao" asp-items="Model.Funcoes">
                     <option selected>-- Grupos --</option>
                 </select> *@
@@ -37,9 +37,9 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card scroll-x">
 
-        <table class="responsive-table">
+        <table>
             <thead>
                 <tr>
                     <th>

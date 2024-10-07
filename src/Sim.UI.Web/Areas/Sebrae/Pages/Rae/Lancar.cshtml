@@ -30,58 +30,58 @@
             <input type="text" asp-for="Input!.Id" readonly>
         </div>
     </div>
-
-    <table class="responsive-table">
-        <thead>
-            <tr>
-                <th>
-                    CPF/CNPJ
-                </th>
-                <th>
-                    Pessoa/Empresa
-                </th>
-                <th>
-                    Contato
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model!.Input!.Pessoa != null)
-            {
+    <div class="scroll-x">
+        <table>
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.Input.Pessoa.CPF)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.Input.Pessoa.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.Input.Pessoa.Email)
-
-                        @Html.DisplayFor(modelItem => Model.Input.Pessoa.Tel_Movel)
-                    </td>
+                    <th>
+                        CPF/CNPJ
+                    </th>
+                    <th>
+                        Pessoa/Empresa
+                    </th>
+                    <th>
+                        Contato
+                    </th>
                 </tr>
-            }
-            @if (Model.Input.Empresa != null)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.Input.Empresa.CNPJ)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.Input.Empresa.Nome_Empresarial)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.Input.Empresa.Email)
+            </thead>
+            <tbody>
+                @if (Model!.Input!.Pessoa != null)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.Input.Pessoa.CPF)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.Input.Pessoa.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.Input.Pessoa.Email)
 
-                        @Html.DisplayFor(modelItem => Model.Input.Empresa.Telefone)
-                    </td>
-                </tr>
-            }
+                            @Html.DisplayFor(modelItem => Model.Input.Pessoa.Tel_Movel)
+                        </td>
+                    </tr>
+                }
+                @if (Model.Input.Empresa != null)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.Input.Empresa.CNPJ)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.Input.Empresa.Nome_Empresarial)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.Input.Empresa.Email)
 
-        </tbody>
-    </table>
+                            @Html.DisplayFor(modelItem => Model.Input.Empresa.Telefone)
+                        </td>
+                    </tr>
+                }
 
+            </tbody>
+        </table>
+    </div>
 
     <div class="row">
         <div class="input-field col s12 l6">

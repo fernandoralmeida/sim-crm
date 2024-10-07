@@ -74,13 +74,15 @@
 
 
 <div class="card">
-    <partial name="_AtendimentoList" model="Model.Input.ListaAtendimento" />
+    <div class="scroll-x">
+        <partial name="_AtendimentoList" model="Model.Input.ListaAtendimento" />
+    </div>
 
     @{
         var _isdisabled = Model.Input!.ListaAtendimento!.Any() ? null : "disabled";
     }
 
-    <div class="card-action">
+    <div class="card-action row-flex gap-5">
         <a asp-page="/Atendimento/Export/Index" asp-route-src="" asp-route-d1="@data1" asp-route-d2="@data2"
             asp-route-cpf="@Model.Input.CPF" asp-route-nome="@Model.Input.Nome" asp-route-cnpj="@Model.Input.CNPJ"
             asp-route-rsocial="@Model.Input.RazaSocial" asp-route-cnae="@Model.Input.CNAE"

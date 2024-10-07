@@ -1,4 +1,8 @@
 ﻿@page "/gerencia/contas/usuario/funcoes/{id}"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using Sim.Identity.Policies
+@inject IAuthorizationService AuthorizationService
 @model Sim.UI.Web.Areas.Admin.Pages.Manager.UserRolesModel
 @{
     Layout = "_Layout.cshtml";
@@ -14,8 +18,9 @@
 
         <div class="card mgn-0">
             <div class="card-header grey-text">
-                <a asp-area="Admin" asp-page="/Manager/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i
-                        class="material-icons">undo</i></a><span class="pdn-10">@ViewData["Title"]</span></div>
+                <a asp-area="Admin" asp-page="/Manager/Index" class="btn-small waves-effect waves-light grey"
+                    title="Voltar"><i class="material-icons">undo</i></a><span class="pdn-10">@ViewData["Title"]</span>
+            </div>
             <div class="card-content pdn-10">
                 <dl class="row">
                     <dt class="col s12 m2 l2">
@@ -65,114 +70,125 @@
                     </dd>
                 </dl>
             </div>
-        </div
-
-        <div class="row">
-            <div class="col s12 l6">
-        <div class="card">
-            <div class="card-header grey-text">Grupos<i class="left material-icons">account_box</i></div>
-            <div class="row no-padding mgn-0">
-                <div class="col s12 m6 l6 mgn-b-10 valign-wrapper">
-                    <select class="browser-default" asp-for="Selecionado" asp-items="Model.RoleList">
-                        <option>-- Incluir Grupo --</option>
-                    </select>
-                      <button type="submit" asp-page-handler="AddRole" asp-route-id="@Model.Input!.Id"
-                        class="btn-small waves-effect mgn-l-10"><i class="material-icons">add</i></button>
+        </div <div class="row">
+        <div class="col s12 l6">
+            <div class="card">
+                <div class="card-header grey-text">Grupos<i class="left material-icons">account_box</i></div>
+                <div class="row no-padding mgn-0">
+                    <div class="col s12 m6 l6 mgn-b-10 valign-wrapper">
+                        <select class="browser-default" asp-for="Selecionado" asp-items="Model.RoleList">
+                            <option>-- Incluir Grupo --</option>
+                        </select>
+                        <button type="submit" asp-page-handler="AddRole" asp-route-id="@Model.Input!.Id"
+                            class="btn-small waves-effect mgn-l-10"><i class="material-icons">add</i></button>
+                    </div>
                 </div>
-            </div>
-            <div class="divider"></div>
-            <table class="responsive-table">
-                <tbody>
-                    @if (Model.Input!.ListRoles != null)
-                    {
-
-                        foreach (var item in Model.Input!.ListRoles)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item)
-                                </td>
-
-                                <td>
-                                    <button type="submit" asp-page-handler="RemoveRole" asp-route-id="@Model.Input!.Id"
-                                        asp-route-role="@item" class="btn-floating waves-effect waves-light materialize-red"
-                                        title="Excluir Role"><i class="material-icons">remove</i></button>
-                                </td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
-        </div>
-            </div>
-            <div class="col s12 l6">
-        <div class="card">
-            <div class="card-header grey-text">Funções<i class="left material-icons">account_box</i></div>
-            <div class="row no-padding mgn-0">
-                <div class="col s12 m6 l6 mgn-b-10 valign-wrapper">
-                    <select asp-for="OwnerSelect" class="browser-default">
-                        <option>-- Incluir Função --</option>
-                        @foreach (var item in Model.OwnerList!)
-                        {
-                            <optgroup label="@item.Key">
-                                @foreach (var subitem in item.Value)
+                <div class="scroll-x">
+                    <table>
+                        <tbody>
+                                @if (Model.Input!.ListRoles != null)
                                 {
-                                    <option>@subitem</option>
+
+                                    foreach (var item in Model.Input!.ListRoles)
+                                    {
+                                    <tr>
+                                        <td>
+                                                @Html.DisplayFor(modelItem => item)
+                                        </td>
+
+                                        <td>
+                                            <button type="submit" asp-page-handler="RemoveRole" asp-route-id="@Model.Input!.Id"
+                                                asp-route-role="@item"
+                                                class="btn-floating waves-effect waves-light materialize-red"
+                                                title="Excluir Role"><i class="material-icons">remove</i></button>
+                                        </td>
+                                    </tr>
+                                    }
                                 }
-                            </optgroup>
-                        }
-                    </select>
-                    <button type="submit" asp-page-handler="BindAccount" asp-route-id="@Model.Input!.Id"
-                        class="btn-small waves-effect mgn-l-10"><i class="material-icons">link</i></button>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div class="divider"></div>
-            <table class="responsive-table">
-                <tbody>
-                        @foreach (var item in Model.Input?.ListClaims!)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Type)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Value)
-                                </td>
-                                <td>
-                                    <button type="submit" asp-page-handler="UnbindAccount" asp-route-id="@Model.Input!.Id" asp-route-ct="@item.Type"
-                                         asp-route-cv="@item.Value" class="btn-floating waves-effect waves-light materialize-red"
-                                        title="Excluir Vínculo"><i class="material-icons">remove</i></button>
-                                </td>
-                            </tr>
-                        }
-                    @* @if (Model.Input!.Vinculos != null)
-                    {
-                        foreach (var item in Model.Input!.Vinculos)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Dominio!.Acronimo)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Data)
-                                </td>
-                                <td>
-                                    <button type="submit" asp-page-handler="UnbindAccount" asp-route-id="@item.Id" asp-route-u="@Model.Input.Id"
-                                        class="btn-small waves-effect waves-light materialize-red"
-                                        title="Excluir Vínculo"><i class="material-icons">remove</i></button>
-                                </td>
-                            </tr>
-                        }
-                    } *@
-
-                </tbody>
-            </table>
         </div>
+        <div class="col s12 l6">
+            <div class="card">
+                <div class="card-header grey-text">Funções<i class="left material-icons">account_box</i></div>
+                <div class="row no-padding mgn-0">
+                        @{
+                            var IsAdmGlobal = (await AuthorizationService.AuthorizeAsync(User,
+                            PolicyExtensions.IsAdminGlobal)).Succeeded;
+                        }
+                        @if (IsAdmGlobal)
+                        {
+                        <div class="col s12 m6 l6 mgn-b-10 valign-wrapper">
+                            <select asp-for="OwnerSelect" class="browser-default">
+                                <option>-- Incluir Função --</option>
+                                    @foreach (var item in Model.OwnerList!)
+                                    {
+                                    <optgroup label="@item.Key">
+                                            @foreach (var subitem in item.Value)
+                                            {
+                                            <option>@subitem</option>
+                                            }
+                                    </optgroup>
+                                    }
+                            </select>
+                            <button type="submit" asp-page-handler="BindAccount" asp-route-id="@Model.Input!.Id"
+                                class="btn-small waves-effect mgn-l-10"><i class="material-icons">link</i></button>
+                        </div>
+                        }
+                </div>
+                <div class="scroll-x">
+                    <table>
+                        <tbody>
+                                @foreach (var item in Model.Input?.ListClaims!)
+                                {
+                                <tr>
+                                    <td>
+                                            @Html.DisplayFor(modelItem => item.Type)
+                                    </td>
+                                    <td>
+                                            @Html.DisplayFor(modelItem => item.Value)
+                                    </td>
+                                    <td>
+                                        <button type="submit" asp-page-handler="UnbindAccount"
+                                            asp-route-id="@Model.Input!.Id" asp-route-ct="@item.Type"
+                                            asp-route-cv="@item.Value"
+                                            class="btn-floating waves-effect waves-light materialize-red"
+                                            title="Excluir Vínculo"><i class="material-icons">remove</i></button>
+                                    </td>
+                                </tr>
+                                }
+                                @* @if (Model.Input!.Vinculos != null)
+                            {
+                            foreach (var item in Model.Input!.Vinculos)
+                            {
+                            <tr>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Dominio!.Acronimo)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Data)
+                            </td>
+                            <td>
+                            <button type="submit" asp-page-handler="UnbindAccount" asp-route-id="@item.Id"
+                            asp-route-u="@Model.Input.Id"
+                            class="btn-small waves-effect waves-light materialize-red"
+                            title="Excluir Vínculo"><i class="material-icons">remove</i></button>
+                            </td>
+                            </tr>
+                            }
+                            } *@
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+</div>
 
 
 
 
-    </form>
+</form>
 </div>

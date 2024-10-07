@@ -24,8 +24,8 @@
 
 <div class="card">
     <form method="post">
-        <div class="right">
-            <div class="valign-wrapper">
+        <div class="row mgn-0 no-padding">
+            <div class="right valign-wrapper">
                 <a class="btn-floating waves-effect waves-light blue mgn-8 right @disabledbutton"
                     asp-page="/Agenda/Inscricoes/Novo/Index" asp-route-id="@Model.Input.Codigo" title="Inscrever"><i
                         class="material-icons">person_add</i></a>
@@ -35,77 +35,79 @@
                         arrow_drop_down</i></button>
             </div>
         </div>
-        <table class="responsive-table">
-            <thead>
-                <tr>
-                    <th>
-                        #
-                    </th>
-                    <th>
-                        Presença
-                    </th>
-                    <th>
-                        CPF
-                    </th>
-                    <th>
-                        Cliente
-                    </th>
-                    <th>
-                        Empresa
-                    </th>
-                    <th>
-                        Contato
-                    </th>
-
-                    <th>
-                        Ação
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    int cont = 0;
-                }
-                @foreach (var item in Model.Input!.Inscritos!)
-                {
+        <div class="scroll-x">
+            <table>
+                <thead>
                     <tr>
-                        <td>
-                            @{
-                                cont++;
-                            }
-                            @cont.ToString()
-                        </td>
-                        <td>
-                            <div class="switch">
-                                <label><input class="icheckbox" data-id="@item.Id" data-cd="@Model.Input.Codigo"
-                                        checked="@item.Presente" type="checkbox" @disabledbutton /><span
-                                        class="lever"></span></label>
-                            </div>
-                        </td>
-                        <td>
-                            <a class="modal-trigger" href="#viewmodal" data-id="@item.Id">@Html.DisplayFor(modelItem =>
-                            item.Participante!.CPF)</a>
-                        </td>
-                        <td class="t-uppercase">
-                            @Html.DisplayFor(modelItem => item.Participante!.Nome)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Empresa!.Nome_Empresarial)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Participante!.Tel_Movel)
-                        </td>
+                        <th>
+                            #
+                        </th>
+                        <th>
+                            Presença
+                        </th>
+                        <th>
+                            CPF
+                        </th>
+                        <th>
+                            Cliente
+                        </th>
+                        <th>
+                            Empresa
+                        </th>
+                        <th>
+                            Contato
+                        </th>
 
-                        <td>
-                            <button asp-page-handler="Remove" asp-route-id="@item.Id" asp-route-ide="@Model.Input.Codigo"
-                                type="submit"
-                                class="btn-floating materialize-red waves-effect waves-light @disabledbutton"><i
-                                    class="material-icons">remove</i></button>
-                        </td>
+                        <th>
+                            Ação
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @{
+                        int cont = 0;
+                    }
+                    @foreach (var item in Model.Input!.Inscritos!)
+                    {
+                        <tr>
+                            <td>
+                                @{
+                                    cont++;
+                                }
+                                @cont.ToString()
+                            </td>
+                            <td>
+                                <div class="switch">
+                                    <label><input class="icheckbox" data-id="@item.Id" data-cd="@Model.Input.Codigo"
+                                            checked="@item.Presente" type="checkbox" @disabledbutton /><span
+                                            class="lever"></span></label>
+                                </div>
+                            </td>
+                            <td>
+                                <a class="modal-trigger" href="#viewmodal" data-id="@item.Id">@Html.DisplayFor(modelItem =>
+                                item.Participante!.CPF)</a>
+                            </td>
+                            <td class="t-uppercase">
+                                @Html.DisplayFor(modelItem => item.Participante!.Nome)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Empresa!.Nome_Empresarial)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Participante!.Tel_Movel)
+                            </td>
+
+                            <td>
+                                <button asp-page-handler="Remove" asp-route-id="@item.Id"
+                                    asp-route-ide="@Model.Input.Codigo" type="submit"
+                                    class="btn-floating materialize-red waves-effect waves-light @disabledbutton"><i
+                                        class="material-icons">remove</i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </form>
     <div class="card-action pdn-10">
         <a asp-page="/Agenda/Inscricoes/Lista/Index" asp-route-id="@Model.Input.Codigo"

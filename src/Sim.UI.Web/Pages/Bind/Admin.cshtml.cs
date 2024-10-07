@@ -9,7 +9,7 @@ using Sim.Identity.Policies;
 
 namespace Sim.UI.Web.Pages.Bind;
 
-[Authorize(Policy = PolicyExtensions.IsAdminGlobal)]
+[Authorize(Policy = PolicyExtensions.IsAdminSettings)]
 public class AdminModel : PageModel
 {
     private readonly IAppServiceBindings _bindings;

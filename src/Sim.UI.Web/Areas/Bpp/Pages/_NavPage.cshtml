@@ -1,32 +1,59 @@
 @using Sim.UI.Web.Areas.Bpp.Pages
 
-<div class="row">
-    <nav class="transparent">
+<ul id="mobile-menu" class="dropdown-content">
+        <li class="@NavPage.NovoBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Add/Index" title="Novo Contrato"><i
+                                class="material-icons">add</i>Novo</a></li>
+        <li class="@NavPage.NovoBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Contracts/Index"
+                        title="Ver Relatórios"><i class="material-icons">analytics</i>Relatórios</a></li>
+        <li class="@NavPage.InicioBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Index"
+                        title="Contratos em Aberto"><i class="material-icons">list</i>Análise</a></li>
+        <li class="@NavPage.AprovadosBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Aprovados/Index"
+                        title="Contratos Aprovados Adimplentes"><i class="material-icons">star</i>Aprovados</a></li>
+        <li class="@NavPage.InadimplentesBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Inadimplentes/Index"
+                        title="Contratos Aprovados Inadimplentes"><i class="material-icons">money_off</i>Inadimplentes</a>
+        </li>
+        <li class="@NavPage.RenegociadosBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Renegociados/Index"
+                        title="Contratos Aprovados Renegociados"><i class="material-icons">currency_exchange</i>Renegociados</a>
+        </li>
+        <li class="@NavPage.RecusadosBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Recusados/Index"
+                        title="Contratos Recusados"><i class="material-icons">report_off</i>Recusados</a></li>
+        <li class="@NavPage.LiquidadosBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Liquidados/Index"
+                        title="Contratos Finalizados"><i class="material-icons">check_circle</i>Liquidados</a></li>
+</ul>
+
+
+<nav class="row navbar">
         <div class="nav-wrapper">
-            <form class="input-field col s4 m4 l4 no-padding" method="post">
-                <input id="search" name="src" type="search" placeholder="Digite aqui para pesquisar" autofocus required>
-                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-            </form>
-            <ul class="right">
-                <li class="@NavPage.NovoBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Contracts/Index"
-                        title="Ver Relatórios"><i class="material-icons">analytics</i></a></li>
-                <li class="@NavPage.InicioBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Index"
-                        title="Contratos em Aberto"><i class="material-icons">list</i></a></li>
-                <li class="@NavPage.AprovadosBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Aprovados/Index"
-                        title="Contratos Aprovados Adimplentes"><i class="material-icons">star</i></a></li>
-                <li class="@NavPage.InadimplentesBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Inadimplentes/Index"
-                        title="Contratos Aprovados Inadimplentes"><i class="material-icons">money_off</i></a>
-                </li>
-                <li class="@NavPage.RenegociadosBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Renegociados/Index"
-                        title="Contratos Aprovados Renegociados"><i
-                            class="material-icons">currency_exchange</i></a></li>
-                <li class="@NavPage.RecusadosBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Recusados/Index"
-                        title="Contratos Recusados"><i class="material-icons">report_off</i></a></li>
-                <li class="@NavPage.LiquidadosBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Liquidados/Index"
-                        title="Contratos Finalizados"><i class="material-icons">check_circle</i></a></li>
-                <li class="@NavPage.NovoBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Add/Index"
-                        title="Novo Contrato"><i class="material-icons">add</i></a></li>
-            </ul>
+                <form class="input-field col s8 m6 l4 no-padding" method="post">
+                        <input id="search" name="src" type="search" placeholder="Digite aqui para pesquisar" autofocus
+                                required>
+                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                </form>
+                <a class="right pdn-h-18 dropdown-trigger hide-on-large-only" href="#!" data-target="mobile-menu"><i
+                                class="material-icons">menu</i></a>
+                <ul class="right hide-on-med-and-down">
+                        <li class="@NavPage.NovoBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Add/Index"
+                                        title="Novo Contrato"><i class="material-icons">add</i></a></li>
+                        <li class="@NavPage.NovoBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Contracts/Index"
+                                        title="Ver Relatórios"><i class="material-icons">analytics</i></a></li>
+                        <li class="@NavPage.InicioBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Index"
+                                        title="Contratos em Aberto"><i class="material-icons">list</i></a></li>
+                        <li class="@NavPage.AprovadosBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Aprovados/Index"
+                                        title="Contratos Aprovados Adimplentes"><i class="material-icons">star</i></a>
+                        </li>
+                        <li class="@NavPage.InadimplentesBPClass(ViewContext)"><a asp-area="Bpp"
+                                        asp-page="/Inadimplentes/Index" title="Contratos Aprovados Inadimplentes"><i
+                                                class="material-icons">money_off</i></a>
+                        </li>
+                        <li class="@NavPage.RenegociadosBPClass(ViewContext)"><a asp-area="Bpp"
+                                        asp-page="/Renegociados/Index" title="Contratos Aprovados Renegociados"><i
+                                                class="material-icons">currency_exchange</i></a></li>
+                        <li class="@NavPage.RecusadosBPClass(ViewContext)"><a asp-area="Bpp" asp-page="/Recusados/Index"
+                                        title="Contratos Recusados"><i class="material-icons">report_off</i></a></li>
+                        <li class="@NavPage.LiquidadosBPClass(ViewContext)"><a asp-area="Bpp"
+                                        asp-page="/Liquidados/Index" title="Contratos Finalizados"><i
+                                                class="material-icons">check_circle</i></a></li>
+
+                </ul>
         </div>
-    </nav>
-</div>
+</nav>

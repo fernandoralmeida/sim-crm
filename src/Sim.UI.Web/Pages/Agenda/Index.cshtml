@@ -2,38 +2,47 @@
 @using Sim.Domain.Evento.Model
 @model Sim.UI.Web.Pages.Agenda.IndexModel
 @{
-    ViewData["Title"] = "Eventos";    
+    ViewData["Title"] = "Eventos";
 }
 
 <partial name="_StatusMessage" model="Model.StatusMessage" />
-<ul id="mobile-demo" class="dropdown-content">
-    <li><a asp-page="/Agenda/Eventos/Index" title="Incluir Novo Evento"><i class="material-icons blue-text">add</i>Novo</a></li>
-    <li class="@AgendaNavPages.EventoAtivoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Ativo" class="green-text"><i class="material-icons">event_available</i>Disponível</a></li>
-    <li class="@AgendaNavPages.EventoFinalizadoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Finalizado"><i class="material-icons">event</i>Encerrado</a></li>
-    <li class="@AgendaNavPages.EventoCanceladoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Cancelado" class="red-t
-             e  xt"><i class="material-icons">event_busy</i>Cancelado</a></li>
-    <li class="@AgendaNavPages.SearchClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Ativo" class="red-text"><i class="material-icons">event_busy</i>Participantes</a></li>
+<ul id="mobile-menu" class="dropdown-content">
+    <li><a asp-page="/Agenda/Eventos/Index" title="Incluir Novo Evento"><i
+                class="material-icons blue-text">add</i>Novo</a></li>
+    <li class="@AgendaNavPages.EventoAtivoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Ativo"
+            class="green-text"><i class="material-icons">event_available</i>Disponível</a></li>
+    <li class="@AgendaNavPages.EventoFinalizadoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Finalizado"><i
+                class="material-icons">event</i>Encerrado</a></li>
+    <li class="@AgendaNavPages.EventoCanceladoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Cancelado"
+            class="red-text"><i class="material-icons">event_busy</i>Cancelado</a></li>
+    <li class="@AgendaNavPages.SearchClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Ativo" class="red-text"><i
+                class="material-icons">event_busy</i>Participantes</a></li>
 </ul>
-<form method="post">    
-    <nav class="row navbar transparent">
-        <div class="nav-wrapper">
-            <form method="post">
-                <div class="input-field col s6 m6 l6 no-padding">
-                    <input id="search" placeholder="Digite aqui para pesquisar!" onkeypress="handle(event)" asp-for="Input!.Search"  type="search" autofocus required>
-                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                </div>   
-            </form>    
-            <a class="right dropdown-trigger hide-on-large-only" href="#!" data-target="mobile-demo"><i class="material-icons alpha-text-5">menu arrow_drop_down</i></a>
-            <ul class="right hide-on-med-and-down">
-                <li><a asp-page="/Agenda/Eventos/Index" title="Incluir Novo Evento"><i class="material-icons blue-text">add</i></a></li>
-                <li class="@AgendaNavPages.EventoAtivoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Ativo" class="green-text"><i class="material-icons">event_available</i></a> </li>
-                <li class="@AgendaNavPages.EventoFinalizadoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Finalizado"><i class="material-icons">event</i></a></li>
-                <li class="@AgendaNavPages.EventoCanceladoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Cancelado" class="red-text"><i class="material-icons">event_busy</i></a></li>
-                <li><a asp-page="/Agenda/Inscricoes/Consulta/Index" class="amber-text"><i class="material-icons">search</i></a></li>
-            </ul>            
-        </div>
-    </nav>
-</form>
+
+<nav class="row navbar">
+    <div class="nav-wrapper">
+        <form method="post" class="input-field col s8 l6 no-padding">
+            <input id="search" placeholder="Digite aqui para pesquisar!" onkeypress="handle(event)"
+                asp-for="Input!.Search" type="search" autofocus required>
+            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+        </form>
+        <a class="right pdn-h-18 dropdown-trigger hide-on-large-only" href="#!" data-target="mobile-menu"><i
+                class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+            <li><a asp-page="/Agenda/Eventos/Index" title="Incluir Novo Evento"><i
+                        class="material-icons blue-text">add</i></a></li>
+            <li class="@AgendaNavPages.EventoAtivoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Ativo"
+                    class="green-text"><i class="material-icons">event_available</i></a> </li>
+            <li class="@AgendaNavPages.EventoFinalizadoClass(ViewContext)"><a
+                    asp-route-m="@EEvento.ESituacao.Finalizado"><i class="material-icons">event</i></a></li>
+            <li class="@AgendaNavPages.EventoCanceladoClass(ViewContext)"><a asp-route-m="@EEvento.ESituacao.Cancelado"
+                    class="red-text"><i class="material-icons">event_busy</i></a></li>
+            <li><a asp-page="/Agenda/Inscricoes/Consulta/Index" class="amber-text"><i
+                        class="material-icons">search</i></a></li>
+        </ul>
+    </div>
+</nav>
+
 
 <partial name="_AgendaList" model="Model.Input!.ListaEventosMes" />
 

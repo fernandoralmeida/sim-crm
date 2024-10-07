@@ -9,7 +9,9 @@
 <partial name="_NavPage" />
 <div class="card">
     <div class="card-header grey-text">Meus Contratos Recusados<i class="material-icons left">text_snippet</i></div>
-        @if(Model.MeusContratos != null) {
+    <div class="scroll-x">
+        @if (Model.MeusContratos != null)
+        {
             <table>
                 <thead>
                     <tr>
@@ -22,29 +24,39 @@
                         <th>...</th>
                     </tr>
                 </thead>
-                <tbody>     
-                    @{ var _cont = 0; }
-                    @foreach (var c in Model.MeusContratos) {
+                <tbody>
+                    @{
+                        var _cont = 0;
+                    }
+                    @foreach (var c in Model.MeusContratos)
+                    {
                         _cont++;
                         <tr>
                             <td>@_cont</td>
                             <td>@Html.DisplayFor(model => c.Numero)</td>
                             <td>
-                            @Html.DisplayFor(Model => c.Cliente!.Nome)
-                            <br>@Html.DisplayFor(Model => c.Empresa!.CNPJ) @Html.DisplayFor(Model => c.Empresa!.Nome_Empresarial)
+                                @Html.DisplayFor(Model => c.Cliente!.Nome)
+                                <br>@Html.DisplayFor(Model => c.Empresa!.CNPJ) @Html.DisplayFor(Model =>
+                        c.Empresa!.Nome_Empresarial)
                             </td>
                             <td>@Html.DisplayFor(model => c.Data) ~ @Html.DisplayFor(model => c.DataSituacao)</td>
                             <td>
-                                @{ var _situacao = c.Situacao.ToString();}                                
-                                <a class="btn-small waves-effect waves-light deep-orange modal-trigger showmodal" data-id="@c.Id" data-stc="@c.Situacao" href="#modal1">@Html.DisplayFor(model => _situacao)</a>
+                                @{
+                                    var _situacao = c.Situacao.ToString();
+                                }
+                                <a class="btn-small waves-effect waves-light deep-orange modal-trigger showmodal"
+                                    data-id="@c.Id" data-stc="@c.Situacao" href="#modal1">@Html.DisplayFor(model =>
+                            _situacao)</a>
                             </td>
                             <td>@NumberFormatInfo.CurrentInfo.CurrencySymbol @Html.DisplayFor(model => c.Valor)</td>
-                            <td><a class="btn-small waves-effect waves-light orange" asp-page="/Edit/Index" asp-route-id="@c.Id"><i class="material-icons">edit_document</i></a></td>
-                        </tr>                        
-                    }       
+                            <td><a class="btn-small waves-effect waves-light orange" asp-page="/Edit/Index"
+                                    asp-route-id="@c.Id"><i class="material-icons">edit_document</i></a></td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         }
+    </div>
     <div class="card-action">
         Lista de contratos recusados
         <span class="deep-orange-text right">@NumberFormatInfo.CurrentInfo.CurrencySymbol @Model.TotalCredito</span>
@@ -57,33 +69,35 @@
         <form method="post">
             <div class="card-header">Atualizar Informações</div>
             <div class="col s12" hidden>
-                <input id="idservico" asp-for="GetID"/>
+                <input id="idservico" asp-for="GetID" />
             </div>
             <div class="row">
                 <div class="col s12 m12 l12 valign-wrapper">
-                    <select id="idsituacao" class="browser-default" asp-for="GetSituacao" asp-items="Model.ESituacoes"></select>
-                    <button class="btn lighten-1 waves-effect waves-light mgn-l-10" type="submit" asp-page-handler="GoSituacao"><i class="material-icons">check_circle</i></button>              
+                    <select id="idsituacao" class="browser-default" asp-for="GetSituacao"
+                        asp-items="Model.ESituacoes"></select>
+                    <button class="btn lighten-1 waves-effect waves-light mgn-l-10" type="submit"
+                        asp-page-handler="GoSituacao"><i class="material-icons">check_circle</i></button>
                 </div>
             </div>
         </form>
     </div>
 </div>
 
-@section scripts{
+@section scripts {
     <script>
         $(function () {
             $('.showmodal').click(function () {
-                var _id = $(this).data('id'); 
-                var _stc = $(this).data('stc');    
-                var _pgt = $(this).data('pgt');   
-                document.getElementById('idservico').value = _id;      
-                document.getElementById('idsituacao').value = _stc;            
-                document.getElementById('idpagamento').value = _pgt;        
+                var _id = $(this).data('id');
+                var _stc = $(this).data('stc');
+                var _pgt = $(this).data('pgt');
+                document.getElementById('idservico').value = _id;
+                document.getElementById('idsituacao').value = _stc;
+                document.getElementById('idpagamento').value = _pgt;
             });
             $("#updateservico").click(function () {
                 var _id = document.getElementById('idservico').value;
-                var _dom = document.getElementById('dominioid').value;  
-                var _nom = document.getElementById('inputmodalnome').value;                 
+                var _dom = document.getElementById('dominioid').value;
+                var _nom = document.getElementById('inputmodalnome').value;
                 $.get(`/configuracoes/servicos/?id=${_id}&dominio=${_dom}&nome=${_nom}&handler=Manager`);
             });
         });

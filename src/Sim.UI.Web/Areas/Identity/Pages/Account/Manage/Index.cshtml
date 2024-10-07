@@ -46,8 +46,35 @@
     <div class="row pdn-10 mgn-0">
         <div class="col s12 l6">
             <div class="card">
-                <div class="card-header grey-text">Funções<i class="left material-icons">account_box</i></div>
-                <table class="responsive-table">
+                <div class="card-header grey-text">Grupos<i class="left material-icons">account_box</i></div>
+
+                @* @{
+                    var IsAccount = (await AuthorizationService.AuthorizeAsync(User,
+                    PolicyExtensions.IsAdminAccounts)).Succeeded;
+                }
+                @if (IsAccount)
+                {
+                    <div class="row no-padding mgn-0">
+                        <div class="col s12 m6 l6 mgn-b-10 valign-wrapper">
+                            <select asp-for="OwnerSelect" class="browser-default">
+                                <option>-- Associar Grupo --</option>
+                                @foreach (var item in Model.OwnerList!)
+                                {
+                                    <optgroup label="@item.Key">
+                                        @foreach (var subitem in item.Value)
+                                        {
+                                            <option value="@subitem.Value">@subitem.Key</option>
+                                        }
+                                    </optgroup>
+                                }
+                            </select>
+                            <button type="submit" asp-page-handler="BindAccount" asp-route-id="@Model.Input!.Id"
+                                class="btn waves-effect mgn-l-10"><i class="material-icons">link</i></button>
+                        </div>
+                    </div>
+                } *@
+
+                <table>
                     <tbody>
                         @foreach (var item in Model.Funcoes!)
                         {
@@ -62,30 +89,10 @@
             </div>
         </div>
         <div class="col s12 l6">
-            <div class="card">
-                <div class="card-header grey-text">Vínculos<i class="left material-icons">account_box</i></div>
+            <div class="card scroll-x">
+                <div class="card-header grey-text">Funções<i class="left material-icons">account_box</i></div>
 
-                <div class="row no-padding mgn-0">
-                    <div class="col s12 m6 l6 mgn-b-10 valign-wrapper">
-                        <select asp-for="OwnerSelect" class="browser-default">
-                            <option>-- Associar Vinculo --</option>
-                            @foreach (var item in Model.OwnerList!)
-                            {
-                                <optgroup label="@item.Key">
-                                    @foreach (var subitem in item.Value)
-                                    {
-                                        <option value="@subitem.Value">@subitem.Key</option>
-                                    }
-                                </optgroup>
-                            }
-                        </select>
-                        <button type="submit" asp-page-handler="BindAccount" asp-route-id="@Model.Input!.Id"
-                            class="btn waves-effect mgn-l-10"><i class="material-icons">link</i></button>
-                    </div>
-                </div>
-
-                <div class="divider"></div>
-                <table class="responsive-table">
+                <table>
                     <tbody>
                         @foreach (var item in Model.Vinculos!)
                         {
@@ -100,7 +107,7 @@
                                 <td>
                                     <button type="submit" asp-page-handler="UnbindAccount" asp-route-id="@Model.Input!.Id"
                                         asp-route-ct="@item.Type" asp-route-cv="@item.Value"
-                                        class="btn-small waves-effect waves-light materialize-red"
+                                        class="btn-floating waves-effect waves-light materialize-red"
                                         title="Excluir Vínculo"><i class="material-icons">remove</i></button>
                                 </td>
 

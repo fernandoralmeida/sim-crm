@@ -7,16 +7,17 @@
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 
 <nav class="row transparent">
-    <div class="nav-wrapper">            
-        <form method="post">
-            <div class="input-field col s6 m6 l6 no-padding">
-                <input id="search" placeholder="Digite o CPF para pesquisar!" onkeypress="handle(event)" asp-for="Input!.GetCPF"  type="search" autofocus required>
-                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-            </div>            
-            <ul class="right">       
-                <li><a asp-page="/Agenda/Index" asp-route-m="ativos" title="Voltar"><i class="material-icons">arrow_back</i></a></li>                
-            </ul>   
-        </form>         
+    <div class="nav-wrapper">
+        <form method="post" class="input-field col s8 m6 l6 no-padding">
+            <input id="search" placeholder="Digite o CPF para pesquisar!" onkeypress="handle(event)"
+                asp-for="Input!.GetCPF" type="search" autofocus required>
+            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+        </form>
+        <ul class="right">
+            <li><a asp-page="/Agenda/Index" asp-route-m="ativos" title="Voltar"><i
+                        class="material-icons">arrow_back</i></a></li>
+        </ul>
+
     </div>
 </nav>
 
@@ -60,7 +61,9 @@
                 {
                     <tr>
                         <td>
-                            @{cont++;}
+                            @{
+                                cont++;
+                            }
                             @cont.ToString()
                         </td>
                         <td>
