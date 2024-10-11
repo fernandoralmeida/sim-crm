@@ -1,0 +1,137 @@
+﻿@page "/empresa/manager/{id}/{sync?}"
+@model IndexModel
+@{
+    ViewData["Title"] = "Atualizar Empresa";
+}
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+
+<div class="row">
+    <form method="post">
+        <div class="card mgn-0">
+            <div class="card-header">
+                <a asp-page="/Empresa/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i
+                        class="material-icons">undo</i></a><span class="pdn-10">Empresa</span>
+            </div>
+            <div class="row">
+                <div class="input-field col s6" hidden>
+                    <label asp-for="Id"></label>
+                    <input asp-for="Id" />
+                </div>
+                <div class="input-field col s6" hidden>
+                    <label asp-for="Cnpj"></label>
+                    <input asp-for="Cnpj" />
+                </div>
+                <div class="input-field col s12" hidden>
+                    <label asp-for="Input!.Id"></label>
+                    <input asp-for="Input!.Id" />
+                </div>
+                <div class="input-field col s12 l4 valign-wrapper">
+                    <input asp-for="Input!.CNPJ" id="inputCNPJ">
+                    <label asp-for="Input!.CNPJ" for="inputCNPJ"></label>
+                    <a class="btn waves-effect waves-light" asp-route-id="@Model.Id" asp-route-sync="@true"
+                        title="Sincronizar com Receita"><i class="material-icons">sync</i></a>
+                </div>
+                <div class="input-field col s12 l4">
+                    <input asp-for="Input!.Data_Abertura" id="inputAbertura" />
+                    <label asp-for="Input!.Data_Abertura" for="inputAbertura"></label>
+                </div>
+                <div class="input-field col s12 l4">
+                    <input asp-for="Input!.Situacao_Cadastral" id="inputSitCad" />
+                    <label asp-for="Input!.Situacao_Cadastral" for="inputSitCad"></label>
+                </div>
+                <div class="input-field col s12 l6">
+                    <input asp-for="Input!.Nome_Empresarial" id="inputNome" />
+                    <label asp-for="Input!.Nome_Empresarial" for="inputNome"></label>
+                </div>
+                <div class="input-field col s12 l6">
+                    <input asp-for="Input!.Nome_Fantasia" id="inputFantasia" />
+                    <label asp-for="Input!.Nome_Fantasia" for="inputFantasia"></label>
+                </div>
+                <div class="input-field col s12 l2">
+                    <input asp-for="Input!.CNAE_Principal" id="inputCNAE" />
+                    <label for="inputCNAE">Cnae</label>
+                </div>
+                <div class="input-field col s12 l10">
+                    <input asp-for="Input!.Atividade_Principal" id="inputAtividade" />
+                    <label for="inputAtividade">Descrição</label>
+                </div>
+                <div class="input-field col s12 l12">
+                    <textarea asp-for="Input!.Atividade_Secundarias" rows="4" class="materialize-textarea"
+                        id="inputSecundaria"></textarea>
+                    <label asp-for="Input!.Atividade_Secundarias" for="inputSecundaria"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="row">
+                <div class="input-field col s12 l2">
+                    <input asp-for="Input!.CEP" id="inputCEP" />
+                    <label asp-for="Input!.CEP" for="inputCEP"></label>
+                </div>
+                <div class="input-field col s12 l8">
+                    <input asp-for="Input!.Logradouro" id="inputRua" />
+                    <label asp-for="Input!.Logradouro" for="inputRua"></label>
+                </div>
+                <div class="input-field col s12 l2">
+                    <input asp-for="Input!.Numero" id="inputNumero" />
+                    <label asp-for="Input!.Numero" for="inputNumero"></label>
+                </div>
+
+                <div class="input-field col s12 l2">
+                    <input asp-for="Input!.Complemento" id="inputComp" />
+                    <label asp-for="Input!.Complemento" for="inputComp"></label>
+                </div>
+                <div class="input-field col s12 l6">
+                    <input asp-for="Input!.Bairro" id="inputBairro" />
+                    <label asp-for="Input!.Bairro" for="inputBairro"></label>
+                </div>
+                <div class="input-field col s8 l3">
+                    <input asp-for="Input!.Municipio" id="inputMunucipio" />
+                    <label asp-for="Input!.Municipio" for="inputMunucipio"></label>
+                </div>
+                <div class="input-field col s4 l1">
+                    <input asp-for="Input!.UF" id="inputUF" />
+                    <label asp-for="Input!.UF" for="inputUF"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="row">
+
+                <div class="input-field col s12 l6">
+                    <input asp-for="Input!.Email" id="inputEmail" />
+                    <label asp-for="Input!.Email" for="inputEmail"></label>
+                </div>
+                <div class="input-field col s12 l6">
+                    <input asp-for="Input!.Telefone" id="inputTel" />
+                    <label asp-for="Input!.Telefone" for="inputTel"></label>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-action">
+                <button type="submit" class="btn waves-effect waves-light">Gravar Cadastro</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+<script src="~/js/jquery.cep.js"></script>
+<script src="~/js/jquery.mask.min.js"></script>
+<script src="~/js/jquery.validation.js"></script>
+<script>
+    $('#inputCNPJ').mask('00.000.000/0000-00', { placeholder: "__.___.___/____-__" });
+    $('#inputTel').mask('(00) 0000-0000', { placeholder: "(__) ____-____" });
+    $('#inputCEP').mask('00000-000', { placeholder: "_____-___" });
+</script>
+}

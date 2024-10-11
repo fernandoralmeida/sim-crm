@@ -31,7 +31,7 @@ public class ThemeModel : PageModel
         {
             var _user = await _usermanager.GetUserAsync(User);
             HttpContext.Session.SetString("Theme", theme ?? "light");
-            await _userservice.SetThemeAsync(_user.Id, theme);
+            await _userservice.SetThemeAsync(_user.Id, theme!);
             Response.Redirect($"/{returnURL}");
         }
         catch (Exception ex)

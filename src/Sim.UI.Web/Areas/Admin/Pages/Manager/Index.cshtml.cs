@@ -6,6 +6,7 @@ using Sim.Identity.Interfaces;
 using Sim.Identity.Entity;
 using Microsoft.AspNetCore.Identity;
 using Sim.Identity.Policies;
+using NuGet.Protocol;
 
 namespace Sim.UI.Web.Areas.Admin.Pages.Manager
 {
@@ -15,11 +16,14 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
     {
         private readonly IServiceUser _appIdentity;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         public IndexModel(IServiceUser appServiceUser,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _appIdentity = appServiceUser;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         [TempData]
@@ -28,61 +32,55 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
         [BindProperty]
         public VMListUsers? Input { get; set; }
 
-        public IEnumerable<ApplicationUser>? Users_Admin_Global { get; set; }
-        public IEnumerable<ApplicationUser>? Users_Admin_Account { get; set; }
-        public IEnumerable<ApplicationUser>? Users_Admin_Config { get; set; }
+        public IEnumerable<AppUserExtended>? Grupos { get; set; }
+        public IEnumerable<KeyValuePair<string, IEnumerable<string>>>? Roles { get; set; }
 
-        public IEnumerable<KeyValuePair<string, IEnumerable<ApplicationUser>>>? GroupedUsers { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string? SelectedRole { get; set; }
+        public IEnumerable<KeyValuePair<string, IEnumerable<string>>>? Funcoes { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string? SelectedFuncao { get; set; }
 
         private async Task LoadAsync()
         {
-            var _adm_global = await _userManager.GetUsersInRoleAsync(PolicyTypes.Adm_Global);
-            var _adm_account = await _userManager.GetUsersInRoleAsync(PolicyTypes.Adm_Account);
-            var _adm_config = await _userManager.GetUsersInRoleAsync(PolicyTypes.Adm_Settings);
-
-            Users_Admin_Global = _adm_global.Where(s => s.LockoutEnabled == false && s.UserName != "Admin").OrderBy(o => o.UserName);
-            Users_Admin_Account = _adm_account.Where(s => s.LockoutEnabled == false).OrderBy(o => o.UserName);
-            Users_Admin_Config = _adm_config.Where(s => s.LockoutEnabled == false).OrderBy(o => o.UserName);
-
-            var _lockout_off = await _appIdentity.ListAllAsync();
-            var _users = _lockout_off.Where(s => s.LockoutEnabled == false).ToList();
-
-            foreach (var u in _lockout_off)
+            await Task.Run(() =>
             {
-                foreach (var g in _adm_global)
+                Funcoes = new List<KeyValuePair<string, IEnumerable<string>>>
                 {
-                    if (g.UserName == u.UserName)
-                        _users.Remove(u);
-                }
-                foreach (var g in _adm_account)
-                {
-                    if (g.UserName == u.UserName)
-                        _users.Remove(u);
-                }
-                foreach (var g in _adm_config)
-                {
-                    if (g.UserName == u.UserName)
-                        _users.Remove(u);
-                }
-            }
+                    new(PolicyTypes.Permission, PolicyTypes.ToList())
+                };
 
-            Input = new()
-            {
-                Users = _users.OrderBy(o => o.UserName)
-            };
-
-            GroupedUsers = await _appIdentity.GetUsersGroupedByRolesAndClaimsAsync();
+                Roles = new List<KeyValuePair<string, IEnumerable<string>>>
+                {
+                    new ("SEDEMPi", from _r in _roleManager.Roles select new string( _r.Name))
+                };
+            });
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
             await LoadAsync();
+            Grupos = await _appIdentity.GetUsersExtendedAsync();
             return Page();
         }
 
         public async Task<IActionResult> OnGetLockUnlock(string id, bool blk)
         {
             var _status = await _appIdentity.lockUnlockAsync(id, blk);
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            await LoadAsync();
+
+            Grupos = await _appIdentity.GetUsersGroupedByRolesAndClaimsAsync(
+                SelectedRole,
+                SelectedFuncao
+            );
+
+
             return Page();
         }
     }

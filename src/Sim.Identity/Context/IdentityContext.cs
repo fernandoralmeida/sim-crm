@@ -17,15 +17,15 @@ namespace Sim.Identity.Context
 
         }
 
-        public DbSet<ApplicationUser> AppUsers { get; set; }
+        public DbSet<ApplicationUser>? AppUsers { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(@"Server=127.0.0.1,1433;Database=sim-accountcenter;User Id=sa;Password=sql@1234;");
-            }
-        }
+        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        // {
+        //     if (!optionsBuilder.IsConfigured)
+        //     {
+        //         optionsBuilder.UseSqlServer(@"Server=127.0.0.1,1433;Database=sim-accountcenter;User Id=sa;Password=sql@1234;");
+        //     }
+        // }
 
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
@@ -51,7 +51,7 @@ namespace Sim.Identity.Context
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
                     SecurityStamp = Guid.NewGuid().ToString("D"),
-                    PasswordHash = hasher.HashPassword(null, "$im1234"),
+                    PasswordHash = hasher.HashPassword(null!, "$im1234"),
                     Theme = "dark"
                 }
             );

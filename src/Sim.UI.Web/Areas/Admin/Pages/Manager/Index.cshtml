@@ -15,79 +15,120 @@
 }
 
 <div class="row">
-    @if (Model.GroupedUsers != null)
+    @if (Model.Grupos != null)
     {
-        @foreach (var _role in Model.GroupedUsers!)
-        {
-            var _noGrupo = _role.Key == "" ? "Sem Grupo" : _role.Key;
-            <div class="card">
-                <div class="card-header">@_noGrupo<i class="material-icons left">manage_accounts</i></div>
-                <div class="scroll-x">
-                    <table class="">
-                        <thead>
-                            <tr>
-                                <th>
-                                    #
-                                </th>
-                                <th>
-                                    User Name
-                                </th>
-                                <th>
-                                    Nome
-                                </th>
-                                <th>
-                                    Email
-                                </th>
-                                <th>
-                                    Bloquear
-                                </th>
-                                <th>Ação</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @{
-                                cont = 0;
-                            }
-
-                            @foreach (var item in _role.Value)
-                            {
-
-                                <tr>
-                                    <td>
-                                        @{
-                                            cont++;
-                                        }
-                                        @cont.ToString()
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.UserName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                        @Html.DisplayFor(modelItem => item.LastName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Email)
-                                    </td>
-                                    <td>
-                                        <div class="switch">
-                                            <label><input class="icheckbox" data-id="@item.UserName" checked="@item.LockoutEnabled"
-                                                    type="checkbox" /><span class="lever"></span></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a asp-page="./UserRoles" asp-route-id="@item.Id"
-                                            class="btn-floating waves-effect waves-light orange" title="Editar"><i
-                                                class="material-icons">edit</i></a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+        <div class="card">
+            <form class="row-flex gap-5" method="post">
+                <div class="card-header"><i class="material-icons">manage_accounts</i></div>
+                <div>
+                    <select class="browser-default" asp-for="SelectedRole" title="Selecionar por Grupo"
+                        onchange="this.form.submit()">
+                        <option value="">-- Grupos --</option>
+                        @foreach (var item in Model.Roles!)
+                        {
+                            <optgroup label="@item.Key">
+                                @foreach (var subitem in item.Value)
+                                {
+                                    <option value="@subitem">@subitem</option>
+                                }
+                            </optgroup>
+                        }
+                    </select>
                 </div>
+                <div>
+                    <select class="browser-default" asp-for="SelectedFuncao" title="Selecionar por Função"
+                        onchange="this.form.submit()">
+                        <option value="">-- Funções --</option>
+                        @foreach (var item in Model.Funcoes!)
+                        {
+                            <optgroup label="@item.Key">
+                                @foreach (var subitem in item.Value)
+                                {
+                                    <option value="@subitem">@subitem</option>
+                                }
+                            </optgroup>
+                        }
+                    </select>
+                </div>
+            </form>
+            <div class="scroll-x">
+                <table class="">
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                User Name
+                            </th>
+                            <th>
+                                Nome
+                            </th>
+                            <th>
+                                Grupos
+                            </th>
+                            <th>
+                                Funções
+                            </th>
+                            <th>
+                                Bloquear?
+                            </th>
+
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @{
+                            cont = 0;
+                        }
+
+                        @foreach (var item in Model.Grupos)
+                        {
+
+                            <tr>
+                                <td>
+                                    @{
+                                        cont++;
+                                    }
+                                    @cont.ToString()
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>@foreach (var r in item.Roles!)
+                                    {
+                                        <div class="purple-text">@Html.DisplayFor(modelItem => r)</div>
+                                    }
+                                </td>
+                                <td>
+                                    @foreach (var r in item.Claims!)
+                                    {
+                                        <div class="deep-purple-text">@Html.DisplayFor(modelItem => r.Value)</div>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="switch">
+                                        <label><input class="icheckbox" data-id="@item.UserName" checked="@item.LockoutEnabled"
+                                                type="checkbox" /><span class="lever"></span></label>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <a asp-page="./UserRoles" asp-route-id="@item.Id"
+                                        class="btn-floating waves-effect waves-light orange" title="Editar"><i
+                                            class="material-icons">edit</i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
-        }
+        </div>
+
     }
 </div>
 

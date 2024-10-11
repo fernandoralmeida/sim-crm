@@ -125,12 +125,12 @@
                                 <option>-- Incluir Função --</option>
                                     @foreach (var item in Model.OwnerList!)
                                     {
-                                    <optgroup label="@item.Key">
-                                            @foreach (var subitem in item.Value)
-                                            {
-                                            <option>@subitem</option>
-                                            }
-                                    </optgroup>
+                                        <optgroup label="@item.Key">
+                                                @foreach (var subitem in item.Value)
+                                                {
+                                                <option>@subitem</option>
+                                                }
+                                        </optgroup>
                                     }
                             </select>
                             <button type="submit" asp-page-handler="BindAccount" asp-route-id="@Model.Input!.Id"

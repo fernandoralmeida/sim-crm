@@ -10,32 +10,32 @@
     <div class="col s12 m8 l10">
         <div class="row">
             <div class="col s12 m6 l4">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="t_eventos"></div>
                 </div>
             </div>
             <div class="col s12 m6 l4">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="t_inscricoes_pie"></div>
                 </div>
             </div>
             <div class="col s12 m12 l4">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="t_perfil_presente_pie"></div>
                 </div>
             </div>
             <div class="col s12 m12 l6">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="t_eve_faixa_etaria_participantes"></div>
                 </div>
             </div>
             <div class="col s12 m12 l6">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="t_eve_setores"></div>
                 </div>
             </div>
             <div class="col s12">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="t_eve_month"></div>
                 </div>
             </div>
@@ -44,7 +44,7 @@
     <div class="col s12 m4 l2">
         @foreach (var item in Model.LReports!.EventosTipo!)
         {
-            <div class="card hoverable">                
+            <div class="card hoverable transparent">
                 <div class="card-content">@item.Value - @item.Key</div>
             </div>
         }
@@ -53,6 +53,9 @@
 
 <script>
     window.onload = function () {
+
+        var _light = 'dark';
+        var _palette = 'palette3';
 
         var t_eventos = {
             title: {
@@ -69,8 +72,8 @@
                     enabled: true
                 }
             },
-            series: [@Model!.Eventos![0]!],
-            labels: [@Model!.Eventos![1]!],
+            series: [@Model!.Eventos![0]],
+            labels: [@Model!.Eventos![1]],
             legend: {
                 position: 'bottom'
             },
@@ -90,8 +93,8 @@
                 enabled: false
             },
             theme: {
-                mode: 'ligth',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             }
         };
 
@@ -133,8 +136,8 @@
                 enabled: false
             },
             theme: {
-                mode: 'ligth',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             }
         };
 
@@ -155,8 +158,8 @@
                     enabled: false
                 }
             },
-            series: [@Model!.ParticipantesGeneroPresente![0]!],
-            labels: [@Model!.ParticipantesGeneroPresente![1]!],
+            series: [@Model!.ParticipantesGeneroPresente![0]],
+            labels: [@Model!.ParticipantesGeneroPresente![1]],
             legend: {
                 position: 'bottom'
             },
@@ -176,8 +179,8 @@
                 enabled: false
             },
             theme: {
-                mode: 'light',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             }
         };
 
@@ -226,8 +229,8 @@
                 text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
             },
             theme: {
-                mode: 'light',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             },
             stroke: {
                 curve: 'smooth',
@@ -286,8 +289,8 @@
                 intersect: false
             },
             theme: {
-                mode: 'light',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             },
             xaxis: {
                 labels: {
@@ -363,8 +366,8 @@
                 intersect: false
             },
             theme: {
-                mode: 'light',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             },
             xaxis: {
                 labels: {

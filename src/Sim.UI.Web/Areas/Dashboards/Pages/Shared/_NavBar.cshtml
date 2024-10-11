@@ -7,23 +7,21 @@
 <div class="navbar-fixed">
     <nav class="navbar z-depth-0 bg-color-dark">
         <div class="nav-wrapper">
-            <a href="#" data-target="sidenav-left" class="sidenav-trigger hide-on-extra-large-only"><i
+            <a href="#" data-target="sidenav-left" class="sidenav-trigger hide-on-med-and-up show-on-small"><i
                     class="material-icons">menu</i></a>
 
-            <div class="left mgn-l-10">Dashboard Analítico!</div>
+            <a asp-area="" asp-page="/Calendar/Index" class="left mgn-l-10 submit" title="Voltar ao SIM-CRM">Dashboard
+                Analítico!
+                <i class="material-icons left hide-on-small-and-down">arrow_back</i>
+            </a>
 
-            <ul class="right hide-on-med-and-down">
+            <ul class="right hide-on-small-and-down">
                 <li><a class="dropdown-trigger" href="#!" data-target="pagnames">@Model.Page<i
                             class="material-icons right">arrow_drop_down</i></a></li>
                 <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">@Model.Ano<i
                             class="material-icons right">arrow_drop_down</i></a></li>
                 <li><a class="dropdown-trigger" href="#!" data-target="dropdown2">@Model.Setor<i
                             class="material-icons right">arrow_drop_down</i></a></li>
-                 
-                @* <li class="dropdown-trigger" data-target="dropdownuser">
-                    <a id="btnstatus" href="#" class=
-                    ">@DisplayName<i class="left material-icons">person</i></a>
-                </li> *@
             </ul>
         </div>
     </nav>
@@ -33,8 +31,7 @@
     <div class="center-align"><a asp-area="Identity" asp-page="/Account/Manage/Index">Meu Perfil</a>
     </div>
     <div class="divider"></div>
-    <div><a asp-area="Identity" asp-page="/Account/Logout">Sair<i
-                class="left material-icons">logout</i></a></div>
+    <div><a asp-area="Identity" asp-page="/Account/Logout">Sair<i class="left material-icons">logout</i></a></div>
 </div>
 
 <ul id="dropdown1" class="dropdown-content bg-color-white">
@@ -59,4 +56,54 @@
     <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/Eventos" asp-route-ano="@Model.Ano"
             asp-route-setor="@Model.Setor" onclick="CloseDropdown()">Eventos</a></li>
     <li><a class="submit" href="https://www.indicadores.net" onclick="CloseDropdown()" target="_blank">Empresas</a></li>
+</ul>
+
+<ul id="sidenav-left" class="sidenav sidenav-fixed bg-color-grey hide-on-med-and-up">
+    <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+            <li>
+                <a asp-area="" asp-page="/Calendar/Index" class="submit collapsible-header">Voltar</a>
+            </li>
+            <li>
+                <div class="collapsible-header">@Model.Page<i class="material-icons chevron">chevron_left</i></div>
+                <div class="collapsible-body">
+                    <ul>
+                        <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/Atendimentos"
+                                asp-route-ano="@Model.Ano" asp-route-setor="@Model.Setor"
+                                onclick="CloseDropdown()">Atendimentos</a></li>
+                        <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/Eventos"
+                                asp-route-ano="@Model.Ano" asp-route-setor="@Model.Setor"
+                                onclick="CloseDropdown()">Eventos</a></li>
+                        <li><a class="submit" href="https://www.indicadores.net" onclick="CloseDropdown()"
+                                target="_blank">Empresas</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header">@Model.Ano<i class="material-icons chevron">chevron_left</i></div>
+                <div class="collapsible-body">
+                    <ul>
+                        @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 10; i--)
+                        {
+                            <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/@Model.Page"
+                                    asp-route-ano="@i" asp-route-setor="@Model.Setor" onclick="CloseDropdown()">@i</a></li>
+                        }
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header">@Model.Setor<i class="material-icons chevron">chevron_left</i></div>
+                <div class="collapsible-body">
+                    <ul>
+                        @foreach (var item in @Model.Setores)
+                        {
+                            <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/@Model.Page"
+                                    asp-route-ano="@Model.Ano" asp-route-setor="@item" onclick="CloseDropdown()">@item</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
 </ul>

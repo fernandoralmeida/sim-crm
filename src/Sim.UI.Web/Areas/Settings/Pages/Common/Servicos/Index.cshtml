@@ -10,27 +10,29 @@
 <div>
     <form method="post">
         <div class="col s12" hidden>
-            <input asp-for="Input!.Id"/>
-            <input asp-for="ReturnID"/>
-            <input asp-for="SetorID"/>
+            <input asp-for="Input!.Id" />
+            <input asp-for="ReturnID" />
+            <input asp-for="SetorID" />
         </div>
         <div class="row">
             <div class="card-header">
-                <a asp-area="Settings" asp-page="/Common/Setor/Index" asp-route-id="@Model.ReturnID" class="btn-small waves-effect waves-light grey" title="Voltar"><i class="material-icons">undo</i></a><span class="pdn-10">Inclua ou remova serviços</span>
+                <a asp-area="Settings" asp-page="/Common/Setor/Index" asp-route-id="@Model.ReturnID"
+                    class="btn-small waves-effect waves-light grey" title="Voltar"><i
+                        class="material-icons">undo</i></a><span class="pdn-10">Inclua ou remova serviços</span>
             </div>
             <div class="input-field col s12 m5 l3">
                 <select asp-for="SetDominio" asp-items="Model.Dominios"></select>
-                <label asp-for="Input!.Dominio"></label>                         
-            </div>   
+                <label asp-for="Input!.Dominio"></label>
+            </div>
             <div class="input-field col s12 m7 l9 valign-wrapper">
                 <input asp-for="Input!.Nome" />
-                <label asp-for="Input!.Nome"></label>          
-                <button class="btn waves-effect waves-light"><i class="material-icons">add</i></button>               
+                <label asp-for="Input!.Nome"></label>
+                <button class="btn waves-effect waves-light"><i class="material-icons">add</i></button>
             </div>
         </div>
     </form>
-    <div class="card">
-        <table class="responsive-table">
+    <div class="card scroll-x">
+        <table class="">
             <thead>
                 <tr>
                     <th>Servico</th>
@@ -49,54 +51,61 @@
                                 @Html.DisplayFor(modelItem => item.Dominio!.Acronimo)
                             </td>
                             <td>
-                                <a data-id="@item.Id" data-nome="@item.Nome" class="waves-effect waves-light btn-floating orange showmodal modal-trigger" href="#modal1"><i class="material-icons">edit</i></a>                 
-                                <a asp-area="Settings" asp-page-handler="Remove" asp-route-id="@item.Id" asp-route-dm="@Model.ReturnID" asp-route-st="@Model.SetorID" class="btn-floating waves-effect waves-light red"><i class="material-icons">remove</i></a>
+                                <div class="row-flex gap-5 no-wrap">
+                                    <a data-id="@item.Id" data-nome="@item.Nome"
+                                        class="waves-effect waves-light btn-floating orange showmodal modal-trigger"
+                                        href="#modal1"><i class="material-icons">edit</i></a>
+                                    <a asp-area="Settings" asp-page-handler="Remove" asp-route-id="@item.Id"
+                                        asp-route-dm="@Model.ReturnID" asp-route-st="@Model.SetorID"
+                                        class="btn-floating waves-effect waves-light red"><i
+                                            class="material-icons">remove</i></a>
+                                </div>
                             </td>
                         </tr>
                     }
                 }
             </tbody>
-        </table> 
+        </table>
     </div>
 
 </div>
 
-  <div id="modal1" class="modal modal-fixed-footer">
+<div id="modal1" class="modal modal-fixed-footer">
     <div class="modal-content">
         <div class="row">
             <div class="col s12" hidden>
-                <input id="idservico"/>
+                <input id="idservico" />
             </div>
             <div class="card-header">
                 <span class="pdn-10">Alterar Serviço<i class="material-icons left">edit_square</i></span>
             </div>
             <div class="input-field col s12 m4 l4">
-                <select id="dominioid" asp-for="Input!.Dominio" asp-items="Model.AllDominios" ></select>
-                <label>Dominio</label>                         
-            </div>   
+                <select id="dominioid" asp-for="Input!.Dominio" asp-items="Model.AllDominios"></select>
+                <label>Dominio</label>
+            </div>
             <div class="input-field col s12 m8 l8">
-                <input id="inputmodalnome" />                            
-            </div>            
+                <input id="inputmodalnome" />
+            </div>
         </div>
     </div>
     <div class="modal-footer pdn-h-10">
-      <a id="updateservico" href="#!" class="modal-close waves-effect waves-green btn-small">Gravar</a>
+        <a id="updateservico" href="#!" class="modal-close waves-effect waves-green btn-small">Gravar</a>
     </div>
-  </div>
+</div>
 
-  @section scripts{
+@section scripts {
     <script>
         $(function () {
             $('.showmodal').click(function () {
-                var _id = $(this).data('id'); 
-                var _name = $(this).data('nome');      
-                document.getElementById('idservico').value = _id;      
-                document.getElementById('inputmodalnome').value = _name;                
+                var _id = $(this).data('id');
+                var _name = $(this).data('nome');
+                document.getElementById('idservico').value = _id;
+                document.getElementById('inputmodalnome').value = _name;
             });
             $("#updateservico").click(function () {
                 var _id = document.getElementById('idservico').value;
-                var _dom = document.getElementById('dominioid').value;  
-                var _nom = document.getElementById('inputmodalnome').value;                 
+                var _dom = document.getElementById('dominioid').value;
+                var _nom = document.getElementById('inputmodalnome').value;
                 $.get(`/Settings/Common/Servicos?id=${_id}&dominio=${_dom}&nome=${_nom}&handler=Manager`);
             });
         });

@@ -43,8 +43,8 @@ namespace Sim.UI.Web.Pages.Triagem
                 var _setores = new List<KeyValuePair<string, IEnumerable<KeyValuePair<string, string>>>>();
                 foreach (var setor in sec)
                 {
-                    var _claim = new Claim(setor.Acronimo!, setor.Id.ToString());
-                    var users = await _userManager.GetUsersForClaimAsync(_claim);
+                    //var _claim = new Claim(setor.Acronimo!, setor.Id.ToString());
+                    var users = await _userManager.GetUsersInRoleAsync(setor.Acronimo);
                     var _atendentes = new List<KeyValuePair<string, string>>();
 
                     foreach (ApplicationUser u in users)
@@ -56,10 +56,10 @@ namespace Sim.UI.Web.Pages.Triagem
                                 var ativo = await _appAtendimento.DoListAsync(s => s.Owner_AppUser_Id == u.UserName && s.Status == "Ativo");
 
                                 if (ativo.Any())
-                                    _atendente = new KeyValuePair<string, string>(u.Name, "Em Atendimento");
+                                    _atendente = new KeyValuePair<string, string>(u.Name!, "Em Atendimento");
 
                                 else
-                                    _atendente = new KeyValuePair<string, string>(u.Name, "Disponível");
+                                    _atendente = new KeyValuePair<string, string>(u.Name!, "Disponível");
 
                                 _atendentes.Add(_atendente);
                             }

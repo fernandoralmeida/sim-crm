@@ -128,7 +128,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
                 var _list = await _appSecretaria.DoListAsync();
                 var collection = new List<KeyValuePair<string, Guid>>();
 
-                HttpContext.Session.SetString("FirstName", appuser.Name);
+                HttpContext.Session.SetString("FirstName", appuser!.Name!);
                 HttpContext.Session.SetString("Theme", appuser.Theme ?? "light");
 
                 foreach (var role in _roles)

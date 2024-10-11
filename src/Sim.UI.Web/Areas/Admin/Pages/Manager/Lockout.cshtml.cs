@@ -31,7 +31,7 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
         private async Task LoadAsync()
         {           
             var _lockout_off = await _appIdentity.ListAllAsync();
-            var _users = _lockout_off.Where(s => s.LockoutEnabled == true).ToList();
+            var _users = _lockout_off!.Where(s => s.LockoutEnabled == true).ToList();
             
             Input = new() {
                 Users = _users.OrderBy(o => o.UserName)

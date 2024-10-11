@@ -18,78 +18,80 @@
             <input type="text" asp-for="Input!.Id" class="form-control" readonly>
         </div>
     </div>
-    <div class="card mgn-0 scroll-x">
+    <div class="card mgn-0 ">
         <div class="card-header grey-text">Cliente</div>
-        <table>
-            <!--<caption>Informações do Cliente</caption>-->
-            <thead>
-                <tr>
-                    <th>
-
-                    </th>
-                    <th>
-                        CPF/CNPJ
-                    </th>
-                    <th>
-                        Pessoa/Empresa
-                    </th>
-                    <th>
-                        Email
-                    </th>
-                    <th>
-                        Telefone
-                    </th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.Input!.Pessoa != null)
-                {
+        <div class="scroll-x">
+            <table>
+                <!--<caption>Informações do Cliente</caption>-->
+                <thead>
                     <tr>
-                        <td>
-                            <a class="btn-floating orange waves-effect waves-light" asp-page="/Cliente/Manager/Index"
-                                asp-route-id="@Model.Input.Pessoa.Id"><i class="material-icons">edit</i></a>
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => Model.Input.Pessoa.CPF)
-                        </td>
-                        <td class="t-uppercase">
-                            @Html.DisplayFor(modelItem => Model.Input.Pessoa.Nome)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => Model.Input.Pessoa.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => Model.Input.Pessoa.Tel_Movel)
-                        </td>
+                        <th>
+
+                        </th>
+                        <th>
+                            CPF/CNPJ
+                        </th>
+                        <th>
+                            Pessoa/Empresa
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Telefone
+                        </th>
 
                     </tr>
-                }
-                @if (Model.Input.Empresa != null)
-                {
-                    <tr>
-                        <td>
-                            <a class="btn-floating orange waves-effect waves-light" asp-page="/Empresa/Manager/Update"
-                                asp-route-id="@Model.Input.Empresa.Id"><i class="material-icons">edit</i></a>
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => Model.Input.Empresa.CNPJ)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => Model.Input.Empresa.Nome_Empresarial)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => Model.Input.Empresa.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => Model.Input.Empresa.Telefone)
-                        </td>
+                </thead>
+                <tbody>
+                    @if (Model.Input!.Pessoa != null)
+                    {
+                        <tr>
+                            <td>
+                                <a class="btn-floating orange waves-effect waves-light" asp-page="/Cliente/Manager/Index"
+                                    asp-route-id="@Model.Input.Pessoa.Id"><i class="material-icons">edit</i></a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Input.Pessoa.CPF)
+                            </td>
+                            <td class="t-uppercase">
+                                @Html.DisplayFor(modelItem => Model.Input.Pessoa.Nome)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Input.Pessoa.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Input.Pessoa.Tel_Movel)
+                            </td>
 
-                    </tr>
-                }
+                        </tr>
+                    }
+                    @if (Model.Input.Empresa != null)
+                    {
+                        <tr>
+                            <td>
+                                <a class="btn-floating orange waves-effect waves-light" asp-page="/Empresa/Manager/Index"
+                                    asp-route-id="@Model.Input.Empresa.Id"><i class="material-icons">edit</i></a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Input.Empresa.CNPJ)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Input.Empresa.Nome_Empresarial)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Input.Empresa.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Input.Empresa.Telefone)
+                            </td>
 
-            </tbody>
-        </table>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="card">
         <div class="card-header grey-text">Informações</div>

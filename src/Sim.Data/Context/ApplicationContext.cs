@@ -43,13 +43,13 @@ namespace Sim.Data.Context
         //Lembretes
         public DbSet<EReminder>? Reminders { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(@"Server=127.0.0.1,1433;Database=Sim-Application-db20210001;User Id=sa;Password=sql@1234;");
-            }
-        }
+        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        // {
+        //     if (!optionsBuilder.IsConfigured)
+        //     {
+        //         optionsBuilder.UseSqlServer(@"Server=127.0.0.1,1433;Database=Sim-Application-db20210001;User Id=sa;Password=sql@1234;");
+        //     }
+        // }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

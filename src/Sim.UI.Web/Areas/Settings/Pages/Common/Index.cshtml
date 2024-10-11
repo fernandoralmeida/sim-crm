@@ -45,8 +45,8 @@
 
         </div>
     </form>
-    <div class="card">
-        <table class="responsive-table">
+    <div class="card scroll-x">
+        <table class="">
             <thead>
                 <tr>
                     <th>Nome</th>
@@ -73,17 +73,22 @@
                                 </div>
                             </td>
                             <td>
-                                <a asp-area="Settings" asp-page="Unidade/Index" asp-route-id="@item.Id"
-                                    class="btn-small waves-effect waves-light blue"><i
-                                        class="material-icons right">navigate_next</i>Unidade</a>
+                                <div class="row-flex gap-5">
+                                    <a asp-area="Settings" asp-page="Unidade/Index" asp-route-id="@item.Id"
+                                        class="btn-small waves-effect waves-light blue"><i
+                                            class="material-icons right hide-on-med-and-down">navigate_next</i>Unidade</a>
+                                </div>
                             </td>
                             <td>
-                                <a asp-area="Settings" asp-page="Manage/Index" asp-route-id="@item.Id"
-                                    class="btn-floating waves-effect waves-light orange"><i class="material-icons">edit</i></a>
-                                <span>|</span>
-                                <a asp-area="Settings" asp-page-handler="Remove" asp-route-id="@item.Id"
-                                    class="btn-floating waves-effect waves-light red"><i class="material-icons">remove</i></a>
-
+                                <div class="row-flex gap-5 no-wrap">
+                                    <a asp-area="Settings" asp-page="Manage/Index" asp-route-id="@item.Id"
+                                        class="btn-floating waves-effect waves-light orange"><i
+                                            class="material-icons">edit</i></a>
+                                    <span>|</span>
+                                    <a asp-area="Settings" asp-page-handler="Remove" asp-route-id="@item.Id"
+                                        class="btn-floating waves-effect waves-light red"><i
+                                            class="material-icons">remove</i></a>
+                                </div>
                             </td>
                         </tr>
                     }

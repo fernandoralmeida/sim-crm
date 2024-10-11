@@ -12,57 +12,57 @@
     <div class="col s12 m8 l10">
         <div class="row">
             <div class="col s12 m6 l2">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="atsvc"></div>
                 </div>
             </div>
             <div class="col s12 m6 l4">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="total"></div>
                 </div>
             </div>
             <div class="col s12 m6 l3">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="perfil"></div>
                 </div>
             </div>
             <div class="col s12 m6 l3">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="canal"></div>
                 </div>
             </div>
             <div class="col s12">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="atmonths"></div>
                 </div>
             </div>
             <div class="col s12 m12 l3">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="chartatdistintos"></div>
                 </div>
             </div>
             <div class="col s12 m12 l3">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="chartclidistintos"></div>
                 </div>
             </div>
             <div class="col s12 m12 l3">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="chartcligenero"></div>
                 </div>
             </div>
             <div class="col s12 m12 l3">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="chartfaixaetaria"></div>
                 </div>
             </div>
             <div class="col s12 m12 l6">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="donutchartsegmentos"></div>
                 </div>
             </div>
             <div class="col s12 m12 l6">
-                <div class="card hoverable">
+                <div class="card hoverable transparent">
                     <div id="funnelchartempfaixas"></div>
                 </div>
             </div>
@@ -72,7 +72,7 @@
     <div class="col s12 m4 l2">
         @foreach (var item in Model.LReports!.Top10Servicos!)
         {
-            <div class="card hoverable">
+            <div class="card hoverable transparent">
                 <div title="@item.servico" class="card-content font-size-12">@item.valor - @item.servico</div>
             </div>
         }
@@ -83,6 +83,9 @@
 
 <script>
     window.onload = function () {
+
+        var _light = 'dark';
+        var _palette = 'palette3';
 
         var atsvc = {
             chart: {
@@ -148,8 +151,8 @@
                 intersect: false
             },
             theme: {
-                mode: 'light',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             }
         };
 
@@ -224,8 +227,8 @@
                 intersect: false
             },
             theme: {
-                mode: 'light',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             }
         };
 
@@ -269,8 +272,8 @@
                 enabled: false
             },
             theme: {
-                mode: 'ligth',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             }
         };
 
@@ -314,8 +317,8 @@
                 enabled: false
             },
             theme: {
-                mode: 'light',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             }
         };
 
@@ -362,8 +365,8 @@
                 text: '@Model.NavBar.Setor - @Model.NavBar.Ano'
             },
             theme: {
-                mode: 'light',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             },
             stroke: {
                 curve: 'smooth',
@@ -421,8 +424,8 @@
                 enabled: false
             },
             theme: {
-                mode: 'light',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             }
         };
 
@@ -498,8 +501,8 @@
                 intersect: false
             },
             theme: {
-                mode: 'light',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             }
         };
 
@@ -544,8 +547,8 @@
                 intersect: false
             },
             theme: {
-                mode: 'light',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             },
             xaxis: {
                 labels: {
@@ -621,8 +624,8 @@
                 enabled: false
             },
             theme: {
-                mode: 'light',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             }
         };
 
@@ -665,8 +668,8 @@
                 enabled: false
             },
             theme: {
-                mode: 'light',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             }
         };
 
@@ -711,8 +714,8 @@
                 intersect: false
             },
             theme: {
-                mode: 'light',
-                palette: 'palette1'
+                mode: _light,
+                palette: _palette
             },
             xaxis: {
                 labels: {
