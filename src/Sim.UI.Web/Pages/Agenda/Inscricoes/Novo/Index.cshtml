@@ -8,7 +8,7 @@
 
 <form method="post">
     <div class="card mgn-0">
-        <div class="card-header alpha-text-5">
+        <div class="card-header">
             <a asp-page="/Agenda/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i
                     class="material-icons">undo</i></a><span class="pdn-10">Inscrição</span>
         </div>
@@ -54,7 +54,7 @@
     </div>
    
     <div class="card mgn-0">
-        <div class="card-header grey-text">Cliente<i class="left material-icons">person</i></div>
+        <div class="card-header">Cliente<i class="left material-icons">person</i></div>
         <div class="card-content no-padding">
             <div class="row mgn-0">
                 @if (Model.Input!.Participante == null)
@@ -96,7 +96,7 @@
     </div>
 
     <div class="card mgn-0">
-        <div class="card-header grey-text">Empresa<i class="left material-icons">domain</i></div>
+        <div class="card-header">Empresa<i class="left material-icons">domain</i></div>
         <div class="card-content no-padding">
             <div class="row mgn-0">
                 @if (Model.Input!.Empresa == null)

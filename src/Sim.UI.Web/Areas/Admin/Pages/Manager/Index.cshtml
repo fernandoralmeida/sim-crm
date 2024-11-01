@@ -101,13 +101,13 @@
                                 </td>
                                 <td>@foreach (var r in item.Roles!)
                                     {
-                                        <div class="purple-text">@Html.DisplayFor(modelItem => r)</div>
+                                        <div class="text-color-blue">@Html.DisplayFor(modelItem => r)</div>
                                     }
                                 </td>
                                 <td>
                                     @foreach (var r in item.Claims!)
                                     {
-                                        <div class="deep-purple-text">@Html.DisplayFor(modelItem => r.Value)</div>
+                                        <div class="text-color-purple-variant">@Html.DisplayFor(modelItem => r.Value)</div>
                                     }
                                 </td>
                                 <td>

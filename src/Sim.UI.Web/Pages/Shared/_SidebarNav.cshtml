@@ -9,7 +9,7 @@
     var _headname = Context.Session.GetString("Dominio");
 }
 
-<ul id="sidenav-left" class="sidenav sidenav-fixed bg-color-grey">
+<ul id="sidenav-left" class="sidenav sidenav-fixed">
 
     <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
@@ -78,7 +78,8 @@
                 </div>
             </li>
             <li class="@LayoutNavPages.PowerBINavClass(ViewContext)">
-                <a class="collapsible-header submit" asp-area="Dashboards" asp-page="/Indicadores/Atendimentos">Indicadores</a>
+                <a class="collapsible-header submit" asp-area="Dashboards"
+                    asp-page="/Indicadores/Atendimentos">Indicadores</a>
             </li>
         </ul>
     </li>

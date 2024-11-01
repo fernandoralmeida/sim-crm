@@ -25,17 +25,17 @@
                             {
                                 @foreach (var item in Model.NotBindings)
                                 {
-                                    <div class="box-cell-item-flex font-size-12 btn-nobg waves-effect bg-color-light">
+                                    <div class="box-cell-item-flex font-size-12 btn-nobg waves-effect">
                                         <p>@item.Item1</p>
-                                        <p class="text-color-grey font-h5">@item.Item2</p>
+                                        <p class="font-h5">@item.Item2</p>
                                     </div>
                                 }
                             }
 
                             <button asp-page-handler="Bindings"
-                                class="box-cell-item-flex font-size-12 btn-nobg waves-effect bg-color-light">
+                                class="box-cell-item-flex font-size-12 btn-nobg waves-effect">
                                 <p>Verificar</p>
-                                <p class="text-color-dark font-h5">Iniciar Vinculos</p>
+                                <p class="font-h5">Iniciar Vinculos</p>
                             </button>
 
                         </div>
@@ -53,9 +53,9 @@
                             @foreach (var item in Model.Vinculos)
                             {
                                 <button asp-page-handler="Preview" asp-route-id="@item.Item3"
-                                    class="box-cell-item-flex font-size-12 btn-nobg waves-effect bg-color-light submit">
+                                    class="box-cell-item-flex font-size-12 btn-nobg waves-effect submit">
                                     <p>@item.Item1</p>
-                                    <p class="text-color-dark font-h5">@item.Item2</p>
+                                    <p class="font-h5">@item.Item2</p>
                                 </button>
                             }
                         </div>
@@ -69,7 +69,7 @@
 @if (Model.Listar != null)
 {
     <div class="card">
-    <div class="card-header grey-text">Vínculos<i class="material-icons left">text_snippet</i></div>
+    <div class="card-header">Vínculos<i class="material-icons left">text_snippet</i></div>
     <table>
         <thead>
             <tr>

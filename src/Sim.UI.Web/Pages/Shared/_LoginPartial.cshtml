@@ -47,13 +47,18 @@
                         <i class="material-icons right">keyboard_arrow_down</i>
                     </a>
                 </li>
-            </ul>            
+            </ul>
 
             <span class="hide-on-small-and-down">
                 @_setorativo : @ViewData["Title"]
             </span>
 
             <ul class="right">
+                <li>
+                    <a id="theme-button" class="theme-button">
+                        <i class="n material-icons">contrast</i>
+                    </a>
+                </li>
                 @if (IsAccount)
                 {
                     <li class="@LayoutNavPages.ConfigContasNavClass(ViewContext) hide-on-small-and-down">
@@ -85,7 +90,7 @@
     </nav>
 </div>
 
-<div id="dropsection" class="dropdown-content rounded-default row bg-color-white">
+<div id="dropsection" class="dropdown-content bg-glass-dark rounded-default row">
     @if (_claims != null)
     {
         @foreach (var setor in _claims!)
@@ -97,7 +102,7 @@
     }
 </div>
 
-<div id="dropdownuser" class="dropdown-content rounded-default row bg-color-white">
+<div id="dropdownuser" class="dropdown-content bg-glass-dark rounded-default row">
     <div class="center-align pdn-h-10">
         <div class="switch" title="Alterar meu status"><label>OFF<input id="chkstatus" checked="@_status"
                     type="checkbox" onclick="myStatus()" /><span class="lever"></span>ON</label></div>
@@ -119,18 +124,4 @@
     <div><a asp-area="Identity" asp-page="/Account/Logout">Sair<i class="left material-icons">logout</i></a></div>
 </div>
 
-<script>
-    function myStatus() {
-        var st = document.querySelector('#chkstatus');
-        var uid = document.querySelector('#meustatusonline').value;
-        const btnstatus = document.querySelector('#btnstatus');
-        btnstatus.classList.remove('online');
-        btnstatus.classList.remove('offline');
-        if (!st.checked) { $('#btnstatus').addClass('offline'); }
-        else { $('#btnstatus').addClass('online'); }
-        var formData = { id: uid, val: st.checked };
-        $.get('/Identity/OnlineStatus', { id: uid, val: st.checked },
-            function (returnedData) {
-            });
-    }
-</script>
+<script type="text/javascript" src="~/js/status-theme.js"></script>

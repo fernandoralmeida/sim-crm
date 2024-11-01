@@ -32,7 +32,7 @@
                 $("#ibge").val("...");
 
                 //Consulta o webservice viacep.com.br/
-                $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+                $.getJSON("https://opencep.com/v1/" + cep, function (dados) {
 
                     if (!("erro" in dados)) {
                         //Atualiza os campos com os valores da consulta.

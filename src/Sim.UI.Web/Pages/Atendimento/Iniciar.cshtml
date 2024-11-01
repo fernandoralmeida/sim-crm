@@ -12,7 +12,7 @@
     <div class="row">
 
         <div class="card no-padding mgn-0">
-            <div class="card-header alpha-text-5">
+            <div class="card-header">
                 <a asp-page="/Atendimento/Index" class="btn-small waves-effect waves-light grey" title="Voltar"><i
                         class="material-icons">undo</i></a><span class="pdn-10">Novo Atendimento</span>
             </div>
@@ -21,7 +21,7 @@
                 <table class="small">
                     <tbody>
                         <tr>
-                            <td><i class="material-icons blue-text">person</i></td>
+                            <td><i class="material-icons text-color-blue">person</i></td>
                             <td><input asp-for="Input!.Pessoa!.Id" class="browser-default borderless" hidden />
                                 <input asp-for="Input!.Pessoa!.CPF" class="browser-default borderless" />
                             </td>
@@ -33,7 +33,7 @@
                         @if (Model.Input!.Empresa == null)
                         {
                             <tr class="tr_empresa">
-                                <td><i class="material-icons blue-text">description</i></td>
+                                <td><i class="material-icons text-color-blue">description</i></td>
                                 <td><input asp-for="GetCNPJ" class="browser-default borderless" autofocus id="inputCNPJ"
                                         placeholder="Incluir CNPJ?" />
                                 </td>
@@ -45,7 +45,7 @@
                         else
                         {
                             <tr>
-                                <td><i class="material-icons blue-text">domain</i></td>
+                                <td><i class="material-icons text-color-blue">domain</i></td>
                                 <td><input asp-for="Input!.Empresa!.Id" class="browser-default borderless" hidden />
                                     <input asp-for="Input!.Empresa!.CNPJ" class="browser-default borderless" />
                                 </td>

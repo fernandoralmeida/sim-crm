@@ -17,7 +17,7 @@
 <form method="post">
 
     <div class="card">
-        <div class="card-header grey-text">Cliente<i class="left material-icons">person</i></div>
+        <div class="card-header">Cliente<i class="left material-icons">person</i></div>
         <div class="card-content no-padding">
             <div class="row mgn-0">
                 @if (Model.InputContrato!.Cliente == null)
@@ -61,7 +61,7 @@
     </div>
 
     <div class="card">
-        <div class="card-header grey-text">Empresa<i class="left material-icons">domain</i></div>
+        <div class="card-header">Empresa<i class="left material-icons">domain</i></div>
         <div class="card-content no-padding">
             <div class="row mgn-0">
                 @if (Model.InputContrato.Cliente != null)
@@ -108,7 +108,7 @@
     </div>
 
     <div class="card">
-        <div class="card-header grey-text">Contrato<i class="material-icons left">text_snippet</i></div>
+        <div class="card-header">Contrato<i class="material-icons left">text_snippet</i></div>
         <div class="row mgn-0">
             <div class="input-field col s6 m6 l3">
                 <input asp-for="InputContrato!.Numero" />

@@ -19,9 +19,9 @@
             </div>
             <ul class="right">
                 <li><a class="modal-trigger" href="#modal1" title="Incluir Empresa!"><i
-                            class="material-icons blue-text">add</i></a></li>
+                            class="material-icons text-color-blue">add</i></a></li>
                 <li><a asp-page="/Empresa/Consulta/Index" title="Consulta Avançada!"><i
-                            class="material-icons orange-text">manage_search</i></a></li>
+                            class="material-icons">manage_search</i></a></li>
             </ul>
         </div>
     </nav>
@@ -62,7 +62,7 @@
                                 @Html.DisplayFor(modelItem => ano)
                         </td>
                         <td>
-                            <a class="blue-text" asp-page="/Empresa/Preview/Index" asp-route-id="@item.Id"
+                            <a class="text-color-blue" asp-page="/Empresa/Preview/Index" asp-route-id="@item.Id"
                                 target="_blank">@Html.DisplayFor(modelItem => item.CNPJ)</a>
                         </td>
                         <td>
@@ -103,7 +103,7 @@
         <span class="left">Página @Model.PaginationEmpresas.PageIndex de @Model.PaginationEmpresas.TotalPages -
             @Model.RegCount Reg.</span>
         <a asp-page="/Empresa/Export/Index" asp-route-ss="@Model.Src"
-            class="btn-small waves-effect waves-light green @_isdisabled right" title="Exportar"><i
+            class="btn-small waves-effect waves-light @_isdisabled right" title="Exportar"><i
                 class="material-icons">description file_download</i></a>
 
         <a asp-page="./Index" asp-route-Src="@Model.Src" asp-route-pag="@(Model.PaginationEmpresas.PageIndex - 1)"

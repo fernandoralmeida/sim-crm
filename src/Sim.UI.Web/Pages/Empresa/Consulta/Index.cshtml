@@ -11,7 +11,7 @@
 @* <nav class="transparent">
 <div class="nav-wrapper rounded-t-2">
 <ul class="right">
-<li><a asp-page="/Empresa/Novo/Index" title="Incluir Empresa!"><i class="material-icons blue-text">add</i></a></li>
+<li><a asp-page="/Empresa/Novo/Index" title="Incluir Empresa!"><i class="material-icons text-color-blue">add</i></a></li>
 <li class="active"><a asp-page="/Empresa/Consulta/Index" title="Consulta Avançada!"><i
 class="material-icons">manage_search</i></a></li>
 </ul>
@@ -92,7 +92,7 @@ class="material-icons">manage_search</i></a></li>
                                 @{
                                     var _cnpj = item.CNPJ?.MaskRemove();
                                 }
-                            <a class="blue-text" asp-page="/Empresa/Preview/Index" asp-route-id="@_cnpj"
+                            <a class="text-color-blue" asp-page="/Empresa/Preview/Index" asp-route-id="@_cnpj"
                                 target="_blank">@Html.DisplayFor(modelItem => item.CNPJ)</a>
                         </td>
                         <td>
@@ -137,7 +137,7 @@ class="material-icons">manage_search</i></a></li>
             @Model.RegCount Reg.</span>
         <a asp-page="/Empresa/Export/Index" asp-route-ss="-" asp-route-c="@Model.Input!.CNPJ"
             asp-route-e="@Model.Input.CNAE" asp-route-l="@Model.Input.Logradouro" asp-route-b="@Model.Input.Bairro"
-            asp-route-r="@Model.Input.RazaoSocial" class="btn-small waves-effect waves-light green @_isdisabled right"
+            asp-route-r="@Model.Input.RazaoSocial" class="btn-small waves-effect waves-light @_isdisabled right"
             title="Exportar"><i class="material-icons">description file_download</i></a>
 
         <a asp-page="./Index" asp-route-cnpj="@Model.Input.CNPJ" asp-route-rs="@Model.Input.RazaoSocial"

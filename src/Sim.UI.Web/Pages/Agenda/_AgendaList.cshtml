@@ -48,7 +48,7 @@
                     }
 
                     <div class="card hoverable">
-                        <div class="card-image @cor lighten-3 waves">
+                        <div class="card-image @cor lighten-4 waves">
                             <div class="card-title-panel @cor-text text-darken-4 truncate t-uppercase pdn-h-10 pdn-v-30">
                                 <a class="btn-floating btn-small halfway-fab waves-effect waves-light @cor lighten-2 left"
                                     asp-page="/Agenda/Eventos/Edit/Index" asp-route-id="@l.Id" title="Editar"><i class="material-icons white-text">edit</i></a>
@@ -56,7 +56,7 @@
                             </div>
                         </div>
                         <div class="card-content truncate border-l border-r pdn-b-0">
-                            @l.Tipo [<span class="@cor-text">@l.Situacao.ToString()</span>], @l.Owner
+                            @l.Tipo [<span class="text-color-blue">@l.Situacao.ToString()</span>], @l.Owner
                             <br />@l.Data!.Value
                             <br />@l.Formato, @l.Vagas() vagas.
                         </div>
@@ -65,7 +65,7 @@
                                 asp-page="/Agenda/Inscricoes/Novo/Index" asp-route-id="@l.Codigo" title="Inscrever"><i
                                     class="material-icons">person_add</i></a>
 
-                            <a class="@cor-text mgn-t-0 pdn-t-10" asp-page="/Agenda/Inscricoes/Index"
+                            <a class="text-color-blue mgn-t-0 pdn-t-10" asp-page="/Agenda/Inscricoes/Index"
                                 asp-route-id="@l.Codigo"><i>Inscritos
                                     @l.Inscricoes()</i></a>
                         </div>

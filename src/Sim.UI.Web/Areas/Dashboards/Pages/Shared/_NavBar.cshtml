@@ -27,14 +27,14 @@
     </nav>
 </div>
 
-<div id="dropdownuser" class="dropdown-content rounded-default row bg-color-white">
+<div id="dropdownuser" class="dropdown-content rounded-default row">
     <div class="center-align"><a asp-area="Identity" asp-page="/Account/Manage/Index">Meu Perfil</a>
     </div>
     <div class="divider"></div>
     <div><a asp-area="Identity" asp-page="/Account/Logout">Sair<i class="left material-icons">logout</i></a></div>
 </div>
 
-<ul id="dropdown1" class="dropdown-content bg-color-white">
+<ul id="dropdown1" class="dropdown-content bg-glass-dark">
     @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 10; i--)
     {
         <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/@Model.Page" asp-route-ano="@i"
@@ -42,7 +42,7 @@
     }
 </ul>
 
-<ul id="dropdown2" class="dropdown-content bg-color-white">
+<ul id="dropdown2" class="dropdown-content bg-glass-dark">
     @foreach (var item in @Model.Setores)
     {
         <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/@Model.Page" asp-route-ano="@Model.Ano"
@@ -50,7 +50,7 @@
     }
 </ul>
 
-<ul id="pagnames" class="dropdown-content bg-color-white">
+<ul id="pagnames" class="dropdown-content bg-glass-dark">
     <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/Atendimentos" asp-route-ano="@Model.Ano"
             asp-route-setor="@Model.Setor" onclick="CloseDropdown()">Atendimentos</a></li>
     <li><a class="submit" asp-area="Dashboards" asp-page="/Indicadores/Eventos" asp-route-ano="@Model.Ano"
@@ -58,7 +58,7 @@
     <li><a class="submit" href="https://www.indicadores.net" onclick="CloseDropdown()" target="_blank">Empresas</a></li>
 </ul>
 
-<ul id="sidenav-left" class="sidenav sidenav-fixed bg-color-grey hide-on-med-and-up">
+<ul id="sidenav-left" class="sidenav sidenav-fixed hide-on-med-and-up">
     <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
             <li>

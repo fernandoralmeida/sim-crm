@@ -57,3 +57,4 @@ function removerMascaraCNPJ(cnpj) {
     // Substitui tudo o que não é dígito por uma string vazia
     return cnpj.replace(/\D/g, '');
 }
+
