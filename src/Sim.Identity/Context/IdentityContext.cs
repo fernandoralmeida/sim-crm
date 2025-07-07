@@ -33,7 +33,7 @@ namespace Sim.Identity.Context
             base.OnModelCreating(modelbuilder);
 
             //a hasher to hash the password before seeding the user to the db
-            var hasher = new PasswordHasher<ApplicationUser>();
+            var hasher = new PasswordHasher<ApplicationUser>();            
 
             //Seeding the User to AspNetUsers table
             modelbuilder.Entity<ApplicationUser>().HasData(

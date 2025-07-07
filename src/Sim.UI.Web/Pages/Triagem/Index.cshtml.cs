@@ -44,7 +44,7 @@ namespace Sim.UI.Web.Pages.Triagem
                 foreach (var setor in sec)
                 {
                     //var _claim = new Claim(setor.Acronimo!, setor.Id.ToString());
-                    var users = await _userManager.GetUsersInRoleAsync(setor.Acronimo);
+                    var users = await _userManager.GetUsersInRoleAsync(setor.Acronimo!);
                     var _atendentes = new List<KeyValuePair<string, string>>();
 
                     foreach (ApplicationUser u in users)

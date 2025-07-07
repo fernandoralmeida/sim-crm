@@ -88,7 +88,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = Input!.UserName, Name = Input.Name, LastName = Input.LastName, Gender = Input.Genero, Email = Input.Email, Theme = "light" };
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var result = await _userManager.CreateAsync(user, Input.Password!);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("O usuário criou uma nova conta com senha.");
@@ -101,7 +101,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirme seu email",
+                    await _emailSender.SendEmailAsync(Input.Email!, "Confirme seu email",
                         $"Por favor, confirme sua conta <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicando aqui</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)

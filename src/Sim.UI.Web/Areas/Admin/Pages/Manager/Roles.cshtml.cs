@@ -75,7 +75,7 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
                 await LoadAsync();
                 if (ModelState.IsValid)
                 {
-                    var role = new IdentityRole(Input!.Name);
+                    var role = new IdentityRole(Input!.Name!);
                     var roleresult = await _roleManager.CreateAsync(role);
 
                     if (roleresult.Succeeded)
@@ -103,7 +103,7 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
                 await LoadAsync();
                 if (ModelState.IsValid)
                 {
-                    var role = new IdentityRole(OwnerSelect);
+                    var role = new IdentityRole(OwnerSelect!);
                     var roleresult = await _roleManager.CreateAsync(role);
 
                     if (roleresult.Succeeded)

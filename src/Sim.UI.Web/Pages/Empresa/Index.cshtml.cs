@@ -7,7 +7,7 @@ using Sim.Domain.Entity;
 using Sim.Application.Interfaces;
 using Sim.UI.Web.Functions;
 using Microsoft.EntityFrameworkCore;
-using Sim.Application.WebService.RFB.Interfaces;
+// using Sim.Application.WebService.RFB.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
 namespace Sim.UI.Web.Pages.Empresa
@@ -16,12 +16,10 @@ namespace Sim.UI.Web.Pages.Empresa
     public class IndexModel : PageModel
     {
         private readonly IAppServiceEmpresa _empresaApp;
-        private readonly IServiceRFB _rfb;
-        public IndexModel(IAppServiceEmpresa appServiceEmpresa,
-            IServiceRFB rfb)
+        // private readonly IServiceRFB _rfb;
+        public IndexModel(IAppServiceEmpresa appServiceEmpresa)
         {
             _empresaApp = appServiceEmpresa;
-            _rfb = rfb;
         }
 
         [TempData]
@@ -40,7 +38,7 @@ namespace Sim.UI.Web.Pages.Empresa
         [BindProperty(SupportsGet = true)]
         public string? GetCaptcha { get; set; }
 
-        public string? Captcha { get { return _rfb.Captcha(); } }
+        public string? Captcha { get { return string.Empty; } }
 
         public Pagination<Empresas>? PaginationEmpresas { get; set; }
         public int RegCount { get; set; }

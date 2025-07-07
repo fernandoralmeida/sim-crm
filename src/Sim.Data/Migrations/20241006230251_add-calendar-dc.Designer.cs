@@ -13,7 +13,9 @@ namespace Sim.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     [Migration("20241006230251_add-calendar-dc")]
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     partial class addcalendardc
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

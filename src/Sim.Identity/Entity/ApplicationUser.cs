@@ -9,6 +9,5 @@ namespace Sim.Identity.Entity
         public string? LastName { get; set; }
         public string? Gender { get; set; }
         public string? Theme { get; set; }
-
     }
 }

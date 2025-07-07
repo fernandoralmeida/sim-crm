@@ -59,7 +59,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account.Manage
             RequirePassword = await _userManager.HasPasswordAsync(user);
             if (RequirePassword)
             {
-                if (!await _userManager.CheckPasswordAsync(user, Input!.Password))
+                if (!await _userManager.CheckPasswordAsync(user, Input!.Password!))
                 {
                     ModelState.AddModelError(string.Empty, "Senha incorreta.");
                     return Page();

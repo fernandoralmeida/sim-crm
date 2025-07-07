@@ -5,7 +5,6 @@ using Sim.Domain.Organizacao.Model;
 using Sim.Domain.Evento.Model;
 
 using Sim.Application.VM;
-using Sim.Application.WebService.RWS.Entity;
 using Sim.UI.Web.Pages.Cliente;
 
 using Sim.UI.Web.Pages.Atendimento;
@@ -22,7 +21,7 @@ namespace Sim.UI.Web.AutoMapper
         {
             CreateMap<Pessoa, InputModelPessoa>().ReverseMap();
             CreateMap<Pessoa, VMPessoa>().ReverseMap();
-            CreateMap<CNPJ, VMEmpresa>().ReverseMap();
+            // CreateMap<CNPJ, VMEmpresa>().ReverseMap();
             CreateMap<Empresas, VMEmpresa>().ReverseMap();
             CreateMap<EAtendimento, InputModelAtendimento>().ReverseMap();
             CreateMap<EEvento, InputModelEvento>().ReverseMap();

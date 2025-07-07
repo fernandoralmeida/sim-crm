@@ -136,7 +136,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
                             values: new { area = "Identity", userId = userId, code = code },
                             protocol: Request.Scheme);
 
-                        await _emailSender.SendEmailAsync(Input.Email, "Confirme seu email",
+                        await _emailSender.SendEmailAsync(Input.Email!, "Confirme seu email",
                             $"Por favor, confirme sua conta <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicando aqui</a>.");
 
                         // If account confirmation is required, we need to show the link if we don't have a real email sender

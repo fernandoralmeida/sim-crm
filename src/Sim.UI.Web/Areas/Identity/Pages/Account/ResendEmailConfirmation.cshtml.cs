@@ -44,7 +44,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
                 return Page();
             }
 
-            var user = await _userManager.FindByEmailAsync(Input!.Email);
+            var user = await _userManager.FindByEmailAsync(Input!.Email!);
             if (user == null)
             {
                 ModelState.AddModelError(string.Empty, "E-mail de verificação enviado. Por favor verifique seu email.");
@@ -60,7 +60,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
                 values: new { userId = userId, code = code },
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
-                Input.Email,
+                Input.Email!,
                 "Confirme seu email",
                 $"Por favor, confirme sua conta <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicando aqui</a>.");
 

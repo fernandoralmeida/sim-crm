@@ -22,7 +22,7 @@ using Sim.Application;
 using Sim.Application.Interfaces;
 using Sim.Application.Services;
 
-using Sim.Application.WebService.RWS.Services;
+using Sim.Application.RWS.Services;
 
 using Sim.Data;
 using Sim.Data.Context;
@@ -36,8 +36,6 @@ using Sim.Application.Customer.Services;
 
 using Sim.Application.Indicadores.Interfaces;
 using Sim.Application.Indicadores.Services;
-using Sim.Application.WebService.RFB.Interfaces;
-using Sim.Application.WebService.RFB.Services;
 
 namespace Sim.IoC
 {
@@ -196,11 +194,9 @@ namespace Sim.IoC
             services.AddScoped<IRepositoryBindings, RepositoryBindings>();
             //
             services.AddScoped<IReceitaWS, ReceitaWS>();
-            services.AddScoped<IServiceRFB, ServiceRFB>();
+            // services.AddScoped<IServiceRFB, ServiceRFB>();
             //
-            services.AddScoped<IAppIndicadores, AppIndicadores>();
-
-            
+            services.AddScoped<IAppIndicadores, AppIndicadores>();         
 
         }
     }

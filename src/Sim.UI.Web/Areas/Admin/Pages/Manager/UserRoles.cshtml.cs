@@ -73,12 +73,12 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
                 RoleList = new SelectList(roles.Where(s => s.Name != PolicyTypes.Adm_Global && s.Name != PolicyTypes.Adm_Account).OrderBy(o => o.Name), nameof(IdentityRole.Name));
 
             var u = await _userManager.FindByIdAsync(id);
-            var r = await _userManager.GetRolesAsync(u);
-            var c = await _userManager.GetClaimsAsync(u);
+            var r = await _userManager.GetRolesAsync(u!);
+            var c = await _userManager.GetClaimsAsync(u!);
 
             Input = new()
             {
-                Id = u.Id,
+                Id = u!.Id,
                 UserName = u.UserName,
                 Name = u.Name,
                 LastName = u.LastName,
@@ -93,8 +93,8 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
         public async Task<IActionResult> OnGetAsync(string id)
         {
             await LoadAsync(id);
-            var user = await _userManager.FindByEmailAsync(Input!.Email);
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var user = await _userManager.FindByEmailAsync(Input!.Email!);
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user!);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             ResetCode = code;
             return Page();
@@ -105,8 +105,8 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
             try
             {
                 var user = await _userManager.FindByIdAsync(id);
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                await _userManager.ConfirmEmailAsync(user, code);
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user!);
+                await _userManager.ConfirmEmailAsync(user!, code);
 
                 return RedirectToPage("./UserRoles", new { id });
             }
@@ -125,7 +125,7 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
             {
                 var user = await _userManager.FindByIdAsync(id);
 
-                await _userManager.AddToRoleAsync(user, Selecionado);
+                await _userManager.AddToRoleAsync(user!, Selecionado!);
 
                 return RedirectToPage("./UserRoles", new { id });
             }
@@ -144,9 +144,9 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
             {
                 var user = await _userManager.FindByIdAsync(id);
 
-                await _userManager.RemoveFromRoleAsync(user, role);
+                await _userManager.RemoveFromRoleAsync(user!, role);
 
-                return RedirectToPage("./UserRoles", new { id = user.Id });
+                return RedirectToPage("./UserRoles", new { id = user!.Id });
             }
             catch
             {
@@ -162,7 +162,7 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
 
                 Claim _claim = new(PolicyTypes.Permission, OwnerSelect!, ClaimValueTypes.String);
 
-                IdentityResult result = await _userManager.AddClaimAsync(_user, _claim);
+                IdentityResult result = await _userManager.AddClaimAsync(_user!, _claim);
 
                 await LoadAsync(id);
                 if (result.Succeeded)
@@ -186,7 +186,7 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
             {
                 var _claim = new Claim(ct, cv);
                 var _user = await _userManager.FindByIdAsync(id);
-                await _userManager.RemoveClaimAsync(_user, _claim);
+                await _userManager.RemoveClaimAsync(_user!, _claim);
                 await LoadAsync(id);
             }
             catch (Exception ex)

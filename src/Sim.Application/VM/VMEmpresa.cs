@@ -1,9 +1,12 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography.X509Certificates;
+using Sim.Application.RWS.Entity;
 
 namespace Sim.Application.VM;
 
-public class VMEmpresa {
+public class VMEmpresa
+{
     [Key]
     public Guid Id { get; set; }
 
@@ -67,4 +70,31 @@ public class VMEmpresa {
     //[Required(ErrorMessage = "Situação cadastral requerido")]
     [DisplayName("Situação Cadastral")]
     public string? Situacao_Cadastral { get; set; }
+
+    public static VMEmpresa? FromCNPJ(CNPJ _cnpj)
+    {
+        if (_cnpj == null)
+            return null;
+
+        return new VMEmpresa
+        {
+            CNPJ = _cnpj.Cnpj,
+            Data_Abertura = DateTime.TryParse(_cnpj.Data_Abertura, out var data) ? data : null,
+            Nome_Empresarial = _cnpj.Nome_Empresarial,
+            Nome_Fantasia = _cnpj.Nome_Fantasia,
+            CNAE_Principal = _cnpj.AtividadePrincipal?.FirstOrDefault()?.Code,
+            Atividade_Principal = _cnpj.AtividadePrincipal?.FirstOrDefault()?.Text,
+            Atividade_Secundarias = _cnpj.AtividadesSecundarias != null ? string.Join(", ", _cnpj.AtividadesSecundarias.Select(a => $"{a.Code} - {a.Text}")) : null,
+            CEP = _cnpj.Cep,
+            Logradouro = _cnpj.Logradouro,
+            Numero = _cnpj.Numero,
+            Complemento = _cnpj.Complemento,
+            Bairro = _cnpj.Bairro,
+            Municipio = _cnpj.Municipio,
+            UF = _cnpj.Uf,
+            Email = _cnpj.Email,
+            Telefone = _cnpj.Telefone,
+            Situacao_Cadastral = _cnpj.Situacao_Cadastral
+        };
+    }
 }

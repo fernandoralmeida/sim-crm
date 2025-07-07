@@ -79,7 +79,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Não foi possível carregar o usuário com ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input!.OldPassword, Input.NewPassword);
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input!.OldPassword!, Input.NewPassword!);
             if (!changePasswordResult.Succeeded)
             {
                 foreach (var error in changePasswordResult.Errors)

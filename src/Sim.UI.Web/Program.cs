@@ -50,29 +50,6 @@ builder.Services.AddSession(options =>
     options.Cookie.Name = $"simcrmSession";
 });
 
-// builder.Services.AddAuthorization(options =>
-// {
-//     options.AddPolicy("IsAdminGlobal", policy =>
-//         policy.RequireClaim("Permission", "Adm_Global"));
-//     options.AddPolicy("CanEditSettings", policy =>
-//         policy.RequireClaim("Permission", "Adm_Settings"));
-//     options.AddPolicy("CanManageAccounts", policy =>
-//         policy.RequireClaim("Permission", "Adm_Accounts"));
-
-//     options.AddPolicy("AdminOrSettings", policy =>
-//     {
-//         policy.RequireAssertion(context =>
-//             context.User.HasClaim("Permission", "Adm_Global") ||
-//             context.User.HasClaim("Permission", "Adm_Settings"));
-//     });
-
-//     options.AddPolicy("AdminOrAccounts", policy =>
-//     {
-//         policy.RequireAssertion(context =>
-//             context.User.HasClaim("Permission", "Adm_Global") ||
-//             context.User.HasClaim("Permission", "Adm_Settings"));
-//     });
-// });
 
 // 6. Configuração de Cookies e Autenticação
 builder.Services.ConfigureApplicationCookie(options =>
@@ -120,28 +97,13 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // 10. Configuração de Endpoints
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-    endpoints.MapRazorPages();
-});
-
-// Mapear as páginas de áreas
-// app.MapRazorPages();
-// app.MapAreaControllerRoute(
-//     name: "areas",
-//     areaName: "Sebrae",
-//     pattern: "Sebrae/{controller=Home}/{action=Index}/{id?}");
+app.MapControllers();
+app.MapRazorPages();
 
 // 11. Executar o Aplicativo
 await app.RunAsync();
 
 
-// // Aplicar migrações automaticamente
-// // using var scope = app.Services.CreateScope();
-// // var _idcontext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
-// // _idcontext.Database.Migrate();
-// // var _appcontext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-// // _appcontext.Database.Migrate();
+
 
 

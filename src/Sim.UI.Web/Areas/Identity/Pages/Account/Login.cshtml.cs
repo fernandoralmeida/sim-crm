@@ -72,17 +72,17 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = [.. (await _signInManager.GetExternalAuthenticationSchemesAsync())];
 
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(Input!.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                var result = await _signInManager.PasswordSignInAsync(Input!.UserName!, Input.Password!, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
-                    var first_name = await _signInManager.UserManager.FindByNameAsync(Input.UserName);
+                    var first_name = await _signInManager.UserManager.FindByNameAsync(Input.UserName!);
 
-                    if (first_name.LockoutEnabled)
+                    if (first_name!.LockoutEnabled)
                     {
                         _logger.LogWarning("Conta de usuário bloqueada!");
                         return RedirectToPage("./Lockout");

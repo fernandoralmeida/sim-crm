@@ -1,8 +1,8 @@
 ﻿using System.Net.Http.Json;
-using Sim.Application.WebService.RWS.Entity;
-using Sim.Application.WebService.RWS.Functions;
+using Sim.Application.RWS.Entity;
+using Sim.Application.RWS.Functions;
 
-namespace Sim.Application.WebService.RWS.Services
+namespace Sim.Application.RWS.Services
 {
     public class ReceitaWS : IReceitaWS
     {

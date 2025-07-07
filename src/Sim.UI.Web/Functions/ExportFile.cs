@@ -5,10 +5,13 @@ namespace Sim.UI.Web.Functions
 {
     public class ExportFile
     {
-        public async Task<(MemoryStream StremFile, string ContentType, string Name)> ToExcel<T>(IEnumerable<T> list, string filename){
+        public async Task<(MemoryStream StremFile, string ContentType, string Name)> ToExcel<T>(IEnumerable<T> list, string filename)
+        {
             var stream = new MemoryStream();
-            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
-
+            // ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+            var licence = new EPPlusLicense();
+            licence.SetNonCommercialPersonal("SIM");
+            // ExcelPackage.License = licence;
             using var epackage = new ExcelPackage(stream);
             var worksheet = epackage.Workbook.Worksheets.Add("Lista");
             worksheet.Cells.LoadFromCollection(list, true);

@@ -19,26 +19,30 @@ public class SessionModel : PageModel
     [TempData]
     public string? StatusMessage { get; set; }
 
-    public async Task OnGetAsync(string id, string url)
+    public async Task OnGetAsync(string id, string returnUrl)
     {
-        string returnURL = url.Replace("%2F", "/");
-        returnURL = returnURL.Remove(0, 1);
+        //string returnURL = HttpContext url;
+
+        var _route = returnUrl.Replace("%2F", "/")[1..];
+
+        var _returnUrl = $"{Request.Scheme}://{Request.Host.ToUriComponent()}/{_route}";
+
         try
         {
             var _unidade = await _appSecretaria.GetAsync(Guid.Parse(id));
             HttpContext.Session.SetString("SetorAtivo", _unidade.Acronimo!);
             StatusMessage = $"Setor {_unidade.Acronimo} selecionado com sucesso!";
             if (_unidade.Acronimo!.Contains("Sebrae"))
-                Response.Redirect($"/sebrae");
+                Response.Redirect($"{Request.Scheme}://{Request.Host.ToUriComponent()}/sebrae");
             else if (_unidade.Acronimo!.Contains("Banco do Povo"))
-                Response.Redirect($"/bpp");
+                Response.Redirect($"{Request.Scheme}://{Request.Host.ToUriComponent()}/bpp");
             else
-                Response.Redirect($"/{returnURL}");
+                Response.Redirect(_returnUrl);
         }
         catch (Exception ex)
         {
             StatusMessage = $"Erro: {ex.Message}";
-            Response.Redirect($"/{returnURL}");
+            Response.Redirect(_returnUrl);
         }
     }
 }

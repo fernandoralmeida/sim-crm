@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Sim.Application.WebService.RWS.Entity
+namespace Sim.Application.RWS.Entity
 {
     public class Atividade
     {

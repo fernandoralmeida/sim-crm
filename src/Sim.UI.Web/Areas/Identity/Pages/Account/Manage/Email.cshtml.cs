@@ -91,7 +91,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account.Manage
             if (Input!.NewEmail != email)
             {
                 var userId = await _userManager.GetUserIdAsync(user);
-                var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
+                var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail!);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.Page(
                     "/Account/ConfirmEmailChange",
@@ -99,7 +99,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account.Manage
                     values: new { userId = userId, email = Input.NewEmail, code = code },
                     protocol: Request.Scheme);
                 await _emailSender.SendEmailAsync(
-                    Input.NewEmail,
+                    Input.NewEmail!,
                     "Confirme seu email",
                     $"Por favor, confirme sua conta <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicando aqui</a>.");
 
@@ -135,7 +135,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account.Manage
                 values: new { area = "Identity", userId = userId, code = code },
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
-                email,
+                email!,
                 "Confirme seu email",
                 $"Por favor, confirme sua conta <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicando aqui</a>.");
 

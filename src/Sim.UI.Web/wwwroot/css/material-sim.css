@@ -32,7 +32,7 @@ for details on configuring this project to bundle and minify static web assets. 
     --sidebar-color: #F0F5FF;
     --footer-background-color: #eaf0fd;
     --footer-overlay: rgba(0, 0, 0, 0.02);
-    --color-glass-dark: rgba(8, 18, 33, 0.6);
+    --color-glass-dark: rgba(8, 18, 33, 1);
     --btn-text-secondary: #fff;
 }
 
@@ -40,8 +40,9 @@ for details on configuring this project to bundle and minify static web assets. 
     --color-1: #005dd7;
     --color-11: #8a2be2;
     --color-21: #f0f5ff;
-    --color-glass: rgba(240, 245, 255, 0.5);
-    --on-color-glass: rgba(37, 43, 51, 0.2);
+    --color-glass: rgba(240, 245, 255, 1);
+    --color-glass-c: rgba(240, 245, 255, 1);
+    --on-color-glass: rgba(37, 43, 51, 1);
     --color-divider: rgba(37, 43, 51, 0.2);
     --color-border: rgba(37, 43, 51, 0.2);
     --background-color: #f0f5ff;
@@ -52,8 +53,9 @@ for details on configuring this project to bundle and minify static web assets. 
     --text-color: #252b33;
     --text-color-secondary: #475966;
     --text-box: #fff;
-    --color-glass-dark: rgba(8, 18, 33, 0.6);
+    --color-glass-dark: rgba(8, 18, 33, 1);
     --btn-text-secondary: #fff;
+    --placeholde-text: rgba(71, 78, 94, 0.4);
 }
 
 [data-theme="dark"] {
@@ -63,8 +65,8 @@ for details on configuring this project to bundle and minify static web assets. 
     --color-12: #ce9dfd;
 
     --color-gb-05: rgba(0, 0, 0, .2);
-    --color-glass: rgba(37, 43, 51, 0.5);
-    --on-color-glass: rgba(37, 43, 51, 0.5);
+    --color-glass: rgba(37, 43, 51, 1);
+    --on-color-glass: rgba(37, 43, 51, 1);
     --color-divider: rgba(240, 245, 255, 0.4);
     --color-border: #252b33;
     --background-color: #252b33;
@@ -80,9 +82,68 @@ for details on configuring this project to bundle and minify static web assets. 
     --footer-background-color: #313842;
     --footer-overlay: rgba(0, 0, 0, 0.05);
 
-    --color-glass-dark: rgba(37, 43, 51, 0.5);
+    --color-glass-dark: rgba(37, 43, 51, 1);
 
     --btn-text-secondary: #000;
+
+    --placeholde-text: rgba(96, 113, 146, 0.85);
+}
+
+@supports (backdrop-filter: blur(50px)) or (-webkit-backdrop-filter: blur(50px)){
+
+[data-theme="light"] {
+        --color-1: #005dd7;
+        --color-11: #8a2be2;
+        --color-21: #f0f5ff;
+        --color-glass: rgba(240, 245, 255, 0.5);
+        --color-glass-c: rgba(240, 245, 255, 0.5);
+        --on-color-glass: rgba(37, 43, 51, 0.2);
+        --color-divider: rgba(37, 43, 51, 0.2);
+        --color-border: rgba(37, 43, 51, 0.2);
+        --background-color: #f0f5ff;
+        --surface-color: #cdd2dd;
+        --surface-color-variant: #f0f5ff;
+        --on-surface-color: #cdd2dd;
+        --surface-disabled: #eaf0fd;
+        --text-color: #252b33;
+        --text-color-secondary: #475966;
+        --text-box: #fff;
+        --color-glass-dark: rgba(8, 18, 33, 0.6);
+        --btn-text-secondary: #fff;
+        --placeholde-text: rgba(71, 78, 94, 0.4);
+    }
+
+    [data-theme="dark"] {
+        --color-1: #6babff;
+        --color-11: #af59ff;
+        --color-8: #ff003c;
+        --color-12: #ce9dfd;
+
+        --color-gb-05: rgba(0, 0, 0, .2);
+        --color-glass: rgba(37, 43, 51, 0.5);
+        --on-color-glass: rgba(37, 43, 51, 0.5);
+        --color-divider: rgba(240, 245, 255, 0.4);
+        --color-border: #252b33;
+        --background-color: #252b33;
+        --surface-color: #475966;
+        --surface-color-variant: #333b46;
+        --on-surface-color: #354550;
+        --surface-disabled: #313842;
+        --text-color: #c1cde8;
+        --text-color-secondary: #999;
+        --text-box: #475966;
+        --sidebar-background-color: #2d343d;
+        --sidebar-color: #F0F5FF;
+        --footer-background-color: #313842;
+        --footer-overlay: rgba(0, 0, 0, 0.05);
+
+        --color-glass-dark: rgba(37, 43, 51, 0.5);
+
+        --btn-text-secondary: #000;
+
+        --placeholde-text: rgba(96, 113, 146, 0.85);
+    }
+
 }
 
 html {
@@ -150,6 +211,46 @@ a {
     height: 50px;
     border-radius: 4px;
     background-color: white;
+}
+
+
+input[data-is-autofilled="true"]{
+    background-color: var(--surface-color-variant);
+    color: var(--text-color);
+}
+
+input:not([type]):focus:not([readonly]),
+input[type=text]:not(.browser-default):focus:not([readonly]),
+input[type=password]:not(.browser-default):focus:not([readonly]),
+input[type=email]:not(.browser-default):focus:not([readonly]),
+input[type=url]:not(.browser-default):focus:not([readonly]),
+input[type=time]:not(.browser-default):focus:not([readonly]),
+input[type=date]:not(.browser-default):focus:not([readonly]),
+input[type=datetime]:not(.browser-default):focus:not([readonly]),
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]),
+input[type=tel]:not(.browser-default):focus:not([readonly]),
+input[type=number]:not(.browser-default):focus:not([readonly]),
+input[type=search]:not(.browser-default):focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid var(--color-2);
+    -webkit-box-shadow: 0 1px 0 0 var(--color-2);
+    box-shadow: 0 1px 0 0 var(--color-2);
+}
+
+input:not([type]),
+input[type=text]:not(.browser-default),
+input[type=password]:not(.browser-default),
+input[type=email]:not(.browser-default),
+input[type=url]:not(.browser-default),
+input[type=time]:not(.browser-default),
+input[type=date]:not(.browser-default),
+input[type=datetime]:not(.browser-default),
+input[type=datetime-local]:not(.browser-default),
+input[type=tel]:not(.browser-default),
+input[type=number]:not(.browser-default),
+input[type=search]:not(.browser-default),
+textarea.materialize-textarea {
+    border-bottom: 1px solid var(--color-border);
 }
 
 .nav-wrapper .input-field input[type=search] {
@@ -655,7 +756,30 @@ tr {
     opacity: .9;
 }
 
+
+/* Style Placeholders */
+::-webkit-input-placeholder {
+    color: var(--placeholde-text);
+}
+
+::-moz-placeholder {
+    color: var(--placeholde-text);
+}
+
+:-ms-input-placeholder {
+    color: var(--placeholde-text);
+}
+
+::-ms-input-placeholder {
+    color: var(--placeholde-text);
+}
+
+::placeholder {
+    color: var(--placeholde-text);
+}
+
 /* Text Color */
+.blue-text,
 .text-color-blue {
     color: var(--color-1) !important;
 }
@@ -719,7 +843,7 @@ tr {
 
 .bg-glass-dark {
 
-    background-color: var(--color-glass-dark) !important;
+    background-color: var(--color-glass-dark, rgba()) !important;
     color: var(--color-21) !important;
     -webkit-backdrop-filter: blur(50px);
     backdrop-filter: blur(50px);
@@ -972,7 +1096,7 @@ nav.navbar .brand-logo i {
     position: fixed;
     left: 0;
     right: 0;
-    background-color: var(--color-glass);
+    background-color: var(--color-glass, rgba(8, 18, 33, 1));
     backdrop-filter: blur(50px);
     -webkit-backdrop-filter: blur(50px);
     padding: 0;

@@ -41,7 +41,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(Input!.Email);
+                var user = await _userManager.FindByEmailAsync(Input!.Email!);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
@@ -59,7 +59,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account
                     protocol: Request.Scheme);
 
                 await _emailSender.SendEmailAsync(
-                    Input.Email,
+                    Input.Email!,
                     "Redefinir senha",
                     $"Redefina sua senha <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicando aqui</a>.");
                                 

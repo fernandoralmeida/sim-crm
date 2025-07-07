@@ -26,12 +26,12 @@ public class ThemeModel : PageModel
     public async Task OnGetAsync(string theme, string url)
     {
         string returnURL = url.Replace("%2F", "/");
-        returnURL = returnURL.Remove(0, 1);
+        returnURL = returnURL[1..];
         try
         {
             var _user = await _usermanager.GetUserAsync(User);
             HttpContext.Session.SetString("Theme", theme ?? "light");
-            await _userservice.SetThemeAsync(_user.Id, theme!);
+            await _userservice.SetThemeAsync(_user!.Id, theme!);
             Response.Redirect($"/{returnURL}");
         }
         catch (Exception ex)

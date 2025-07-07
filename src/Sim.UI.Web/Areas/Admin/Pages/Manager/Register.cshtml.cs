@@ -49,7 +49,7 @@ namespace Sim.UI.Web.Areas.Admin.Pages.Manager
                     EmailConfirmed = true
                 };
 
-                await _userManager.CreateAsync(newuser, Input.Password);
+                await _userManager.CreateAsync(newuser, Input.Password!);
 
                 return RedirectToPage("./Index");
 

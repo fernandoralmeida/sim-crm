@@ -72,10 +72,10 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account.Manage
         private async Task LoadAsync(string user)
         {
             var _user = await _userManager.GetUserAsync(User);
-            var _roles = await _userManager.GetRolesAsync(_user);
-            var _claims = await _userManager.GetClaimsAsync(_user);
+            var _roles = await _userManager.GetRolesAsync(_user!);
+            var _claims = await _userManager.GetClaimsAsync(_user!);
 
-            UserName = _user.UserName;
+            UserName = _user!.UserName;
 
             Input = new InputModel
             {
@@ -131,11 +131,11 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account.Manage
                 var _setor = await _secretaria.GetAsync(Guid.Parse(OwnerSelect!));
                 Claim _claim = new(_setor.Acronimo!, _setor.Id.ToString(), ClaimValueTypes.String);
 
-                IdentityResult result = await _userManager.AddClaimAsync(_user, _claim);
+                IdentityResult result = await _userManager.AddClaimAsync(_user!, _claim);
 
                 await LoadAsync(id);
                 if (result.Succeeded)
-                    StatusMessage = $"Vinculo {_user.Name} :: {_setor.Acronimo} criado com sucesso!";
+                    StatusMessage = $"Vinculo {_user!.Name} :: {_setor.Acronimo} criado com sucesso!";
 
                 else
                     StatusMessage = $"Erro: {result}";
@@ -155,7 +155,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account.Manage
             {
                 var _claim = new Claim(ct, cv);
                 var _user = await _userManager.FindByIdAsync(id);
-                await _userManager.RemoveClaimAsync(_user, _claim);
+                await _userManager.RemoveClaimAsync(_user!, _claim);
                 await LoadAsync(id);
             }
             catch (Exception ex)
@@ -191,7 +191,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account.Manage
             }
 
             var name_lastname = await _userManager.GetUserAsync(User);
-            if (Input.Name != name_lastname.Name || Input.LastName != name_lastname.LastName || Input.Genero != name_lastname.Gender)
+            if (Input.Name != name_lastname!.Name || Input.LastName != name_lastname.LastName || Input.Genero != name_lastname.Gender)
             {
                 name_lastname.Name = Input.Name;
                 name_lastname.LastName = Input.LastName;

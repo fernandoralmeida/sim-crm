@@ -5,10 +5,10 @@ using AutoMapper;
 using System.Text;
 using Sim.Application.Interfaces;
 using Sim.Domain.Entity;
-using Sim.Application.WebService.RWS.Services;
+using Sim.Application.RWS.Services;
 using Sim.UI.Web.Functions;
 using Sim.Application.VM;
-using Sim.Application.WebService.RFB.Interfaces;
+// using Sim.Application.RFB.Interfaces;
 
 namespace Sim.UI.Web.Pages.Empresa.Novo
 {
@@ -18,17 +18,15 @@ namespace Sim.UI.Web.Pages.Empresa.Novo
         private readonly IAppServiceEmpresa _appServiceEmpresa;
         private readonly IMapper _mapper;
         private readonly IReceitaWS _receitaWS;
-        private readonly IServiceRFB _rfb;
+        // private readonly IServiceRFB _rfb;
 
         public IndexModel(IAppServiceEmpresa appServiceEmpresa,
             IMapper mapper,
-            IReceitaWS receitaWS,
-            IServiceRFB rfb)
+            IReceitaWS receitaWS)
         {
             _appServiceEmpresa = appServiceEmpresa;
             _mapper = mapper;
             _receitaWS = receitaWS;
-            _rfb = rfb;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -44,7 +42,7 @@ namespace Sim.UI.Web.Pages.Empresa.Novo
                 var _cnpj = id.Mask("##.###.###/####-##");
                 var _emp = await _appServiceEmpresa.DoListAsync(s => s.CNPJ == _cnpj);
                 var rws = await _receitaWS.ConsultarCPNJAsync(id);
-                Input = _mapper.Map<VMEmpresa>(rws);
+                Input = VMEmpresa.FromCNPJ(rws);
                 StringBuilder _atv_sec = new();
 
                 if (_emp.Any())
@@ -59,7 +57,7 @@ namespace Sim.UI.Web.Pages.Empresa.Novo
                         {
                             item.CNAE_Principal = at.Code;
                             item.Atividade_Principal = at.Text;
-                            Input.CNAE_Principal = at.Code;
+                            Input!.CNAE_Principal = at.Code;
                             Input.Atividade_Principal = at.Text;
                         }
 
@@ -67,7 +65,7 @@ namespace Sim.UI.Web.Pages.Empresa.Novo
                         foreach (var at in rws.AtividadesSecundarias!)
                             _atv_sec.AppendLine(string.Format("{0} - {1}", at.Code, at.Text));
 
-                        Input.Atividade_Secundarias = _atv_sec.ToString().Trim();
+                        Input!.Atividade_Secundarias = _atv_sec.ToString().Trim();
                         item.Atividade_Secundarias = _atv_sec.ToString().Trim();
 
                         item.CEP = rws.Cep;
@@ -87,7 +85,7 @@ namespace Sim.UI.Web.Pages.Empresa.Novo
 
                     foreach (var at in rws.AtividadePrincipal!)
                     {
-                        Input.CNAE_Principal = at.Code;
+                        Input!.CNAE_Principal = at.Code;
                         Input.Atividade_Principal = at.Text;
                     }
 
@@ -97,7 +95,7 @@ namespace Sim.UI.Web.Pages.Empresa.Novo
                         _atv_sec.AppendLine(string.Format("{0} - {1}", at.Code, at.Text));
                     }
 
-                    Input.Atividade_Secundarias = _atv_sec.ToString().Trim();
+                    Input!.Atividade_Secundarias = _atv_sec.ToString().Trim();
                     await _appServiceEmpresa.AddAsync(_mapper.Map<Empresas>(Input));
                     StatusMessage = "Empresa sincronizada com sucesso!";
                 }

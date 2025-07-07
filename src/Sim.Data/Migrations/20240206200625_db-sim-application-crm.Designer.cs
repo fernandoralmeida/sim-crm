@@ -13,7 +13,9 @@ namespace Sim.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     [Migration("20240206200625_db-sim-application-crm")]
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     partial class dbsimapplicationcrm
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

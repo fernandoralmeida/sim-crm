@@ -60,9 +60,9 @@ namespace Sim.UI.Web.Pages.Atendimento.Novo
         private async Task OnLoad()
         {
 
-            var _claims = await
-                            _userManager.GetRolesAsync(
-                                await _userManager.GetUserAsync(User));
+            var _users = await _userManager.GetUserAsync(User);
+
+            var _claims = await _userManager.GetRolesAsync(_users!);
 
             var _setores = new List<EOrganizacao>();
 

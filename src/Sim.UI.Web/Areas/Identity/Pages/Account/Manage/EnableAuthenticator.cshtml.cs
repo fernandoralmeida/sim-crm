@@ -99,7 +99,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account.Manage
             if (await _userManager.CountRecoveryCodesAsync(user) == 0)
             {
                 var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
-                RecoveryCodes = recoveryCodes.ToArray();
+                RecoveryCodes = [.. recoveryCodes!];
                 return RedirectToPage("./ShowRecoveryCodes");
             }
             else
@@ -118,10 +118,10 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account.Manage
                 unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
             }
 
-            SharedKey = FormatKey(unformattedKey);
+            SharedKey = FormatKey(unformattedKey!);
 
             var email = await _userManager.GetEmailAsync(user);
-            AuthenticatorUri = GenerateQrCodeUri(email, unformattedKey);
+            AuthenticatorUri = GenerateQrCodeUri(email!, unformattedKey!);
         }
 
         private string FormatKey(string unformattedKey)

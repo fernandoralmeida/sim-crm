@@ -13,7 +13,9 @@ namespace Sim.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
     [Migration("20241002000114_sim-identity-claims")]
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     partial class simidentityclaims
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

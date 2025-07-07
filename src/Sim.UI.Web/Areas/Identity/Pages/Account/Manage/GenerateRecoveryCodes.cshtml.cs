@@ -60,7 +60,7 @@ namespace Sim.UI.Web.Areas.Identity.Pages.Account.Manage
             }
 
             var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
-            RecoveryCodes = recoveryCodes.ToArray();
+            RecoveryCodes = [.. recoveryCodes!];
 
             _logger.LogInformation("O usuário com ID '{UserId}' gerou novos códigos de recuperação 2FA .", userId);
             StatusMessage = "Você gerou novos códigos de recuperação.";

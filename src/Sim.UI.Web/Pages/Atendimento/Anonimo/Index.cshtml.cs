@@ -64,9 +64,9 @@ namespace Sim.UI.Web.Pages.Atendimento.Anonimo
         {
             try
             {
+                var _users = await _userManager.GetUserAsync(User);
                 var _claims = await
-                                _userManager.GetRolesAsync(
-                                    await _userManager.GetUserAsync(User));
+                                _userManager.GetRolesAsync(_users!);
 
                 var _setores = new List<EOrganizacao>();
 
@@ -95,7 +95,7 @@ namespace Sim.UI.Web.Pages.Atendimento.Anonimo
                 foreach (var item in _claims)
                     _lista.Add(new KeyValuePair<string, IEnumerable<string>>(
                         item, from c in await _appServiceServico.DoListAsync(s => s.Dominio!.Acronimo == item)
-                                   select c.Nome
+                              select c.Nome
                     ));
 
                 ListaServicos = _lista;

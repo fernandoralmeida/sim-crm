@@ -35,8 +35,8 @@ namespace Sim.Identity.Repository
                                                      User = user,
                                                      Role = role.Name,
                                                      Claim = new KeyValuePair<string, string>(
-                                                        userClaim.ClaimType,
-                                                        userClaim.ClaimValue)
+                                                        userClaim.ClaimType!,
+                                                        userClaim.ClaimValue!)
                                                  }).ToListAsync();
 
             // Certifique-se de que o filtro é aplicado corretamente a uma lista materializada
@@ -148,12 +148,12 @@ namespace Sim.Identity.Repository
                         .Join(_db.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => r.Name)
                         .Where(r => string.IsNullOrEmpty(role) || r == role)
                         .Distinct()
-                        .ToList(),
+                        .ToList()!,
 
                     Claims = _db.UserClaims
                         .Where(uc => uc.UserId == user.Id)
                         .Where(c => string.IsNullOrEmpty(claim) || c.ClaimValue == claim)
-                        .Select(uc => new KeyValuePair<string, string>(uc.ClaimType, uc.ClaimValue))
+                        .Select(uc => new KeyValuePair<string, string>(uc.ClaimType!, uc.ClaimValue!))
                         .Distinct()
                         .ToList()
                 })
