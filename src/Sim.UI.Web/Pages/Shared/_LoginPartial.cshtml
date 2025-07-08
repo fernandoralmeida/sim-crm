@@ -96,7 +96,8 @@
         @foreach (var setor in _claims!)
         {
             <div>
-                <a asp-area="Identity" asp-page="/Session" asp-route-id="@setor.Value" asp-route-url="@_url">@setor.Key</a>
+                @* <a asp-area="Identity" asp-page="/Session" asp-route-id="@setor.Value" asp-route-url="@_url">@setor.Key</a> *@
+                <a asp-area="Identity" asp-page="/Session" asp-route-id="@setor.Value">@setor.Key</a>
             </div>
         }
     }

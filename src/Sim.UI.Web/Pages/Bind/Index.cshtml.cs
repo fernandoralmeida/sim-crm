@@ -18,7 +18,15 @@ public class IndexModel : PageModel
 
     [BindProperty(SupportsGet = true)]
     public string? Search { get; set; }
+    public int StartNumber { get; set; }
 
+    [BindProperty(SupportsGet = true)]
+    public int CurrentPage { get; set; }
+
+    public int NextPage { get; set; }
+    public int PreviousPage { get; set; }
+    public int RegCount { get; set; }
+    public int TotalPages => (int)Math.Ceiling((double)RegCount / 10);
     public IEnumerable<EBindings>? Listar { get; set; }
 
     public IndexModel(IAppServiceBindings repository)
@@ -26,11 +34,17 @@ public class IndexModel : PageModel
         _bindings = repository;
     }
 
-    public async Task OnGetAsync()
-        => await Task.Run(async () =>
-        {
-            Listar = await _bindings.DoListAsync();
-        });
+    public async Task OnGetAsync(int pg = 1)
+    {
+        pg = pg < 1 ? 1 : pg;
+        var _list = await _bindings.DoListAsync();
+        Listar = _list?.Skip((pg - 1) * 10).Take(10);
+        StartNumber = (pg - 1) * 10 + 1;
+        CurrentPage = pg;
+        NextPage += pg == TotalPages ? pg : pg + 1;
+        PreviousPage += pg == 1 ? 1 : pg - 1;
+        RegCount = _list?.Count() ?? 0;
+    }
 
     public async Task OnPostAsync()
         => Listar = await _bindings.DoListAsync(s => s.Pessoa!.CPF == Search || s.Empresa!.CNPJ == Search);
@@ -41,6 +55,4 @@ public class IndexModel : PageModel
         await _bindings.RemoveAsync(await _bindings.GetAsync(id));
         return new JsonResult(_result);
     }
-
-
 }

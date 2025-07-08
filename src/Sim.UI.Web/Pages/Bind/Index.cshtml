@@ -1,4 +1,4 @@
-@page "/bindings/"
+@page "/bindings/{pg?}"
 @model Sim.UI.Web.Pages.Bind.IndexModel
 @using Sim.Identity.Config;
 
@@ -43,10 +43,9 @@
         <tbody>
             @if (Model.Listar != null)
             {
-                var _c = 0;
+                var _c = Model.StartNumber;
                 @foreach (var item in Model.Listar)
-                {
-                    _c++;
+                {                    
                     var _vinculo = item.Vinculo;
                     <tr>
                         <td>@_c</td>
@@ -64,10 +63,23 @@
                                 data-id="@item.Id"><i class="material-icons">remove</i></a>
                         </td>
                     </tr>
+                    _c++;
                 }
             }
         </tbody>
     </table>
+
+    <div class="card-action center">
+        <span class="left">Página @Model.CurrentPage de @Model.TotalPages [@Model.RegCount]</span>
+        <a asp-page="./Index" asp-route-pg="@Model.PreviousPage"
+            class="btn-small waves-effect waves-light">
+            <i class="material-icons">navigate_before</i>
+        </a>
+        <a asp-page="./Index" asp-route-pg="@Model.NextPage"
+            class="btn-small waves-effect waves-light">
+                <i class="material-icons">navigate_next</i> 
+        </a>
+    </div>
 </div>
 
 @section Scripts {

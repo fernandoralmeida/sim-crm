@@ -19,26 +19,37 @@ public class SessionModel : PageModel
     [TempData]
     public string? StatusMessage { get; set; }
 
-    public async Task OnGetAsync(string id, string url)
+    public async Task<IActionResult> OnGetAsync(string id)
     {
-        string returnURL = url.Replace("%2F", "/");
-        returnURL = returnURL.Remove(0, 1);
+        // var _route = url.Replace("%2F", "/");
+
+        // var _returnUrl = $"{Request.Scheme}://{Request.Host.ToUriComponent()}{_route}";
+
         try
         {
             var _unidade = await _appSecretaria.GetAsync(Guid.Parse(id));
             HttpContext.Session.SetString("SetorAtivo", _unidade.Acronimo!);
             StatusMessage = $"Setor {_unidade.Acronimo} selecionado com sucesso!";
+
             if (_unidade.Acronimo!.Contains("Sebrae"))
-                Response.Redirect($"/sebrae");
+                return RedirectToPage("/Index", new { area = "Sebrae" });
+            // _returnUrl = $"{Request.Scheme}://{Request.Host.ToUriComponent()}/sebrae";
+
+
             else if (_unidade.Acronimo!.Contains("Banco do Povo"))
-                Response.Redirect($"/bpp");
+                return RedirectToPage("/Index", new { area = "Bpp" });
+            // _returnUrl = $"{Request.Scheme}://{Request.Host.ToUriComponent()}/bpp";
+
             else
-                Response.Redirect($"/{returnURL}");
+                return RedirectToPage("/Atendimento/Index");
+
         }
         catch (Exception ex)
         {
             StatusMessage = $"Erro: {ex.Message}";
-            Response.Redirect($"/{returnURL}");
+            return RedirectToPage("/Atendimento/Index");
         }
+
+        //return Redirect(_returnUrl);
     }
 }
