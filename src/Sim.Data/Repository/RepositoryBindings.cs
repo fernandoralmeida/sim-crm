@@ -3,6 +3,7 @@ using Sim.Data.Context;
 using Sim.Domain.Customer.Interfaces;
 using Sim.Domain.Customer.Models;
 using Microsoft.EntityFrameworkCore;
+using Sim.Domain.Response;
 
 namespace Sim.Data.Repository;
 
@@ -22,6 +23,30 @@ public class RepositoryBindings : RepositoryBase<EBindings>, IRepositoryBindings
                 .OrderBy(o => o.Pessoa!.Nome)
                 .AsNoTrackingWithIdentityResolution()
                 .ToListAsync();
+    }
+
+    public async Task<PagedResponse<EBindings>> DoListPaginedAsync(Expression<Func<EBindings, bool>>? param = null, int pag = 1, int itemsPerPage = 10)
+    {
+        var query = _db.Vinculos!
+                    .Where(param ?? (p => true))
+                    .Include(p => p.Pessoa)
+                    .Include(e => e.Empresa)
+                    .OrderBy(o => o.Pessoa!.Nome) // OU o critério de ordenação dinâmico
+                    .AsNoTrackingWithIdentityResolution()
+                    .AsQueryable();
+
+        var totalRecords = await query.CountAsync();
+
+        var _data = await query.Skip((pag - 1) * itemsPerPage)
+                    .Take(itemsPerPage)
+                    .ToListAsync();
+
+        return new PagedResponse<EBindings>(
+            data: _data,
+            pageNumber: pag,
+            pageSize: itemsPerPage,
+            totalRecords: totalRecords
+        );
     }
 
     public async Task<EBindings> GetAsync(Guid id)

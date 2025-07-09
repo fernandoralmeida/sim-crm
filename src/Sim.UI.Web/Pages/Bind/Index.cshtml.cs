@@ -26,7 +26,7 @@ public class IndexModel : PageModel
     public int NextPage { get; set; }
     public int PreviousPage { get; set; }
     public int RegCount { get; set; }
-    public int TotalPages => (int)Math.Ceiling((double)RegCount / 10);
+    public int TotalPages {get; set; } = 1;
     public IEnumerable<EBindings>? Listar { get; set; }
 
     public IndexModel(IAppServiceBindings repository)
@@ -37,13 +37,14 @@ public class IndexModel : PageModel
     public async Task OnGetAsync(int pg = 1)
     {
         pg = pg < 1 ? 1 : pg;
-        var _list = await _bindings.DoListAsync();
-        Listar = _list?.Skip((pg - 1) * 10).Take(10);
+        var _response = await _bindings.DoListPaginedAsync(null, pg, 10);
+        Listar = _response.Data;
         StartNumber = (pg - 1) * 10 + 1;
-        CurrentPage = pg;
+        CurrentPage = _response.PageNumber;
+        RegCount = _response.TotalRecords;
+        TotalPages = _response.TotalPages;
         NextPage += pg == TotalPages ? pg : pg + 1;
         PreviousPage += pg == 1 ? 1 : pg - 1;
-        RegCount = _list?.Count() ?? 0;
     }
 
     public async Task OnPostAsync()
