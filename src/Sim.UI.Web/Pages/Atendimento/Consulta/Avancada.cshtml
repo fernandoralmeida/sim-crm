@@ -51,8 +51,23 @@
                 <label asp-for="Input!.Setor"></label>
             </div>
             <div class="input-field col s6 m4 l2">
-                <select asp-for="Input!.Servico" asp-items="@Model.ListaServicos">
+                @* <select asp-for="Input!.Servico" asp-items="@Model.ListaServicos">
                     <option selected></option>
+                </select>
+                <label asp-for="Input!.Servico"></label> *@
+                <select asp-for="Input!.Servico" multiple size="2">
+                    @if (Model.ListaServicosGroup != null)
+                    {
+                        foreach (var item in Model.ListaServicosGroup!)
+                        {
+                            <optgroup label="@item.Key">
+                                @foreach (var subitem in item.Value)
+                                {
+                                    <option value="@subitem">@subitem</option>
+                                }
+                            </optgroup>
+                        }
+                    }
                 </select>
                 <label asp-for="Input!.Servico"></label>
             </div>

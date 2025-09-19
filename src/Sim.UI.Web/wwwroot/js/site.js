@@ -16,7 +16,7 @@ $(document).ready(function () {
             closeOnClick: false
         });
 
-    $('select').formSelect();
+    $('select').formSelect({ constrainWidth: false });
 
     $('.collapsible').collapsible({ accordion: true });
 

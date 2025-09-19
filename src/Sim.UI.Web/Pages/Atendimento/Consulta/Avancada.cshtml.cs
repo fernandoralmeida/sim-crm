@@ -29,6 +29,7 @@ namespace Sim.UI.Web.Pages.Atendimento.Consulta
         public InputModel? Input { get; set; }
         public SelectList? ListaAtendentes { get; set; }
         public SelectList? ListaServicos { get; set; }
+        public IEnumerable<KeyValuePair<string, IEnumerable<string>>>? ListaServicosGroup { get; set; }
         public SelectList? ListaSetores { get; set; }
 
         public class InputModel
@@ -91,18 +92,40 @@ namespace Sim.UI.Web.Pages.Atendimento.Consulta
         {
             var _dominioativo = await _appServiceSecretaria.DoListAsync(s => s.Acronimo == HttpContext.Session.GetString("Dominio"));
 
+            // var _claims = await
+            //     _userManager.GetRolesAsync(
+            //         await _userManager.GetUserAsync(User));
+
             if (!_dominioativo.Any())
                 return;
 
-            var _setores = await _appServiceSecretaria.DoListAsync(s => s.Dominio == _dominioativo.FirstOrDefault()!.Id);
-            ListaSetores = new SelectList(_setores, nameof(EOrganizacao.Nome), nameof(EOrganizacao.Nome), null);
+            var _setores = await _appServiceSecretaria.DoListAsync(s => s.Dominio == _dominioativo.FirstOrDefault()!.Id || s.Id == _dominioativo.FirstOrDefault()!.Id);
+            ListaSetores = new SelectList(_setores, nameof(EOrganizacao.Acronimo), nameof(EOrganizacao.Acronimo), null);
 
             var _list_servicos = new List<EServico>();
             foreach (var item in _setores)
-                foreach (var servico in await _appServiceServico.DoListAsync(s => s.Dominio!.Id == item.Id))
+                foreach (var servico in await _appServiceServico.DoListAsync(s => s.Dominio!.Id == item.Id || s.Id == item.Id))
                     _list_servicos.Add(servico);
 
             ListaServicos = new SelectList(_list_servicos, nameof(EServico.Nome), nameof(EServico.Nome), null);
+
+            var _dominio = HttpContext.Session.GetString("Dominio");
+
+            var _lista = new List<KeyValuePair<string, IEnumerable<string>>>
+                {
+                    new(_dominio!,
+                        from d in await _appServiceServico.DoListAsync(s => s.Dominio!.Acronimo == _dominio)
+                        select d.Nome)
+                };
+
+            foreach (var item in _setores)
+                _lista.Add(new KeyValuePair<string, IEnumerable<string>>(
+                    item.Acronimo!, from c in await _appServiceServico.DoListAsync(s => s.Dominio!.Acronimo == item.Acronimo!)
+                          select c.Nome
+                ));
+
+            ListaServicosGroup = _lista;
+
         }
 
 
